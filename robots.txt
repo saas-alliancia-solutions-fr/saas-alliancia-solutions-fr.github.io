@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://saas.alliancia-solutions.fr/sitemap.xml
