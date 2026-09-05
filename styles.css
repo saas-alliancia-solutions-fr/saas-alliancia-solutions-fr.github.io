@@ -165,7 +165,7 @@ p { margin-top: 0; }
 .billing-toggle button { min-height: 42px; padding: 0 16px; border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; font-weight: 700; }
 .billing-toggle button.active { background: var(--navy); color: #fff; }
 .billing-toggle button span { display: inline-block; margin-left: 6px; padding: 2px 6px; border-radius: 20px; background: var(--mint); color: var(--navy); font-size: .65rem; }
-.starter-pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+.starter-pricing { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 18px; }
 .starter-pricing article { position: relative; min-height: 180px; padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
 .starter-pricing article > strong { display: block; font: 800 1.45rem "Manrope", sans-serif; }
 .starter-pricing article p { margin: 12px 0 0; font: 700 1.1rem "Manrope", sans-serif; }
@@ -402,7 +402,7 @@ p { margin-top: 0; }
   .benefits-grid, .platforms-grid, .retention-grid, .faq-grid { gap: 48px; }
   .faq-grid > div:first-child { position: static; }
   .retention-visual { min-height: 260px; }
-  .starter-pricing { grid-template-columns: repeat(3, minmax(240px, 1fr)); overflow-x: auto; scroll-snap-type: x mandatory; }
+  .starter-pricing { grid-template-columns: repeat(2, minmax(240px, 1fr)); overflow-x: auto; scroll-snap-type: x mandatory; }
   .starter-pricing article { scroll-snap-align: start; }
   .pricing-table { display: grid; grid-template-columns: repeat(5, minmax(260px, 1fr)); overflow-x: auto; border-radius: 0; border-inline: 0; scroll-snap-type: x mandatory; }
   .pricing-header { display: none; }

@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20260905-10">
+  <link rel="stylesheet" href="/styles.css?v=20260905-11">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:title" content="SAAS — Vos données sauvegardées. Votre activité protégée.">
@@ -173,8 +173,7 @@
     <section class="section pricing-section" id="tarifs">
       <div class="container">
         <div class="section-heading pricing-heading"><h2>Un tarif simple,<br>selon votre volume.</h2><div class="pricing-intro"><p>Payez à l’année pour profiter de deux mois offerts, ou choisissez la souplesse du mensuel.</p><div class="billing-toggle" role="group" aria-label="Période de facturation"><button type="button" class="active" data-billing="annual" aria-pressed="true">Annuel <span>2 mois offerts</span></button><button type="button" data-billing="monthly" aria-pressed="false">Mensuel</button></div></div></div>
-        <div class="starter-pricing" aria-label="Formules découverte et petits volumes">
-          <article><span class="plan-badge">Pour tester</span><strong>100 Mo</strong><p>Gratuit</p><small>1 poste · 365 jours · En autonomie</small><a href="#diagnostic" data-plan="Découverte 100 Mo">Essayer gratuitement →</a></article>
+        <div class="starter-pricing" aria-label="Formules petits volumes">
           <article><strong>1 Go</strong><p><span data-annual="36 € HT/an" data-monthly="4 € HT/mois">36 € HT/an</span></p><small data-annual="soit 3 € HT/mois" data-monthly="sans engagement annuel">soit 3 € HT/mois</small><a href="#diagnostic" data-plan="1 Go">Choisir →</a></article>
           <article><strong>10 Go</strong><p><span data-annual="96 € HT/an" data-monthly="10 € HT/mois">96 € HT/an</span></p><small data-annual="soit 8 € HT/mois" data-monthly="sans engagement annuel">soit 8 € HT/mois</small><a href="#diagnostic" data-plan="10 Go">Choisir →</a></article>
         </div>
@@ -206,6 +205,40 @@
       </div>
     </section>
 
+    <section class="contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="container contact-grid">
+        <div class="contact-copy">
+          <h2 id="contact-title">Une question ?<br>Écrivez-nous.</h2>
+          <p>Décrivez votre besoin directement depuis le site. Votre demande arrive chez Alliancia Solutions et reçoit une réponse personnalisée.</p>
+          <div class="contact-details">
+            <p><strong>Un interlocuteur humain</strong><span>Nous revenons vers vous pendant les horaires ouvrés.</span></p>
+            <p><strong>Un échange confidentiel</strong><span>Ne transmettez aucun mot de passe ni donnée sensible dans ce formulaire.</span></p>
+          </div>
+        </div>
+        <form class="contact-form" action="https://formsubmit.co/contact@alliancia-solutions.fr" method="POST" data-contact-form>
+          <input type="hidden" name="_subject" value="Nouvelle demande depuis le site SAAS">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://saas.alliancia-solutions.fr/merci.html">
+          <input type="hidden" name="_url" value="https://saas.alliancia-solutions.fr/#contact">
+          <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="form-row">
+            <label>Nom et prénom <span>*</span><input type="text" name="Nom" autocomplete="name" required></label>
+            <label>Société <span>*</span><input type="text" name="Société" autocomplete="organization" required></label>
+          </div>
+          <div class="form-row">
+            <label>Adresse e-mail <span>*</span><input type="email" name="email" autocomplete="email" required></label>
+            <label>Téléphone <input type="tel" name="Téléphone" autocomplete="tel"></label>
+          </div>
+          <label>Objet de la demande <span>*</span><select name="Objet" required><option value="">Sélectionnez</option><option>Diagnostic gratuit</option><option>Demande de devis</option><option>Question sur une formule</option><option>Assistance technique</option><option>Facturation ou abonnement</option><option>Autre demande</option></select></label>
+          <label>Votre message <span>*</span><textarea name="Message" rows="6" minlength="20" placeholder="Décrivez votre besoin en quelques lignes…" required></textarea></label>
+          <label class="form-consent"><input type="checkbox" name="Consentement" value="Accepté" required><span>J’accepte que mes informations soient utilisées pour répondre à ma demande, conformément à la <a href="/confidentialite.html">politique de confidentialité</a>.</span></label>
+          <button class="button form-submit" type="submit">Envoyer ma demande</button>
+          <p class="form-note">Les champs marqués d’un * sont obligatoires.</p>
+        </form>
+      </div>
+    </section>
+
     <section class="final-cta" id="diagnostic">
       <div class="container final-cta-inner">
         <div><h2>On vérifie ensemble<br>ce qu’il faut protéger ?</h2><p>Un échange de 30 minutes pour faire le point sur vos données, vos équipements et le bon volume pour votre entreprise.</p></div>
@@ -218,7 +251,7 @@
     <div class="container footer-grid">
       <div class="footer-brand"><img src="/assets/alliancia-logo.png" alt="" width="44" height="44"><div><strong>SAAS</strong><span>Une solution Alliancia Solutions</span></div></div>
       <div><strong>Alliancia Solutions</strong><address>5 rue Grenouillère<br>68230 Turckheim, France</address></div>
-      <div><strong>Contact</strong><a href="mailto:contact@alliancia-solutions.fr">contact@alliancia-solutions.fr</a><a href="/espace-client.html">Espace client</a></div>
+      <div><strong>Contact</strong><a href="#contact">Formulaire de contact</a><a href="/espace-client.html">Téléchargements et assistance</a></div>
       <div><strong>Informations</strong><a href="/mentions-legales.html">Mentions légales</a><a href="/confidentialite.html">Confidentialité</a><a href="https://alliancia-solutions.fr">Alliancia Solutions</a></div>
     </div>
     <div class="container footer-bottom"><span>© <span data-year></span> Alliancia Solutions</span><span>Service d’Archivage Automatique Sécurisé</span></div>
@@ -262,6 +295,6 @@
     </div>
   </dialog>
   <script src="/config.js"></script>
-  <script src="/script.js?v=20260905-10" defer></script>
+  <script src="/script.js?v=20260905-11" defer></script>
 </body>
 </html>
