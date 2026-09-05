@@ -12,13 +12,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles.css?v=20260905-10">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:title" content="SAAS — Vos données sauvegardées. Votre activité protégée.">
   <meta property="og:description" content="Une sauvegarde cloud française, configurée pour vous en 60 minutes et restaurable 24h/24.">
   <meta property="og:url" content="https://saas.alliancia-solutions.fr/">
-  <meta property="og:image" content="https://saas.alliancia-solutions.fr/assets/saas-hero-v2.jpg">
+  <meta property="og:image" content="https://saas.alliancia-solutions.fr/assets/saas-hero-v3.png">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -70,7 +70,7 @@
           <p class="hero-note">30 minutes · Sans engagement · Avec un interlocuteur humain</p>
         </div>
         <div class="hero-media" aria-label="Ordinateur, NAS et serveur sauvegardés vers un cloud français sécurisé">
-          <img src="/assets/saas-hero-v2.jpg" alt="Ordinateur, NAS et serveur reliés à une sauvegarde cloud française sécurisée" width="1536" height="1024">
+          <img src="/assets/saas-hero-v3.png" alt="Ordinateur, NAS et serveur reliés à une sauvegarde cloud française sécurisée" width="1536" height="1024">
         </div>
       </div>
       <div class="container trust-strip" aria-label="Garanties principales">
@@ -121,21 +121,34 @@
         <div>
           <h2>Ce qui change vraiment<br>pour votre entreprise.</h2>
           <ul class="benefit-list">
-            <li><span>01</span><div><strong>Tous vos postes, un seul contrat</strong><small>Windows, macOS, Linux, NAS et serveurs, sans facturation par appareil.</small></div></li>
-            <li><span>02</span><div><strong>Restauration autonome 24/7</strong><small>Récupérez un fichier, un dossier ou un poste complet.</small></div></li>
-            <li><span>03</span><div><strong>Aucune coupure en cas de dépassement</strong><small>Vous êtes alerté, mais la protection continue.</small></div></li>
-            <li><span>04</span><div><strong>Aucun frais de restauration ou de sortie</strong><small>Une facture lisible, sans mauvaise surprise.</small></div></li>
+            <li><span class="benefit-icon" aria-hidden="true">◎</span><div><strong>Tous vos postes, un seul contrat</strong><small>Windows, macOS, Linux, NAS et serveurs, sans facturation par appareil.</small></div></li>
+            <li><span class="benefit-icon benefit-icon-text" aria-hidden="true">24/7</span><div><strong>Restauration autonome 24/7</strong><small>Récupérez un fichier, un dossier ou un poste complet.</small></div></li>
+            <li><span class="benefit-icon benefit-icon-infinity" aria-hidden="true">∞</span><div><strong>Aucune coupure en cas de dépassement</strong><small>Vous êtes alerté, mais la protection continue.</small></div></li>
+            <li><span class="benefit-icon" aria-hidden="true">€</span><div><strong>Aucun frais de restauration ou de sortie</strong><small>Une facture lisible, sans mauvaise surprise.</small></div></li>
           </ul>
         </div>
         <div class="restore-demo" aria-label="Exemple d’une restauration de fichiers">
-          <div class="demo-header"><span class="status-dot"></span><strong>Sauvegarde réussie</strong><small>Aujourd’hui, 08:42</small></div>
-          <div class="demo-flow">
-            <div class="source-stack"><span>Poste direction</span><span>NAS comptabilité</span><span>Serveur fichiers</span></div>
-            <svg class="flow-arrow" aria-hidden="true" viewBox="0 0 90 24"><path d="M2 12h80M74 5l9 7-9 7"/></svg>
-            <div class="cloud-node"><svg aria-hidden="true" viewBox="0 0 48 48"><path d="M10 33a9 9 0 0 1 2-17.8A13 13 0 0 1 37 20a7 7 0 0 1 1 13H10Z"/><path d="m19 25 4 4 8-9"/></svg><span>365 jours</span></div>
+          <div class="restore-map">
+            <div class="devices-column">
+              <strong>Vos données</strong>
+              <div class="device-list" aria-label="Sources sauvegardées">
+                <span><svg aria-hidden="true" viewBox="0 0 32 32"><path d="M6 8h20v14H6zM3 25h26"/></svg><b>✓</b><small>Poste</small></span>
+                <span><svg aria-hidden="true" viewBox="0 0 32 32"><path d="M5 6h22v16H5zM10 26h12M16 22v4"/></svg><b>✓</b><small>Serveur</small></span>
+                <span><svg aria-hidden="true" viewBox="0 0 32 32"><rect x="9" y="4" width="14" height="24" rx="2"/><path d="M13 9h6M13 14h6M13 22h.1"/></svg><b>✓</b><small>NAS</small></span>
+                <span><svg aria-hidden="true" viewBox="0 0 32 32"><path d="M3 10h11l2 3h13v14H3z"/></svg><b>✓</b><small>Dossiers</small></span>
+              </div>
+            </div>
+            <div class="backup-cloud">
+              <svg aria-hidden="true" viewBox="0 0 80 80"><path d="M17 55a15 15 0 0 1 3-29.7A22 22 0 0 1 63 33a12 12 0 0 1 2 22H17Z"/><path d="m31 42 7 7 13-15"/></svg>
+              <strong>Sauvegarde réussie</strong><small>365 jours d’historique</small>
+            </div>
+            <div class="restore-window">
+              <div class="restore-title"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 16a5 5 0 0 1 1-9.9A7 7 0 0 1 20 9a4 4 0 0 1 0 7H5Z"/></svg><strong>Restaurer un fichier</strong></div>
+              <div class="file-list"><p><span class="file-type pdf">P</span><span>Contrat_client.pdf</span><small>2,4 Mo</small><b>✓</b></p><p><span class="file-type ppt">P</span><span>Présentation.pptx</span><small>18,7 Mo</small><b>✓</b></p><p><span class="file-type xls">X</span><span>Comptabilite.xlsx</span><small>6,1 Mo</small><b>✓</b></p><p><span class="file-type img">I</span><span>Photo_produit.jpg</span><small>3,2 Mo</small><b>✓</b></p></div>
+              <button type="button" class="demo-button" data-demo-restore>↓&nbsp; Restaurer</button>
+            </div>
           </div>
-          <div class="file-list"><p><span>Contrat_client.pdf</span><small>2,4 Mo</small><b>✓</b></p><p><span>Comptabilite_2026.xlsx</span><small>6,1 Mo</small><b>✓</b></p><p><span>Présentation.pptx</span><small>18,7 Mo</small><b>✓</b></p></div>
-          <button type="button" class="demo-button" data-demo-restore>Restaurer ces fichiers</button>
+          <p class="restore-assurance"><span>✓</span> Vos fichiers sont intacts et disponibles à tout moment.</p>
           <p class="demo-feedback" aria-live="polite" data-demo-feedback></p>
         </div>
       </div>
@@ -159,19 +172,24 @@
 
     <section class="section pricing-section" id="tarifs">
       <div class="container">
-        <div class="section-heading pricing-heading"><h2>Un tarif annuel simple,<br>selon votre volume.</h2><p>Toutes les formules comprennent les mêmes services. Seul le volume utile change.</p></div>
+        <div class="section-heading pricing-heading"><h2>Un tarif simple,<br>selon votre volume.</h2><div class="pricing-intro"><p>Payez à l’année pour profiter de deux mois offerts, ou choisissez la souplesse du mensuel.</p><div class="billing-toggle" role="group" aria-label="Période de facturation"><button type="button" class="active" data-billing="annual" aria-pressed="true">Annuel <span>2 mois offerts</span></button><button type="button" data-billing="monthly" aria-pressed="false">Mensuel</button></div></div></div>
+        <div class="starter-pricing" aria-label="Formules découverte et petits volumes">
+          <article><span class="plan-badge">Pour tester</span><strong>100 Mo</strong><p>Gratuit</p><small>1 poste · 365 jours · En autonomie</small><a href="#diagnostic" data-plan="Découverte 100 Mo">Essayer gratuitement →</a></article>
+          <article><strong>1 Go</strong><p><span data-annual="36 € HT/an" data-monthly="4 € HT/mois">36 € HT/an</span></p><small data-annual="soit 3 € HT/mois" data-monthly="sans engagement annuel">soit 3 € HT/mois</small><a href="#diagnostic" data-plan="1 Go">Choisir →</a></article>
+          <article><strong>10 Go</strong><p><span data-annual="96 € HT/an" data-monthly="10 € HT/mois">96 € HT/an</span></p><small data-annual="soit 8 € HT/mois" data-monthly="sans engagement annuel">soit 8 € HT/mois</small><a href="#diagnostic" data-plan="10 Go">Choisir →</a></article>
+        </div>
         <div class="pricing-table" role="table" aria-label="Tarifs annuels SAAS">
           <div class="pricing-row pricing-header" role="row">
-            <div role="columnheader">Volume sauvegardé</div><div role="columnheader">Équivalent mensuel</div><div role="columnheader">Facturation annuelle</div><div role="columnheader"><span class="sr-only">Choisir</span></div>
+            <div role="columnheader">Volume sauvegardé</div><div role="columnheader">Prix</div><div role="columnheader">Votre avantage</div><div role="columnheader"><span class="sr-only">Choisir</span></div>
           </div>
-          <div class="pricing-row" role="row"><div role="cell"><strong>50 Go</strong><small>Pour les documents essentiels</small></div><div role="cell">20 € HT/mois</div><div role="cell"><strong>240 € HT/an</strong></div><div role="cell"><a href="#diagnostic" data-plan="50 Go">Choisir <span>→</span></a></div></div>
-          <div class="pricing-row" role="row"><div role="cell"><strong>100 Go</strong><small>Pour une petite équipe</small></div><div role="cell">30 € HT/mois</div><div role="cell"><strong>360 € HT/an</strong></div><div role="cell"><a href="#diagnostic" data-plan="100 Go">Choisir <span>→</span></a></div></div>
-          <div class="pricing-row recommended" role="row"><div role="cell"><strong>250 Go</strong><small>Le bon équilibre pour une TPE</small></div><div role="cell">55 € HT/mois</div><div role="cell"><strong>660 € HT/an</strong></div><div role="cell"><a href="#diagnostic" data-plan="250 Go">Choisir <span>→</span></a></div></div>
-          <div class="pricing-row" role="row"><div role="cell"><strong>550 Go</strong><small>Pour plusieurs postes et un NAS</small></div><div role="cell">90 € HT/mois</div><div role="cell"><strong>1 080 € HT/an</strong></div><div role="cell"><a href="#diagnostic" data-plan="550 Go">Choisir <span>→</span></a></div></div>
-          <div class="pricing-row" role="row"><div role="cell"><strong>1 To</strong><small>Pour un parc plus important</small></div><div role="cell">140 € HT/mois</div><div role="cell"><strong>1 680 € HT/an</strong></div><div role="cell"><a href="#diagnostic" data-plan="1 To">Choisir <span>→</span></a></div></div>
+          <div class="pricing-row" role="row"><div role="cell"><strong>50 Go</strong><small>Pour les documents essentiels</small></div><div role="cell"><strong data-annual="240 € HT/an" data-monthly="24 € HT/mois">240 € HT/an</strong><small data-annual="soit 20 € HT/mois" data-monthly="sans engagement annuel">soit 20 € HT/mois</small></div><div role="cell"><span data-saving>48 € économisés/an</span></div><div role="cell"><a href="#diagnostic" data-plan="50 Go">Choisir <span>→</span></a></div></div>
+          <div class="pricing-row" role="row"><div role="cell"><strong>100 Go</strong><small>Pour une petite équipe</small></div><div role="cell"><strong data-annual="360 € HT/an" data-monthly="36 € HT/mois">360 € HT/an</strong><small data-annual="soit 30 € HT/mois" data-monthly="sans engagement annuel">soit 30 € HT/mois</small></div><div role="cell"><span data-saving>72 € économisés/an</span></div><div role="cell"><a href="#diagnostic" data-plan="100 Go">Choisir <span>→</span></a></div></div>
+          <div class="pricing-row recommended" role="row"><div role="cell"><strong>250 Go</strong><small>Le bon équilibre pour une TPE</small></div><div role="cell"><strong data-annual="660 € HT/an" data-monthly="66 € HT/mois">660 € HT/an</strong><small data-annual="soit 55 € HT/mois" data-monthly="sans engagement annuel">soit 55 € HT/mois</small></div><div role="cell"><span data-saving>132 € économisés/an</span></div><div role="cell"><a href="#diagnostic" data-plan="250 Go">Choisir <span>→</span></a></div></div>
+          <div class="pricing-row" role="row"><div role="cell"><strong>550 Go</strong><small>Pour plusieurs postes et un NAS</small></div><div role="cell"><strong data-annual="1 080 € HT/an" data-monthly="108 € HT/mois">1 080 € HT/an</strong><small data-annual="soit 90 € HT/mois" data-monthly="sans engagement annuel">soit 90 € HT/mois</small></div><div role="cell"><span data-saving>216 € économisés/an</span></div><div role="cell"><a href="#diagnostic" data-plan="550 Go">Choisir <span>→</span></a></div></div>
+          <div class="pricing-row" role="row"><div role="cell"><strong>1 To</strong><small>Pour un parc plus important</small></div><div role="cell"><strong data-annual="1 680 € HT/an" data-monthly="168 € HT/mois">1 680 € HT/an</strong><small data-annual="soit 140 € HT/mois" data-monthly="sans engagement annuel">soit 140 € HT/mois</small></div><div role="cell"><span data-saving>336 € économisés/an</span></div><div role="cell"><a href="#diagnostic" data-plan="1 To">Choisir <span>→</span></a></div></div>
         </div>
-        <div class="included-line"><span>Inclus dans chaque formule</span><ul><li>Postes illimités</li><li>Installation guidée</li><li>Alertes</li><li>Restaurations</li><li>Rétention 365 jours</li></ul></div>
-        <p class="pricing-note">Besoin de plus de 1 To ou d’un périmètre particulier ? <a class="booking-link" href="mailto:contact@alliancia-solutions.fr?subject=Devis%20SAAS%20sur%20mesure">Demander un devis personnalisé →</a></p>
+        <div class="included-line"><span>Inclus dans chaque formule payante</span><ul><li>Postes illimités</li><li>Installation guidée</li><li>Alertes</li><li>Restaurations</li><li>Rétention 365 jours</li></ul></div>
+        <p class="pricing-note">Besoin de plus de 1 To ou d’un périmètre particulier ? <button type="button" class="pricing-quote-link" data-quote-open>Demander un devis personnalisé →</button></p>
       </div>
     </section>
 
@@ -179,7 +197,7 @@
       <div class="container faq-grid">
         <div><h2>Vos questions,<br>avant de vous lancer.</h2><p>Nous faisons le point sur votre situation pendant le diagnostic, sans jargon ni engagement.</p></div>
         <div class="accordion" data-accordion>
-          <article><h3><button type="button" aria-expanded="false">Où sont hébergées mes données ?<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></h3><div hidden><p>Vos sauvegardes sont hébergées en France au sein de l’infrastructure de notre partenaire Kiwi Backup. L’environnement est certifié ISO 27001 et HDS pour répondre aux besoins de protection des données sensibles.</p></div></article>
+          <article><h3><button type="button" aria-expanded="false">Où sont hébergées mes données ?<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></h3><div hidden><p>Vos sauvegardes sont hébergées en France au sein d’une infrastructure certifiée ISO 27001 et HDS, conçue pour répondre aux besoins de protection des données sensibles.</p></div></article>
           <article><h3><button type="button" aria-expanded="false">Puis-je sauvegarder plusieurs ordinateurs et un NAS ?<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></h3><div hidden><p>Oui. Le nombre de postes n’est pas facturé : vous pouvez associer ordinateurs, serveurs, NAS et machines virtuelles compatibles au même contrat. Votre tarif dépend du volume sauvegardé.</p></div></article>
           <article><h3><button type="button" aria-expanded="false">Que se passe-t-il si je dépasse mon volume ?<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></h3><div hidden><p>La sauvegarde ne s’interrompt pas. Vous recevez une alerte et nous vérifions avec vous si le dépassement est ponctuel ou si une formule supérieure devient plus adaptée. Aucun changement n’est appliqué sans votre accord.</p></div></article>
           <article><h3><button type="button" aria-expanded="false">Comment restaurer mes fichiers ?<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></h3><div hidden><p>Vous pouvez restaurer vous-même un fichier, un dossier ou un poste depuis la console, 24h/24 et sans frais. En cas d’urgence matérielle, notre équipe peut également préparer un accès sécurisé à votre dernière sauvegarde.</p></div></article>
@@ -200,12 +218,50 @@
     <div class="container footer-grid">
       <div class="footer-brand"><img src="/assets/alliancia-logo.png" alt="" width="44" height="44"><div><strong>SAAS</strong><span>Une solution Alliancia Solutions</span></div></div>
       <div><strong>Alliancia Solutions</strong><address>5 rue Grenouillère<br>68230 Turckheim, France</address></div>
-      <div><strong>Contact</strong><a href="mailto:contact@alliancia-solutions.fr">contact@alliancia-solutions.fr</a><a href="https://admin5.sante.kiwi-backup.com/">Espace client</a></div>
+      <div><strong>Contact</strong><a href="mailto:contact@alliancia-solutions.fr">contact@alliancia-solutions.fr</a><a href="/espace-client.html">Espace client</a></div>
       <div><strong>Informations</strong><a href="/mentions-legales.html">Mentions légales</a><a href="/confidentialite.html">Confidentialité</a><a href="https://alliancia-solutions.fr">Alliancia Solutions</a></div>
     </div>
-    <div class="container footer-bottom"><span>© <span data-year></span> Alliancia Solutions</span><span>Sauvegarde opérée avec la technologie Kiwi Backup</span></div>
+    <div class="container footer-bottom"><span>© <span data-year></span> Alliancia Solutions</span><span>Service d’Archivage Automatique Sécurisé</span></div>
   </footer>
+
+  <dialog class="quote-dialog" data-quote-dialog aria-labelledby="quote-title">
+    <div class="quote-dialog-inner">
+      <div class="quote-dialog-header">
+        <div><span>Devis sur mesure</span><h2 id="quote-title">Décrivez-nous votre périmètre.</h2><p>Quelques informations suffisent pour préparer une première estimation adaptée à votre entreprise.</p></div>
+        <button type="button" class="quote-close" data-quote-close aria-label="Fermer le formulaire">×</button>
+      </div>
+      <form class="quote-form" action="https://formsubmit.co/contact@alliancia-solutions.fr" method="POST" data-quote-form>
+        <input type="hidden" name="_subject" value="Nouvelle demande de devis SAAS sur mesure">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://saas.alliancia-solutions.fr/merci.html">
+        <input type="hidden" name="_url" value="https://saas.alliancia-solutions.fr/#tarifs">
+        <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="quote-form-row">
+          <label>Nom et prénom <span>*</span><input type="text" name="Nom" autocomplete="name" required></label>
+          <label>Société <span>*</span><input type="text" name="Société" autocomplete="organization" required></label>
+        </div>
+        <div class="quote-form-row">
+          <label>Adresse e-mail <span>*</span><input type="email" name="email" autocomplete="email" required></label>
+          <label>Téléphone <input type="tel" name="Téléphone" autocomplete="tel"></label>
+        </div>
+        <div class="quote-form-row">
+          <label>Volume estimé <span>*</span><select name="Volume estimé" required><option value="">Sélectionnez</option><option>Moins de 1 To</option><option>1 à 2 To</option><option>2 à 5 To</option><option>5 à 10 To</option><option>Plus de 10 To</option><option>Je ne sais pas encore</option></select></label>
+          <label>Nombre d’équipements <span>*</span><select name="Nombre d’équipements" required><option value="">Sélectionnez</option><option>1 à 5</option><option>6 à 20</option><option>21 à 50</option><option>Plus de 50</option></select></label>
+        </div>
+        <fieldset class="quote-platforms"><legend>Équipements à protéger</legend><div><label><input type="checkbox" name="Équipements" value="Windows">Windows</label><label><input type="checkbox" name="Équipements" value="macOS">macOS</label><label><input type="checkbox" name="Équipements" value="Linux">Linux</label><label><input type="checkbox" name="Équipements" value="Serveur">Serveur</label><label><input type="checkbox" name="Équipements" value="NAS">NAS</label><label><input type="checkbox" name="Équipements" value="Microsoft 365 / Google Workspace">Cloud collaboratif</label></div></fieldset>
+        <div class="quote-form-row">
+          <label>Facturation préférée <select name="Facturation préférée"><option>À déterminer ensemble</option><option>Annuelle</option><option>Mensuelle</option></select></label>
+          <label>Délai souhaité <select name="Délai souhaité"><option>Dans le mois</option><option>Sous 3 mois</option><option>Sous 6 mois</option><option>Simple étude</option></select></label>
+        </div>
+        <label>Précisions sur votre besoin <textarea name="Message" rows="4" placeholder="Volumes actuels, contraintes, logiciels métiers, nombre de sites…"></textarea></label>
+        <label class="form-consent"><input type="checkbox" name="Consentement" value="Accepté" required><span>J’accepte que mes informations soient utilisées pour établir ce devis, conformément à la <a href="/confidentialite.html">politique de confidentialité</a>.</span></label>
+        <button type="submit" class="button quote-submit">Envoyer ma demande de devis</button>
+        <p class="form-note">Les champs marqués d’un * sont obligatoires.</p>
+      </form>
+    </div>
+  </dialog>
   <script src="/config.js"></script>
-  <script src="/script.js" defer></script>
+  <script src="/script.js?v=20260905-10" defer></script>
 </body>
 </html>

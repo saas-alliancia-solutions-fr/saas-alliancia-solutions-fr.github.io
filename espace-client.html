@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Espace client SAAS — Sauvegarde et restauration</title>
+  <meta name="description" content="Accédez aux ressources utiles pour sauvegarder et restaurer vos données avec SAAS.">
+  <meta name="robots" content="noindex,follow">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20260905-9">
+</head>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="SAAS, retour au site">
+        <img src="/assets/alliancia-logo.png" alt="" width="48" height="48">
+        <span class="brand-copy"><strong>SAAS</strong><small>Service d’Archivage<br>Automatique Sécurisé</small></span>
+      </a>
+      <a class="text-link client-back" href="/">← Retour au site</a>
+    </div>
+  </header>
+
+  <main id="contenu" class="client-main download-main">
+    <section class="container download-hero">
+      <div>
+        <h1>Téléchargez votre<br>logiciel de sauvegarde.</h1>
+        <p>Choisissez l’équipement sur lequel vous souhaitez protéger vos données. Les installateurs officiels sont fournis et maintenus par notre partenaire technologique.</p>
+      </div>
+      <aside class="contract-notice">
+        <strong>Votre numéro de contrat est indispensable</strong>
+        <p>Il vous sera demandé pendant l’installation. Si vous ne l’avez pas encore reçu, contactez directement votre interlocuteur Alliancia Solutions.</p>
+        <a class="button" href="#contact" data-contact-reason="Demande de numéro de contrat">Demander mon numéro</a>
+      </aside>
+    </section>
+
+    <section class="download-section" aria-labelledby="platform-title">
+      <div class="container">
+        <div class="download-heading"><h2 id="platform-title">Choisissez votre plateforme.</h2><p>La version Santé est recommandée pour votre offre SAAS. La version Cloud reste disponible si votre contrat le prévoit.</p></div>
+        <div class="platform-tabs" role="tablist" aria-label="Système d’exploitation">
+          <button type="button" class="active" role="tab" aria-selected="true" aria-controls="panel-windows" data-platform-tab="windows">Windows</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-windows-arm" data-platform-tab="windows-arm">Windows ARM</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-macos" data-platform-tab="macos">macOS</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-linux" data-platform-tab="linux">Linux</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-synology" data-platform-tab="synology">Synology</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-qnap" data-platform-tab="qnap">QNAP</button>
+        </div>
+
+        <div class="platform-panel" id="panel-windows" role="tabpanel" data-platform-panel="windows">
+          <div class="platform-copy">
+            <span class="platform-label">Windows x64</span><h3>Windows et Windows Server</h3>
+            <p>Compatible avec Windows 10 et versions ultérieures, ainsi qu’avec Windows Server 2016 et suivants en 64 bits. La sauvegarde Hyper-V est prise en charge.</p>
+            <div class="download-buttons"><a class="button" href="https://upd4.sauvegardes.org/download/4183">Télécharger la version Santé V5.2.3</a><a class="button button-secondary" href="https://upd4.sauvegardes.org/download/4181">Version Cloud V5.2.3</a></div>
+            <ol class="install-steps"><li>Téléchargez puis ouvrez l’installeur.</li><li>Saisissez votre numéro de contrat.</li><li>Lancez l’application depuis l’icône créée sur le bureau.</li></ol>
+            <p class="karch-note"><strong>Archives .karch</strong> — ce format accélère fortement les restaurations. Après avoir récupéré l’archive, utilisez l’outil d’extraction en ligne de commande proposé ci-dessous.</p>
+            <div class="panel-links"><a href="https://doc.kiwi-backup.com/client.html#installation-sous-windows">Guide d’installation</a><a href="https://doc.kiwi-backup.com/client.html#guide-de-sauvegarde-et-restauration-hyper-v">Guide Hyper-V</a><a href="https://kiwi-backup.com/media/23782.gz">Outil d’extraction .karch</a></div>
+          </div><div class="platform-visual"><img src="/assets/platform-windows.png" alt="Illustration Windows" width="1494" height="995"></div>
+        </div>
+
+        <div class="platform-panel" id="panel-windows-arm" role="tabpanel" data-platform-panel="windows-arm" hidden>
+          <div class="platform-copy"><span class="platform-label">Architecture ARM</span><h3>Windows ARM</h3><p>Version dédiée aux machines Windows équipées d’un processeur ARM, sous Windows 10 ou une version ultérieure.</p><div class="download-buttons"><a class="button" href="https://upd4.sauvegardes.org/download/4187">Télécharger la version Santé V5.2.3</a><a class="button button-secondary" href="https://upd4.sauvegardes.org/download/4185">Version Cloud V5.2.3</a></div><ol class="install-steps"><li>Téléchargez l’installeur ARM.</li><li>Ouvrez-le et renseignez votre contrat.</li><li>Démarrez l’application depuis le bureau.</li></ol><p class="karch-note"><strong>Archives .karch</strong> — l’outil ARM dédié permet d’extraire en ligne de commande les restaurations téléchargées depuis votre espace.</p><div class="panel-links"><a href="https://doc.kiwi-backup.com/client.html#installation-sous-windows">Guide Windows ARM</a><a href="https://kiwi-backup.com/media/23752.gz">Outil d’extraction .karch ARM</a></div></div><div class="platform-visual"><img src="/assets/platform-windows-arm.png" alt="Illustration Windows ARM" width="1494" height="995"></div>
+        </div>
+
+        <div class="platform-panel" id="panel-macos" role="tabpanel" data-platform-panel="macos" hidden>
+          <div class="platform-copy"><span class="platform-label">Intel et Apple Silicon</span><h3>macOS</h3><p>Compatible avec Monterey 12, Ventura 13, Sonoma 14, Sequoia 15, Tahoe 26 et les versions ultérieures.</p><div class="download-buttons"><a class="button" href="https://upd4.sauvegardes.org/download/3113">Télécharger la version Santé V5.0.33</a><a class="button button-secondary" href="https://upd4.sauvegardes.org/download/3111">Version Cloud V5.0.33</a></div><ol class="install-steps"><li>Ouvrez le paquet téléchargé et placez l’application de sauvegarde dans Applications.</li><li>Autorisez l’accès complet au disque dans Réglages système → Confidentialité et sécurité.</li><li>Ouvrez l’application depuis le Finder et enregistrez le contrat.</li></ol><div class="panel-links"><a href="https://doc.kiwi-backup.com/client.html#installation-macos">Guide d’installation macOS</a></div></div><div class="platform-visual"><img src="/assets/platform-macos.png" alt="Illustration macOS" width="1494" height="995"></div>
+        </div>
+
+        <div class="platform-panel" id="panel-linux" role="tabpanel" data-platform-panel="linux" hidden>
+          <div class="platform-copy"><span class="platform-label">Ligne de commande</span><h3>Linux Debian / Ubuntu</h3><p>Le client en ligne de commande fonctionne sur Debian 8, Ubuntu 14.04 et versions ultérieures, avec une architecture AMD64 / Intel 64.</p><div class="command-list"><div><code>wget -q https://apt.kiwi-backup.com/kiwi-backup.gpg -O - | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/kiwi-backup.gpg</code><button type="button" data-copy-command aria-label="Copier la commande">Copier</button></div><div><code>echo 'deb [arch=amd64] https://apt.kiwi-backup.com/ trixie main' | sudo tee /etc/apt/sources.list.d/kiwi-backup.list</code><button type="button" data-copy-command aria-label="Copier la commande">Copier</button></div><div><code>sudo apt-get update &amp;&amp; sudo apt-get install kiwi4-cli</code><button type="button" data-copy-command aria-label="Copier la commande">Copier</button></div></div><div class="panel-links"><a href="https://doc.kiwi-backup.com/client.html#installation-sous-linux">Documentation Linux complète</a></div></div><div class="platform-visual"><img src="/assets/platform-linux.png" alt="Illustration Linux" width="1494" height="995"></div>
+        </div>
+
+        <div class="platform-panel" id="panel-synology" role="tabpanel" data-platform-panel="synology" hidden>
+          <div class="platform-copy"><span class="platform-label">DSM 6 et DSM 7</span><h3>NAS Synology</h3><p>Ajoutez le dépôt officiel au Centre de paquets de votre NAS pour installer la version adaptée à son architecture.</p><ol class="install-steps"><li>Dans le Centre de paquets, ouvrez Paramètres → Sources de paquets.</li><li>Ajoutez la source <code>https://syno5.kiwi-backup.com/</code>.</li><li>Installez l’application de sauvegarde depuis l’onglet Communauté, puis saisissez votre contrat.</li></ol><div class="panel-links"><a href="https://doc.kiwi-backup.com/client.html#installation-sous-nas-synology">Guide Synology complet</a></div></div><div class="platform-visual"><img src="/assets/platform-synology.png" alt="Illustration NAS Synology" width="1494" height="995"></div>
+        </div>
+
+        <div class="platform-panel" id="panel-qnap" role="tabpanel" data-platform-panel="qnap" hidden>
+          <div class="platform-copy"><span class="platform-label">QTS 4.1 et suivants</span><h3>NAS QNAP</h3><p>Choisissez le paquet correspondant au processeur de votre NAS. En cas de doute, vérifiez l’architecture dans les informations système QTS.</p><div class="download-stack"><a href="https://upd4.sauvegardes.org/download/3985"><strong>ARM X41</strong><span>Archive ZIP · 6 Mo</span></a><a href="https://upd4.sauvegardes.org/download/3987"><strong>ARM 64</strong><span>Archive ZIP · 6 Mo</span></a><a href="https://upd4.sauvegardes.org/download/3989"><strong>x86 64</strong><span>Archive ZIP · 7 Mo</span></a></div><div class="panel-links"><a href="https://doc.kiwi-backup.com/client.html#installation-sous-nas-qnap">Guide QNAP complet</a></div></div><div class="platform-visual"><img src="/assets/platform-qnap.png" alt="Illustration NAS QNAP" width="1494" height="995"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container client-help">
+      <div><h2>Déjà installé ?</h2><p>Ouvrez l’application SAAS sur votre équipement pour modifier la sélection, lancer une sauvegarde ou restaurer un fichier.</p></div>
+      <div><h2>Une difficulté ?</h2><p>Indiquez-nous votre société, le système concerné et le message affiché. Ne communiquez jamais votre mot de passe.</p><a class="button" href="#contact" data-contact-reason="Assistance technique">Contacter l’assistance</a></div>
+    </section>
+
+    <section class="contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="container contact-grid">
+        <div class="contact-copy">
+          <h2 id="contact-title">Parlez-nous de votre besoin.</h2>
+          <p>Votre demande arrive directement chez Alliancia Solutions. Nous vous répondons avec un interlocuteur humain, généralement pendant les horaires ouvrés.</p>
+          <div class="contact-details">
+            <p><strong>Avant d’envoyer</strong><span>Précisez le système concerné et recopiez le message d’erreur, si vous en avez un.</span></p>
+            <p><strong>Données sensibles</strong><span>Ne joignez ni mot de passe, ni clé de contrat, ni données confidentielles.</span></p>
+          </div>
+        </div>
+        <form class="contact-form" action="https://formsubmit.co/contact@alliancia-solutions.fr" method="POST" data-contact-form>
+          <input type="hidden" name="_subject" value="Nouvelle demande depuis l’espace client SAAS">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://saas.alliancia-solutions.fr/merci.html">
+          <input type="hidden" name="_url" value="https://saas.alliancia-solutions.fr/espace-client.html">
+          <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="form-row">
+            <label>Nom et prénom <span>*</span><input type="text" name="Nom" autocomplete="name" required></label>
+            <label>Société <span>*</span><input type="text" name="Société" autocomplete="organization" required></label>
+          </div>
+          <div class="form-row">
+            <label>Adresse e-mail <span>*</span><input type="email" name="email" autocomplete="email" required></label>
+            <label>Téléphone <input type="tel" name="Téléphone" autocomplete="tel"></label>
+          </div>
+          <div class="form-row">
+            <label>Objet de la demande <span>*</span><select name="Objet" required data-contact-reason-select><option value="">Sélectionnez</option><option>Assistance technique</option><option>Demande de numéro de contrat</option><option>Installation</option><option>Restauration de fichiers</option><option>Facturation ou abonnement</option><option>Autre demande</option></select></label>
+            <label>Équipement concerné <select name="Équipement"><option value="">Non précisé</option><option>Windows</option><option>Windows ARM</option><option>macOS</option><option>Linux</option><option>NAS Synology</option><option>NAS QNAP</option><option>Autre</option></select></label>
+          </div>
+          <label>Votre message <span>*</span><textarea name="Message" rows="6" minlength="20" placeholder="Décrivez votre demande et, si nécessaire, le message affiché…" required></textarea></label>
+          <label class="form-consent"><input type="checkbox" name="Consentement" value="Accepté" required><span>J’accepte que mes informations soient utilisées pour répondre à ma demande, conformément à la <a href="/confidentialite.html">politique de confidentialité</a>.</span></label>
+          <button class="button form-submit" type="submit">Envoyer ma demande</button>
+          <p class="form-note">Les champs marqués d’un * sont obligatoires.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer client-footer">
+    <div class="container footer-bottom"><span>© <span data-year></span> Alliancia Solutions</span><a href="mailto:contact@alliancia-solutions.fr">contact@alliancia-solutions.fr</a></div>
+  </footer>
+  <script src="/script.js?v=20260905-9" defer></script>
+</body>
+</html>

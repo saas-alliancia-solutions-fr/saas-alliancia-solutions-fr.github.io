@@ -61,4 +61,86 @@
       if (selectedPlan) selectedPlan.textContent = `Formule envisagée : ${plan}`;
     });
   });
+
+  const billingButtons = document.querySelectorAll("[data-billing]");
+  const pricingTable = document.querySelector(".pricing-table");
+  billingButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const period = button.dataset.billing;
+      billingButtons.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+      document.querySelectorAll("[data-annual][data-monthly]").forEach((price) => {
+        price.textContent = price.dataset[period];
+      });
+      pricingTable?.classList.toggle("monthly", period === "monthly");
+      document.querySelectorAll("[data-saving]").forEach((saving) => {
+        if (!saving.dataset.annualLabel) saving.dataset.annualLabel = saving.textContent;
+        saving.textContent = period === "monthly" ? "Sans engagement annuel" : saving.dataset.annualLabel;
+      });
+      pricingTable?.setAttribute("aria-label", period === "monthly" ? "Tarifs mensuels SAAS" : "Tarifs annuels SAAS");
+    });
+  });
+
+  const platformTabs = [...document.querySelectorAll("[data-platform-tab]")];
+  const platformPanels = [...document.querySelectorAll("[data-platform-panel]")];
+  const activatePlatform = (platform) => {
+    platformTabs.forEach((tab) => {
+      const active = tab.dataset.platformTab === platform;
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+    });
+    platformPanels.forEach((panel) => {
+      panel.hidden = panel.dataset.platformPanel !== platform;
+    });
+  };
+  platformTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => activatePlatform(tab.dataset.platformTab));
+    tab.addEventListener("keydown", (event) => {
+      if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault();
+      const offset = event.key === 'ArrowRight' ? 1 : -1;
+      const next = platformTabs[(index + offset + platformTabs.length) % platformTabs.length];
+      activatePlatform(next.dataset.platformTab);
+      next.focus();
+    });
+  });
+
+  document.querySelectorAll("[data-copy-command]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const command = button.closest("div")?.querySelector("code")?.textContent;
+      if (!command) return;
+      try {
+        await navigator.clipboard.writeText(command);
+        button.textContent = "Copié ✓";
+        window.setTimeout(() => { button.textContent = "Copier"; }, 1600);
+      } catch {
+        button.textContent = "Sélectionnez la commande";
+      }
+    });
+  });
+
+  const contactReason = document.querySelector("[data-contact-reason-select]");
+  document.querySelectorAll("[data-contact-reason]").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (contactReason) contactReason.value = link.dataset.contactReason;
+    });
+  });
+
+  const quoteDialog = document.querySelector("[data-quote-dialog]");
+  let quoteOpener;
+  document.querySelectorAll("[data-quote-open]").forEach((button) => {
+    button.addEventListener("click", () => {
+      quoteOpener = button;
+      if (quoteDialog?.showModal) quoteDialog.showModal();
+    });
+  });
+  document.querySelector("[data-quote-close]")?.addEventListener("click", () => quoteDialog?.close());
+  quoteDialog?.addEventListener("click", (event) => {
+    if (event.target === quoteDialog) quoteDialog.close();
+  });
+  quoteDialog?.addEventListener("close", () => quoteOpener?.focus());
 })();
