@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20260905-11">
+  <link rel="stylesheet" href="/styles.css?v=20260905-12">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:title" content="SAAS — Vos données sauvegardées. Votre activité protégée.">
@@ -51,7 +51,7 @@
         <a href="#solution">La solution</a>
         <a href="#fonctionnement">Comment ça marche</a>
         <a href="#tarifs">Tarifs</a>
-        <a href="#faq">FAQ</a>
+        <a class="nav-account" href="/connexion.html">Se connecter</a>
       </nav>
       <a class="button button-small header-cta booking-link" href="mailto:contact@alliancia-solutions.fr?subject=Diagnostic%20SAAS%20de%2030%20minutes">Diagnostic gratuit</a>
     </div>
@@ -145,11 +145,10 @@
             <div class="restore-window">
               <div class="restore-title"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 16a5 5 0 0 1 1-9.9A7 7 0 0 1 20 9a4 4 0 0 1 0 7H5Z"/></svg><strong>Restaurer un fichier</strong></div>
               <div class="file-list"><p><span class="file-type pdf">P</span><span>Contrat_client.pdf</span><small>2,4 Mo</small><b>✓</b></p><p><span class="file-type ppt">P</span><span>Présentation.pptx</span><small>18,7 Mo</small><b>✓</b></p><p><span class="file-type xls">X</span><span>Comptabilite.xlsx</span><small>6,1 Mo</small><b>✓</b></p><p><span class="file-type img">I</span><span>Photo_produit.jpg</span><small>3,2 Mo</small><b>✓</b></p></div>
-              <button type="button" class="demo-button" data-demo-restore>↓&nbsp; Restaurer</button>
+              <a class="demo-button booking-link" href="mailto:contact@alliancia-solutions.fr?subject=Démonstration%20de%20restauration%20SAAS" aria-label="Réserver une démonstration de restauration">Voir la démo <span aria-hidden="true">→</span></a>
             </div>
           </div>
           <p class="restore-assurance"><span>✓</span> Vos fichiers sont intacts et disponibles à tout moment.</p>
-          <p class="demo-feedback" aria-live="polite" data-demo-feedback></p>
         </div>
       </div>
     </section>
@@ -223,15 +222,15 @@
           <input type="hidden" name="_url" value="https://saas.alliancia-solutions.fr/#contact">
           <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="form-row">
-            <label>Nom et prénom <span>*</span><input type="text" name="Nom" autocomplete="name" required></label>
-            <label>Société <span>*</span><input type="text" name="Société" autocomplete="organization" required></label>
+            <label><span class="field-label">Nom et prénom <span class="required-mark" aria-hidden="true">*</span></span><input type="text" name="Nom" autocomplete="name" required></label>
+            <label><span class="field-label">Société <span class="required-mark" aria-hidden="true">*</span></span><input type="text" name="Société" autocomplete="organization" required></label>
           </div>
           <div class="form-row">
-            <label>Adresse e-mail <span>*</span><input type="email" name="email" autocomplete="email" required></label>
-            <label>Téléphone <input type="tel" name="Téléphone" autocomplete="tel"></label>
+            <label><span class="field-label">Adresse e-mail <span class="required-mark" aria-hidden="true">*</span></span><input type="email" name="email" autocomplete="email" required></label>
+            <label><span class="field-label">Téléphone</span><input type="tel" name="Téléphone" autocomplete="tel"></label>
           </div>
-          <label>Objet de la demande <span>*</span><select name="Objet" required><option value="">Sélectionnez</option><option>Diagnostic gratuit</option><option>Demande de devis</option><option>Question sur une formule</option><option>Assistance technique</option><option>Facturation ou abonnement</option><option>Autre demande</option></select></label>
-          <label>Votre message <span>*</span><textarea name="Message" rows="6" minlength="20" placeholder="Décrivez votre besoin en quelques lignes…" required></textarea></label>
+          <label><span class="field-label">Objet de la demande <span class="required-mark" aria-hidden="true">*</span></span><select name="Objet" required data-custom-select><option value="">Sélectionnez</option><option>Diagnostic gratuit</option><option>Demande de devis</option><option>Question sur une formule</option><option>Assistance technique</option><option>Facturation ou abonnement</option><option>Autre demande</option></select></label>
+          <label><span class="field-label">Votre message <span class="required-mark" aria-hidden="true">*</span></span><textarea name="Message" rows="6" minlength="20" placeholder="Décrivez votre besoin en quelques lignes…" required></textarea></label>
           <label class="form-consent"><input type="checkbox" name="Consentement" value="Accepté" required><span>J’accepte que mes informations soient utilisées pour répondre à ma demande, conformément à la <a href="/confidentialite.html">politique de confidentialité</a>.</span></label>
           <button class="button form-submit" type="submit">Envoyer ma demande</button>
           <p class="form-note">Les champs marqués d’un * sont obligatoires.</p>
@@ -295,6 +294,6 @@
     </div>
   </dialog>
   <script src="/config.js"></script>
-  <script src="/script.js?v=20260905-11" defer></script>
+  <script src="/script.js?v=20260905-12" defer></script>
 </body>
 </html>
