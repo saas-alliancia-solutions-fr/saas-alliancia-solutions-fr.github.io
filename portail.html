@@ -10,28 +10,42 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css?v=20260905-11">
-  <link rel="stylesheet" href="/portal.css?v=20260905-1">
+  <link rel="stylesheet" href="/portal.css?v=20260905-3">
 </head>
 <body class="portal-page" data-portal-page>
+  <svg class="portal-icon-sprite" aria-hidden="true">
+    <symbol id="icon-overview" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+    <symbol id="icon-requests" viewBox="0 0 24 24"><path d="M7 18.5 3.5 21v-5A8.5 8.5 0 1 1 7 18.5Z"/><path d="M8 9h8M8 13h5"/></symbol>
+    <symbol id="icon-invoices" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h4M9 12h7M9 16h7"/></symbol>
+    <symbol id="icon-statistics" viewBox="0 0 24 24"><path d="M4 20V10h4v10M10 20V4h4v16M16 20v-7h4v7M3 20h18"/></symbol>
+    <symbol id="icon-alerts" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/></symbol>
+    <symbol id="icon-downloads" viewBox="0 0 24 24"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5M4 19v2h16v-2"/></symbol>
+    <symbol id="icon-company" viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14M8 10h2M14 10h2M8 14h2M14 14h2M9 21v-3h6v3M2 21h20"/></symbol>
+    <symbol id="icon-shield-check" viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5.2-3.3 8.7-8 10-4.7-1.3-8-4.8-8-10V6z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></symbol>
+    <symbol id="icon-storage" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/><path d="M17 9.5h.01M17 15.5h.01"/></symbol>
+    <symbol id="icon-backup-time" viewBox="0 0 24 24"><path d="M4 8V4m0 0h4M4 4l3 3a8 8 0 1 1-2.1 7.7"/><path d="M12 8v4l3 2"/></symbol>
+    <symbol id="icon-retention" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M8 14h3v3H8z"/></symbol>
+    <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  </svg>
   <div class="portal-loading" data-portal-loading><span></span><p>Ouverture de votre espace sécurisé…</p></div>
   <div class="portal-shell" data-portal-shell hidden>
     <aside class="portal-sidebar">
       <a class="portal-brand" href="/" aria-label="SAAS, retour au site"><img src="/assets/alliancia-logo.png" alt="" width="44" height="44"><strong>SAAS</strong></a>
       <nav aria-label="Navigation de l’espace client">
-        <button class="active" type="button" data-portal-view="overview"><span aria-hidden="true">⌂</span>Vue d’ensemble</button>
-        <button type="button" data-portal-view="requests"><span aria-hidden="true">□</span>Demandes</button>
-        <button type="button" data-portal-view="invoices"><span aria-hidden="true">▤</span>Factures</button>
-        <button type="button" data-portal-view="statistics"><span aria-hidden="true">▥</span>Statistiques</button>
-        <button type="button" data-portal-view="alerts"><span aria-hidden="true">◉</span>Alertes</button>
-        <a href="/espace-client.html"><span aria-hidden="true">↓</span>Téléchargements</a>
+        <button class="active" type="button" data-portal-view="overview"><span class="portal-nav-icon" aria-hidden="true"><svg><use href="#icon-overview"/></svg></span>Vue d’ensemble</button>
+        <button type="button" data-portal-view="requests"><span class="portal-nav-icon" aria-hidden="true"><svg><use href="#icon-requests"/></svg></span>Demandes</button>
+        <button type="button" data-portal-view="invoices"><span class="portal-nav-icon" aria-hidden="true"><svg><use href="#icon-invoices"/></svg></span>Factures</button>
+        <button type="button" data-portal-view="statistics"><span class="portal-nav-icon" aria-hidden="true"><svg><use href="#icon-statistics"/></svg></span>Statistiques</button>
+        <button type="button" data-portal-view="alerts"><span class="portal-nav-icon" aria-hidden="true"><svg><use href="#icon-alerts"/></svg></span>Alertes</button>
+        <a href="/espace-client.html"><span class="portal-nav-icon" aria-hidden="true"><svg><use href="#icon-downloads"/></svg></span>Téléchargements</a>
       </nav>
       <a class="portal-help" href="/espace-client.html#contact"><strong>Besoin d’aide ?</strong><span>Centre d’assistance →</span></a>
     </aside>
 
     <div class="portal-workspace">
       <header class="portal-topbar">
-        <button class="portal-menu" type="button" data-portal-menu aria-label="Ouvrir le menu">☰</button>
-        <div class="portal-company"><span aria-hidden="true">▦</span><strong data-organization-name>Votre entreprise</strong></div>
+        <button class="portal-menu" type="button" data-portal-menu aria-label="Ouvrir le menu"><svg aria-hidden="true"><use href="#icon-menu"/></svg></button>
+        <div class="portal-company"><span class="portal-company-icon" aria-hidden="true"><svg><use href="#icon-company"/></svg></span><strong data-organization-name>Votre entreprise</strong></div>
         <div class="portal-account"><span class="portal-avatar" data-user-initials>—</span><div><strong data-user-name>Compte client</strong><small data-user-email></small></div><button type="button" data-logout>Se déconnecter</button></div>
       </header>
 
@@ -39,10 +53,10 @@
         <section class="portal-view active" data-view-panel="overview">
           <div class="portal-title-row"><div><h1>Bonjour, bienvenue dans votre espace.</h1><p>Voici la situation de vos sauvegardes et de votre compte.</p></div><button class="button" type="button" data-new-request>+ Nouvelle demande</button></div>
           <div class="portal-status-strip">
-            <article><span class="status-good" aria-hidden="true">✓</span><div><strong data-backup-status>Situation à vérifier</strong><small>État général</small></div></article>
-            <article><span aria-hidden="true">◉</span><div><strong data-storage-used>—</strong><small>Volume protégé</small></div></article>
-            <article><span aria-hidden="true">◷</span><div><strong data-last-backup>—</strong><small>Dernière sauvegarde</small></div></article>
-            <article><span aria-hidden="true">▣</span><div><strong data-retention>365 jours</strong><small>Rétention</small></div></article>
+            <article><span class="portal-metric-icon status-good" aria-hidden="true"><svg><use href="#icon-shield-check"/></svg></span><div><strong data-backup-status>Situation à vérifier</strong><small>État général</small></div></article>
+            <article><span class="portal-metric-icon" aria-hidden="true"><svg><use href="#icon-storage"/></svg></span><div><strong data-storage-used>—</strong><small>Volume protégé</small></div></article>
+            <article><span class="portal-metric-icon" aria-hidden="true"><svg><use href="#icon-backup-time"/></svg></span><div><strong data-last-backup>—</strong><small>Dernière sauvegarde</small></div></article>
+            <article><span class="portal-metric-icon" aria-hidden="true"><svg><use href="#icon-retention"/></svg></span><div><strong data-retention>365 jours</strong><small>Rétention</small></div></article>
           </div>
           <section class="portal-chart-panel">
             <div class="portal-panel-heading"><div><h2>Utilisation du stockage</h2><p>Évolution sur les 30 derniers jours</p></div><div><strong data-storage-summary>—</strong><small data-storage-limit>Capacité non renseignée</small></div></div>
