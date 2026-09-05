@@ -187,3 +187,7 @@ using (
 
 -- Organisation de fichiers attendue dans le bucket privé :
 -- invoices/<organization_id>/<nom-du-fichier.pdf>
+
+-- La fonction créée par l’option « automatic RLS » reste réservée aux événements
+-- internes de la base et ne doit pas être appelable depuis l’API.
+revoke execute on function public.rls_auto_enable() from public, anon, authenticated;
