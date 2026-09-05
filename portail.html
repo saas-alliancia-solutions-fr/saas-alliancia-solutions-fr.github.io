@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon espace client SAAS</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20260905-11">
+  <link rel="stylesheet" href="/portal.css?v=20260905-1">
+</head>
+<body class="portal-page" data-portal-page>
+  <div class="portal-loading" data-portal-loading><span></span><p>Ouverture de votre espace sécurisé…</p></div>
+  <div class="portal-shell" data-portal-shell hidden>
+    <aside class="portal-sidebar">
+      <a class="portal-brand" href="/" aria-label="SAAS, retour au site"><img src="/assets/alliancia-logo.png" alt="" width="44" height="44"><strong>SAAS</strong></a>
+      <nav aria-label="Navigation de l’espace client">
+        <button class="active" type="button" data-portal-view="overview"><span aria-hidden="true">⌂</span>Vue d’ensemble</button>
+        <button type="button" data-portal-view="requests"><span aria-hidden="true">□</span>Demandes</button>
+        <button type="button" data-portal-view="invoices"><span aria-hidden="true">▤</span>Factures</button>
+        <button type="button" data-portal-view="statistics"><span aria-hidden="true">▥</span>Statistiques</button>
+        <button type="button" data-portal-view="alerts"><span aria-hidden="true">◉</span>Alertes</button>
+        <a href="/espace-client.html"><span aria-hidden="true">↓</span>Téléchargements</a>
+      </nav>
+      <a class="portal-help" href="/espace-client.html#contact"><strong>Besoin d’aide ?</strong><span>Centre d’assistance →</span></a>
+    </aside>
+
+    <div class="portal-workspace">
+      <header class="portal-topbar">
+        <button class="portal-menu" type="button" data-portal-menu aria-label="Ouvrir le menu">☰</button>
+        <div class="portal-company"><span aria-hidden="true">▦</span><strong data-organization-name>Votre entreprise</strong></div>
+        <div class="portal-account"><span class="portal-avatar" data-user-initials>—</span><div><strong data-user-name>Compte client</strong><small data-user-email></small></div><button type="button" data-logout>Se déconnecter</button></div>
+      </header>
+
+      <main class="portal-main">
+        <section class="portal-view active" data-view-panel="overview">
+          <div class="portal-title-row"><div><h1>Bonjour, bienvenue dans votre espace.</h1><p>Voici la situation de vos sauvegardes et de votre compte.</p></div><button class="button" type="button" data-new-request>+ Nouvelle demande</button></div>
+          <div class="portal-status-strip">
+            <article><span class="status-good" aria-hidden="true">✓</span><div><strong data-backup-status>Situation à vérifier</strong><small>État général</small></div></article>
+            <article><span aria-hidden="true">◉</span><div><strong data-storage-used>—</strong><small>Volume protégé</small></div></article>
+            <article><span aria-hidden="true">◷</span><div><strong data-last-backup>—</strong><small>Dernière sauvegarde</small></div></article>
+            <article><span aria-hidden="true">▣</span><div><strong data-retention>365 jours</strong><small>Rétention</small></div></article>
+          </div>
+          <section class="portal-chart-panel">
+            <div class="portal-panel-heading"><div><h2>Utilisation du stockage</h2><p>Évolution sur les 30 derniers jours</p></div><div><strong data-storage-summary>—</strong><small data-storage-limit>Capacité non renseignée</small></div></div>
+            <div class="portal-chart" data-usage-chart><p>Aucune mesure disponible pour le moment.</p></div>
+          </section>
+          <div class="portal-overview-grid">
+            <section class="portal-data-panel"><div class="portal-panel-heading"><h2>Alertes récentes</h2><button type="button" data-portal-view="alerts">Voir toutes</button></div><div data-alerts-preview></div></section>
+            <section class="portal-data-panel"><div class="portal-panel-heading"><h2>Dernières factures</h2><button type="button" data-portal-view="invoices">Voir toutes</button></div><div data-invoices-preview></div></section>
+            <section class="portal-data-panel"><div class="portal-panel-heading"><h2>Dernières demandes</h2><button type="button" data-portal-view="requests">Voir toutes</button></div><div data-requests-preview></div></section>
+          </div>
+        </section>
+
+        <section class="portal-view" data-view-panel="requests" hidden><div class="portal-title-row"><div><h1>Vos demandes</h1><p>Suivez vos échanges avec Alliancia Solutions.</p></div><button class="button" type="button" data-new-request>+ Nouvelle demande</button></div><section class="portal-data-panel portal-full-panel"><div data-requests-list></div></section></section>
+        <section class="portal-view" data-view-panel="invoices" hidden><div class="portal-title-row"><div><h1>Vos factures</h1><p>Consultez vos échéances et téléchargez vos documents.</p></div></div><section class="portal-data-panel portal-full-panel"><div data-invoices-list></div></section></section>
+        <section class="portal-view" data-view-panel="statistics" hidden><div class="portal-title-row"><div><h1>Vos statistiques</h1><p>Suivez l’évolution du volume protégé et de vos équipements.</p></div></div><section class="portal-chart-panel portal-full-panel"><div class="portal-chart portal-chart-large" data-usage-chart-full><p>Aucune mesure disponible pour le moment.</p></div></section></section>
+        <section class="portal-view" data-view-panel="alerts" hidden><div class="portal-title-row"><div><h1>Vos alertes</h1><p>Identifiez rapidement les événements nécessitant votre attention.</p></div></div><section class="portal-data-panel portal-full-panel"><div data-alerts-list></div></section></section>
+      </main>
+    </div>
+  </div>
+
+  <dialog class="request-dialog" data-request-dialog aria-labelledby="request-title">
+    <form data-request-form>
+      <div><h2 id="request-title">Nouvelle demande</h2><button type="button" data-request-close aria-label="Fermer">×</button></div>
+      <label>Objet<input type="text" name="subject" minlength="5" required></label>
+      <label>Catégorie<select name="category" required><option>Assistance technique</option><option>Installation</option><option>Restauration</option><option>Facturation</option><option>Contrat</option><option>Autre</option></select></label>
+      <label>Priorité<select name="priority" required><option value="normal">Normale</option><option value="high">Élevée</option><option value="urgent">Urgente</option></select></label>
+      <label>Votre message<textarea name="message" rows="6" minlength="20" required></textarea></label>
+      <p data-request-feedback aria-live="polite"></p>
+      <button class="button" type="submit">Envoyer la demande</button>
+    </form>
+  </dialog>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/config.js?v=20260905-1"></script>
+  <script src="/portal.js?v=20260905-1" defer></script>
+</body>
+</html>

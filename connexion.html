@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion à l’espace client SAAS</title>
+  <meta name="description" content="Accédez à votre espace client SAAS sécurisé.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20260905-11">
+  <link rel="stylesheet" href="/portal.css?v=20260905-1">
+</head>
+<body class="auth-page">
+  <a class="skip-link" href="#connexion">Aller au formulaire de connexion</a>
+  <main class="auth-layout">
+    <section class="auth-brand-panel" aria-label="Présentation de l’espace client">
+      <a class="auth-brand" href="/" aria-label="SAAS, retour au site">
+        <img src="/assets/alliancia-logo.png" alt="" width="68" height="68">
+        <span><strong>SAAS</strong><small>Service d’Archivage<br>Automatique Sécurisé</small></span>
+      </a>
+      <div class="auth-benefits">
+        <article><span aria-hidden="true">✓</span><div><strong>Suivi centralisé</strong><p>Vos contrats, demandes et factures au même endroit.</p></div></article>
+        <article><span aria-hidden="true">↗</span><div><strong>Pilotage clair</strong><p>Consultez vos volumes, sauvegardes et alertes récentes.</p></div></article>
+        <article><span aria-hidden="true">24/7</span><div><strong>Accessible à tout moment</strong><p>Un espace réservé aux utilisateurs autorisés de votre entreprise.</p></div></article>
+      </div>
+    </section>
+
+    <section class="auth-form-panel" id="connexion">
+      <div class="auth-card">
+        <h1>Accédez à votre<br>espace client.</h1>
+        <p class="auth-intro">Retrouvez vos demandes, factures, statistiques et alertes dans un espace sécurisé.</p>
+        <div class="auth-setup" data-auth-setup hidden>
+          <strong>Activation en cours</strong>
+          <p>L’espace privé est en cours de raccordement sécurisé. Aucun accès client n’est encore ouvert.</p>
+        </div>
+        <form class="auth-form" data-login-form>
+          <label>Adresse e-mail<input type="email" name="email" autocomplete="username" placeholder="nom@entreprise.fr" required></label>
+          <label>Mot de passe<span class="password-field"><input type="password" name="password" autocomplete="current-password" required><button type="button" data-password-toggle aria-label="Afficher le mot de passe">Afficher</button></span></label>
+          <button class="auth-forgot" type="button" data-forgot-password>Mot de passe oublié ?</button>
+          <button class="button auth-submit" type="submit">Se connecter</button>
+          <p class="auth-feedback" data-auth-feedback aria-live="polite"></p>
+        </form>
+        <form class="auth-form" data-reset-form hidden>
+          <h2>Réinitialiser le mot de passe</h2>
+          <p>Indiquez l’adresse associée à votre compte. Vous recevrez un lien sécurisé.</p>
+          <label>Adresse e-mail<input type="email" name="email" autocomplete="email" required></label>
+          <button class="button auth-submit" type="submit">Recevoir le lien</button>
+          <button class="auth-forgot" type="button" data-back-login>Revenir à la connexion</button>
+          <p class="auth-feedback" data-reset-feedback aria-live="polite"></p>
+        </form>
+        <form class="auth-form" data-update-password-form hidden>
+          <h2>Choisir votre mot de passe</h2>
+          <p>Créez un mot de passe d’au moins 10 caractères pour sécuriser votre espace.</p>
+          <label>Nouveau mot de passe<span class="password-field"><input type="password" name="password" minlength="10" autocomplete="new-password" required></span></label>
+          <label>Confirmer le mot de passe<span class="password-field"><input type="password" name="confirmation" minlength="10" autocomplete="new-password" required></span></label>
+          <button class="button auth-submit" type="submit">Enregistrer mon mot de passe</button>
+          <p class="auth-feedback" data-update-password-feedback aria-live="polite"></p>
+        </form>
+        <p class="auth-invite-note">Votre accès est créé par Alliancia Solutions. Aucun compte public ne peut être créé depuis cette page.</p>
+        <a class="auth-back" href="/">← Retour au site</a>
+        <p class="auth-security"><span aria-hidden="true">▣</span> Connexion sécurisée · Accès sur invitation</p>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/config.js?v=20260905-1"></script>
+  <script src="/portal.js?v=20260905-1" defer></script>
+</body>
+</html>
