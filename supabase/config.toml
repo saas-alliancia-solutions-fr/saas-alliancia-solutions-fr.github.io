@@ -1,0 +1,2 @@
+[functions.sync-kiwi]
+verify_jwt = true
