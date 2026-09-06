@@ -181,9 +181,9 @@
       pricingTable?.classList.toggle("monthly", period === "monthly");
       document.querySelectorAll("[data-saving]").forEach((saving) => {
         if (!saving.dataset.annualLabel) saving.dataset.annualLabel = saving.textContent;
-        saving.textContent = period === "monthly" ? "Sans engagement annuel" : saving.dataset.annualLabel;
+        saving.textContent = period === "monthly" ? "Disponible après un an de service" : saving.dataset.annualLabel;
       });
-      pricingTable?.setAttribute("aria-label", period === "monthly" ? "Tarifs mensuels SAAS" : "Tarifs annuels SAAS");
+      pricingTable?.setAttribute("aria-label", period === "monthly" ? "Tarifs mensuels SAAS disponibles après douze mois de service" : "Tarifs annuels SAAS");
     });
   });
 
@@ -227,6 +227,10 @@
   });
 
   const contactReason = document.querySelector("[data-contact-reason-select]");
+  const requestedReason = new URLSearchParams(window.location.search).get("objet");
+  if (contactReason && requestedReason && [...contactReason.options].some((option) => option.value === requestedReason)) {
+    contactReason.value = requestedReason;
+  }
   document.querySelectorAll("[data-contact-reason]").forEach((link) => {
     link.addEventListener("click", () => {
       if (contactReason) contactReason.value = link.dataset.contactReason;
