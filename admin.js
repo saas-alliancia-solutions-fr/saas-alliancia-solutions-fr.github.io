@@ -139,7 +139,7 @@
         {
           organizations: [
             { id: 1, name: "Alliancia Solutions", slug: "alliancia-solutions", created_at: new Date(now - 120 * 86400000).toISOString() },
-            { id: 2, name: "Cabinet d’ostéopathie Frank Hummel", slug: "cabinet-osteopathie-frank-hummel", created_at: new Date(now - 7 * 86400000).toISOString() }
+            { id: 2, name: "Cabinet Santé Démo", slug: "cabinet-sante-demo", created_at: new Date(now - 7 * 86400000).toISOString() }
           ],
           subscriptions: [
             { organization_id: 1, plan_name: "Interne", storage_limit_bytes: 0, storage_used_bytes: 0, retention_days: 365, status: "attention", last_backup_at: null },
