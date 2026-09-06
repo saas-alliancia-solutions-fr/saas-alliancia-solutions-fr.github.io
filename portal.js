@@ -6,6 +6,12 @@
   const authLinkType = new URLSearchParams(location.hash.slice(1)).get("type");
   const needsPasswordSetup = ["invite", "recovery"].includes(authLinkType) || new URLSearchParams(location.search).get("reset") === "1";
 
+  const openAuthorizedSpace = async (session) => {
+    if (!session?.user || !client) return;
+    const { data: administrator } = await client.from("app_admins").select("role").eq("user_id", session.user.id).eq("active", true).maybeSingle();
+    location.replace(administrator ? "/administration.html" : "/portail.html");
+  };
+
   const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
   }[character]));
@@ -53,7 +59,7 @@
     } else {
       client.auth.getSession().then(({ data }) => {
         if (data.session && needsPasswordSetup) showPasswordSetup();
-        else if (data.session) location.replace("/portail.html");
+        else if (data.session) openAuthorizedSpace(data.session);
       });
       client.auth.onAuthStateChange((event) => {
         if (event === "PASSWORD_RECOVERY" || (event === "SIGNED_IN" && needsPasswordSetup)) showPasswordSetup();
@@ -84,7 +90,7 @@
       submit.disabled = true;
       feedback.classList.remove("success");
       feedback.textContent = "Vérification de vos accès…";
-      const { error } = await client.auth.signInWithPassword({
+      const { data, error } = await client.auth.signInWithPassword({
         email: loginForm.elements.email.value.trim(),
         password: loginForm.elements.password.value
       });
@@ -95,7 +101,7 @@
       }
       feedback.classList.add("success");
       feedback.textContent = "Connexion réussie. Ouverture de votre espace…";
-      location.replace("/portail.html");
+      openAuthorizedSpace(data.session);
     });
     resetForm.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -128,7 +134,8 @@
       }
       updatePasswordFeedback.classList.add("success");
       updatePasswordFeedback.textContent = "Mot de passe enregistré. Ouverture de votre espace…";
-      location.replace("/portail.html");
+      const { data: refreshedSession } = await client.auth.getSession();
+      openAuthorizedSpace(refreshedSession.session);
     });
   }
 

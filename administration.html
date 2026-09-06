@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Console Alliancia — SAAS</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20260905-11">
+  <link rel="stylesheet" href="/portal.css?v=20260905-3">
+  <link rel="stylesheet" href="/admin.css?v=20260906-1">
+</head>
+<body class="portal-page admin-page" data-admin-page>
+  <svg class="portal-icon-sprite" aria-hidden="true">
+    <symbol id="admin-overview" viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20H4z"/><path d="M9 20v-6h6v6"/></symbol>
+    <symbol id="admin-clients" viewBox="0 0 24 24"><path d="M16 20v-1.8c0-2.3-1.8-4.2-4.1-4.2H7.1A4.1 4.1 0 0 0 3 18.2V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M16 5.4a3.5 3.5 0 0 1 0 6.2M18 14.2c1.8.6 3 2.1 3 4V20"/></symbol>
+    <symbol id="admin-requests" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2m6 2V2M9 9h6m-6 4h6m-6 4h4"/></symbol>
+    <symbol id="admin-invoices" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h4M9 12h7m-7 4h7"/></symbol>
+    <symbol id="admin-alerts" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></symbol>
+    <symbol id="admin-building" viewBox="0 0 24 24"><path d="M4 21V5l8-3 8 3v16M8 8h1m6 0h1M8 12h1m6 0h1M8 16h1m6 0h1M10 21v-4h4v4"/></symbol>
+    <symbol id="admin-storage" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></symbol>
+    <symbol id="admin-sync" viewBox="0 0 24 24"><path d="M20 7h-6V1M4 17h6v6"/><path d="M19 12a7 7 0 0 0-12-5l-3 3m1 2a7 7 0 0 0 12 5l3-3"/></symbol>
+    <symbol id="admin-laptop" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M2 20h20M9 16l-1 4m7-4 1 4"/></symbol>
+    <symbol id="admin-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="admin-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  </svg>
+
+  <div class="portal-loading" data-admin-loading><span></span><p>Chargement de la console sécurisée…</p></div>
+  <div class="portal-shell" data-admin-shell hidden>
+    <aside class="portal-sidebar">
+      <a class="portal-brand" href="/"><img src="/assets/favicon.png" alt=""><strong>SAAS</strong></a>
+      <nav aria-label="Navigation de la console">
+        <button class="active" type="button" data-admin-view="overview"><span class="portal-nav-icon"><svg><use href="#admin-overview"/></svg></span>Vue d’ensemble</button>
+        <button type="button" data-admin-view="clients"><span class="portal-nav-icon"><svg><use href="#admin-clients"/></svg></span>Clients</button>
+        <button type="button" data-admin-view="requests"><span class="portal-nav-icon"><svg><use href="#admin-requests"/></svg></span>Demandes</button>
+        <button type="button" data-admin-view="invoices"><span class="portal-nav-icon"><svg><use href="#admin-invoices"/></svg></span>Factures</button>
+        <button type="button" data-admin-view="alerts"><span class="portal-nav-icon"><svg><use href="#admin-alerts"/></svg></span>Alertes</button>
+      </nav>
+      <a class="portal-help" href="/espace-client.html#contact"><strong>Besoin d’aide ?</strong><span>Centre d’assistance →</span></a>
+    </aside>
+
+    <div class="portal-workspace">
+      <header class="portal-topbar">
+        <button class="portal-menu" type="button" data-admin-menu aria-label="Ouvrir le menu"><svg><use href="#admin-menu"/></svg></button>
+        <div class="portal-company"><span class="portal-company-icon"><svg><use href="#admin-building"/></svg></span><strong>Console Alliancia</strong></div>
+        <div class="portal-account"><span class="portal-avatar" data-admin-initials>A</span><div><strong data-admin-name>Administrateur</strong><small data-admin-email></small></div><button type="button" data-admin-logout>Se déconnecter</button></div>
+      </header>
+
+      <main class="portal-main">
+        <section class="portal-view active" data-view-panel="overview">
+          <div class="portal-title-row admin-heading"><div><h1>Pilotez votre activité.</h1><p>Supervisez vos clients, sauvegardes et demandes en un coup d’œil.</p></div><div class="admin-live"><span></span>Synchronisation automatique</div></div>
+
+          <div class="portal-status-strip admin-metrics">
+            <article><span class="portal-metric-icon"><svg><use href="#admin-clients"/></svg></span><div><small>Clients actifs</small><strong data-kpi-clients>0</strong></div></article>
+            <article><span class="portal-metric-icon"><svg><use href="#admin-storage"/></svg></span><div><small>Volume protégé</small><strong data-kpi-storage>0 Go</strong></div></article>
+            <article><span class="portal-metric-icon warning"><svg><use href="#admin-alerts"/></svg></span><div><small>Alertes à traiter</small><strong data-kpi-alerts>0</strong></div></article>
+            <article><span class="portal-metric-icon"><svg><use href="#admin-requests"/></svg></span><div><small>Demandes ouvertes</small><strong data-kpi-requests>0</strong></div></article>
+          </div>
+
+          <div class="admin-dashboard-grid">
+            <section class="portal-data-panel admin-client-panel">
+              <div class="portal-panel-heading admin-table-heading"><div><h2>Clients sauvegardés</h2><p data-clients-summary></p></div><label class="admin-search"><svg><use href="#admin-search"/></svg><input type="search" placeholder="Rechercher un client…" data-client-search></label></div>
+              <div class="admin-table-scroll" data-clients-overview></div>
+            </section>
+            <aside class="admin-activity-rail">
+              <section class="portal-data-panel"><div class="portal-panel-heading"><h2>Alertes récentes</h2><button type="button" data-admin-view="alerts">Voir toutes</button></div><div data-alerts-preview></div></section>
+              <section class="portal-data-panel"><div class="portal-panel-heading"><h2>Demandes récentes</h2><button type="button" data-admin-view="requests">Voir toutes</button></div><div data-requests-preview></div></section>
+            </aside>
+          </div>
+        </section>
+
+        <section class="portal-view" data-view-panel="clients" hidden><div class="portal-title-row"><div><h1>Clients</h1><p>Consultez les contrats, volumes et équipements protégés.</p></div><label class="admin-search"><svg><use href="#admin-search"/></svg><input type="search" placeholder="Rechercher…" data-client-search></label></div><section class="portal-data-panel portal-full-panel"><div class="admin-table-scroll" data-clients-list></div></section></section>
+        <section class="portal-view" data-view-panel="requests" hidden><div class="portal-title-row"><div><h1>Demandes</h1><p>Suivez les sollicitations transmises depuis les espaces clients.</p></div></div><section class="portal-data-panel portal-full-panel"><div class="admin-table-scroll" data-requests-list></div></section></section>
+        <section class="portal-view" data-view-panel="invoices" hidden><div class="portal-title-row"><div><h1>Factures</h1><p>Retrouvez les documents associés à chaque entreprise.</p></div></div><section class="portal-data-panel portal-full-panel"><div class="admin-table-scroll" data-invoices-list></div></section></section>
+        <section class="portal-view" data-view-panel="alerts" hidden><div class="portal-title-row"><div><h1>Alertes</h1><p>Identifiez les sauvegardes qui nécessitent une intervention.</p></div></div><section class="portal-data-panel portal-full-panel"><div class="admin-table-scroll" data-alerts-list></div></section></section>
+      </main>
+    </div>
+  </div>
+
+  <dialog class="request-dialog admin-client-dialog" data-client-dialog>
+    <form method="dialog"><div><div><h2 data-client-title>Détail du client</h2><p data-client-subtitle></p></div><button type="submit" aria-label="Fermer">×</button></div><div data-client-detail></div></form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/config.js?v=20260905-8"></script>
+  <script src="/admin.js?v=20260906-1"></script>
+</body>
+</html>

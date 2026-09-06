@@ -23,6 +23,7 @@ Le portail privé est disponible sur `/connexion.html` et s’appuie sur Supabas
 - Les données sont isolées par entreprise grâce aux politiques Row Level Security.
 - Les factures sont déposées dans le bucket privé `invoices`, sous la forme `<organization_id>/<fichier.pdf>`.
 - Seule la clé publique Supabase est présente dans `config.js`. Ne jamais y ajouter de clé secrète ou `service_role`.
+- La console interne `/administration.html` est protégée par la table `app_admins` et les politiques RLS. Les clients authentifiés ne peuvent ni l’ouvrir ni lire les données des autres organisations.
 
 ### Synchronisation Kiwi Backup
 
