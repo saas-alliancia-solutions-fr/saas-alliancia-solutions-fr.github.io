@@ -110,6 +110,11 @@
 .portal-status { display: inline-block; padding: 3px 7px; border-radius: 4px; background: #edf3ff; color: #2455dd; font-size: .68rem; font-weight: 700; }
 .portal-status.paid, .portal-status.resolved { background: #def9ea; color: #16855f; }
 .portal-status.overdue, .portal-status.urgent { background: #fff0ed; color: #c43d2d; }
+.portal-status.active { background: #def9ea; color: #16855f; }
+.portal-status.attention { background: #fff3df; color: #a85f08; }
+.portal-status.in_progress { background: #edf3ff; color: #2455dd; }
+.portal-devices-table { min-width: 940px; }
+.portal-devices-table td:first-child strong { font-family: "Manrope", sans-serif; }
 .portal-download { padding: 0; border: 0; background: transparent; color: #356bff; cursor: pointer; font-weight: 700; }
 .request-dialog { width: min(calc(100% - 30px), 610px); padding: 0; border: 0; border-radius: 16px; box-shadow: 0 35px 100px rgba(5,19,39,.32); }
 .request-dialog::backdrop { background: rgba(8,24,46,.72); backdrop-filter: blur(5px); }

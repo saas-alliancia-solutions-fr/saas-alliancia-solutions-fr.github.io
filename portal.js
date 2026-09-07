@@ -147,6 +147,10 @@
     organization: { id: 1, name: "Entreprise Démo" },
     subscription: { plan_name: "500 Go", storage_limit_bytes: 500 * 1024 ** 3, storage_used_bytes: 248 * 1024 ** 3, retention_days: 365, status: "active", last_backup_at: new Date(Date.now() - 18 * 60000).toISOString() },
     usage: Array.from({ length: 30 }, (_, index) => ({ measured_on: new Date(Date.now() - (29 - index) * 86400000).toISOString(), storage_bytes: (208 + index * 1.35 + Math.sin(index / 3) * 5) * 1024 ** 3, protected_devices: 12 })),
+    devices: [
+      { name: "Poste direction", device_type: "Windows", source_bytes: 128 * 1024 ** 3, stored_bytes: 76 * 1024 ** 3, source_count: 4, last_backup_at: new Date(Date.now() - 18 * 60000).toISOString(), backup_alert: false, missing_backup_alert: false, backup_running: false, active: true },
+      { name: "NAS comptabilité", device_type: "NAS", source_bytes: 320 * 1024 ** 3, stored_bytes: 172 * 1024 ** 3, source_count: 6, last_backup_at: new Date(Date.now() - 31 * 60000).toISOString(), backup_alert: false, missing_backup_alert: false, backup_running: false, active: true }
+    ],
     alerts: [
       { severity: "info", title: "Sauvegarde effectuée avec succès", occurred_at: new Date(Date.now() - 18 * 60000).toISOString(), status: "open" },
       { severity: "warning", title: "Espace de stockage utilisé à 80 %", occurred_at: new Date(Date.now() - 86400000).toISOString(), status: "open" },
@@ -187,6 +191,16 @@
     host.innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" role="img" aria-label="Évolution du volume sauvegardé"><defs><linearGradient id="usage-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#356bff" stop-opacity=".2"/><stop offset="1" stop-color="#356bff" stop-opacity=".02"/></linearGradient></defs><line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="#dbe3ef"/><line x1="${pad}" y1="${height / 2}" x2="${width - pad}" y2="${height / 2}" stroke="#edf1f7"/><polygon points="${area}" fill="url(#usage-fill)"/><polyline points="${points}" fill="none" stroke="#356bff" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>`;
   };
 
+  const renderDevices = (devices) => {
+    if (!devices.length) return '<div class="portal-empty">Aucun équipement sauvegardé pour le moment.</div>';
+    return `<table class="portal-table portal-devices-table"><thead><tr><th>Équipement</th><th>Type</th><th>Sources</th><th>Volume source</th><th>Volume stocké</th><th>Dernière sauvegarde</th><th>État</th></tr></thead><tbody>${devices.map((device) => {
+      const needsAttention = device.backup_alert || device.missing_backup_alert || !device.active;
+      const status = device.backup_running ? "Sauvegarde en cours" : needsAttention ? "À vérifier" : "Opérationnel";
+      const tone = device.backup_running ? "in_progress" : needsAttention ? "attention" : "active";
+      return `<tr><td><strong>${escapeHtml(device.name)}</strong></td><td>${escapeHtml(device.device_type || "—")}</td><td>${Number(device.source_count || 0)}</td><td>${escapeHtml(formatBytes(device.source_bytes))}</td><td>${escapeHtml(formatBytes(device.stored_bytes))}</td><td>${escapeHtml(formatDate(device.last_backup_at, true))}</td><td><span class="portal-status ${tone}">${status}</span></td></tr>`;
+    }).join("")}</tbody></table>`;
+  };
+
   const bindInvoiceDownloads = () => document.querySelectorAll("[data-invoice-path]").forEach((button) => button.addEventListener("click", async () => {
     if (!client) return;
     button.disabled = true;
@@ -216,6 +230,7 @@
     document.querySelector("[data-alerts-list]").innerHTML = renderTable("alerts", state.alerts);
     document.querySelector("[data-invoices-list]").innerHTML = renderTable("invoices", state.invoices);
     document.querySelector("[data-requests-list]").innerHTML = renderTable("requests", state.requests);
+    document.querySelector("[data-backups-list]").innerHTML = renderDevices(state.devices || []);
     renderChart("[data-usage-chart]", state.usage);
     renderChart("[data-usage-chart-full]", state.usage);
     bindInvoiceDownloads();
@@ -235,19 +250,20 @@
       return;
     }
     const organizationId = membership.organization_id;
-    const [subscription, usage, alerts, invoices, requests] = await Promise.all([
+    const [subscription, usage, alerts, invoices, requests, devices] = await Promise.all([
       client.from("subscriptions").select("*").eq("organization_id", organizationId).maybeSingle(),
       client.from("usage_daily").select("*").eq("organization_id", organizationId).order("measured_on", { ascending: true }).limit(30),
       client.from("alerts").select("*").eq("organization_id", organizationId).order("occurred_at", { ascending: false }).limit(100),
       client.from("invoices").select("*").eq("organization_id", organizationId).order("issued_at", { ascending: false }).limit(100),
-      client.from("support_requests").select("*").eq("organization_id", organizationId).order("updated_at", { ascending: false }).limit(100)
+      client.from("support_requests").select("*").eq("organization_id", organizationId).order("updated_at", { ascending: false }).limit(100),
+      client.from("backup_devices").select("*").eq("organization_id", organizationId).order("last_backup_at", { ascending: false }).limit(200)
     ]);
-    const firstError = [subscription, usage, alerts, invoices, requests].find((result) => result.error)?.error;
+    const firstError = [subscription, usage, alerts, invoices, requests, devices].find((result) => result.error)?.error;
     if (firstError) {
       loading.innerHTML = "<strong>Impossible de charger votre espace.</strong><p>Réessayez dans quelques instants ou contactez l’assistance.</p>";
       return;
     }
-    renderPortal({ user, organization: membership.organizations, subscription: subscription.data, usage: usage.data || [], alerts: alerts.data || [], invoices: invoices.data || [], requests: requests.data || [] });
+    renderPortal({ user, organization: membership.organizations, subscription: subscription.data, usage: usage.data || [], alerts: alerts.data || [], invoices: invoices.data || [], requests: requests.data || [], devices: devices.data || [] });
   };
 
   document.querySelectorAll("[data-portal-view]").forEach((control) => control.addEventListener("click", () => {
