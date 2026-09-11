@@ -215,17 +215,32 @@ p { margin-top: 0; }
 .cta-panel > span { margin-top: 14px; color: #bac8d9; font-size: .8rem; }
 .cta-panel small { margin-top: 8px; color: var(--mint); font-weight: 700; }
 
-.site-footer { margin-top: 32px; padding: 64px 0 24px; background: #fff; }
-.footer-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 50px; padding-bottom: 55px; }
-.footer-grid > div:not(.footer-brand) { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
-.footer-grid strong { font: 700 .92rem "Manrope", sans-serif; }
-.footer-grid a, .footer-grid address, .footer-brand span { color: var(--muted); font-size: .84rem; font-style: normal; text-decoration: none; }
-.footer-grid a:hover { color: var(--blue); }
-.footer-brand { display: flex; align-items: flex-start; gap: 13px; }
-.footer-brand img { width: 44px; height: 44px; object-fit: contain; }
-.footer-brand strong, .footer-brand span { display: block; }
-.footer-brand strong { margin-top: 2px; font-size: 1.25rem; letter-spacing: .08em; }
-.footer-bottom { display: flex; justify-content: space-between; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
+.site-footer { margin-top: 0; padding: 0; background: var(--navy); color: #fff; }
+.footer-cta { display: flex; align-items: center; justify-content: space-between; gap: 55px; padding: 50px 0 42px; }
+.footer-cta-copy h2 { margin: 0 0 8px; color: #fff; font-size: clamp(2rem, 3vw, 3rem); }
+.footer-cta-copy h2 span { color: #6f94ff; }
+.footer-cta-copy p { max-width: 720px; margin: 0; color: #becbdd; }
+.footer-actions { display: flex; flex: 0 0 auto; gap: 12px; }
+.footer-actions .button { min-width: 190px; min-height: 52px; }
+.footer-actions .button-secondary { border-color: #8da5c7; background: transparent; color: #fff; }
+.footer-actions .button-secondary:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+.footer-main { display: grid; grid-template-columns: 1.55fr repeat(3, 1fr); gap: 54px; padding: 42px 0 48px; border-top: 1px solid rgba(183,198,220,.3); }
+.footer-primary { display: grid; grid-template-columns: 54px 1fr; gap: 8px 16px; }
+.footer-primary img { grid-row: 1 / 4; width: 50px; height: 50px; object-fit: contain; filter: brightness(0) invert(1); }
+.footer-primary strong { align-self: end; font: 800 1.55rem/1 "Manrope", sans-serif; letter-spacing: .08em; }
+.footer-primary > span { color: #c4d0df; font-size: .75rem; }
+.footer-primary p, .footer-primary address { grid-column: 1 / -1; max-width: 350px; margin: 15px 0 0; color: #becbdd; font-size: .86rem; font-style: normal; line-height: 1.6; }
+.footer-primary address { margin-top: 2px; color: #fff; }
+.footer-nav { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding-left: 30px; border-left: 1px solid rgba(183,198,220,.22); }
+.footer-nav strong { margin-bottom: 8px; color: #fff; font: 700 1rem "Manrope", sans-serif; }
+.footer-nav a { color: #becbdd; font-size: .87rem; text-decoration: none; }
+.footer-nav a:hover, .footer-nav a:focus-visible { color: #fff; }
+.footer-nav a::after { content: ""; display: inline-block; width: 0; height: 1px; margin-left: 0; vertical-align: middle; background: var(--mint-strong); transition: width .18s, margin-left .18s; }
+.footer-nav a:hover::after, .footer-nav a:focus-visible::after { width: 14px; margin-left: 7px; }
+.footer-context { margin: -18px 0 28px; color: #93a5bc; font-size: .75rem; }
+.footer-bottom { display: flex; justify-content: space-between; gap: 28px; padding: 22px 0 26px; border-top: 1px solid rgba(183,198,220,.3); color: #9fb0c5; font-size: .76rem; }
+.footer-trust { color: #c7d4e4; text-align: right; }
+.footer-trust::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: var(--mint-strong); vertical-align: 1px; }
 
 .legal-main { padding: 90px 0 120px; }
 .legal-main .container { max-width: 820px; }
@@ -252,8 +267,7 @@ p { margin-top: 0; }
 .client-security div { display: flex; align-items: center; gap: 10px; }
 .client-security div span { display: grid; width: 25px; height: 25px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--mint); color: #147b57; font-weight: 800; }
 .client-security p { margin: 0; color: var(--muted); font-size: .85rem; }
-.client-footer { margin-top: 0; padding-top: 18px; }
-.client-footer a { color: var(--muted); text-decoration: none; }
+.client-footer { margin-top: 0; }
 
 [hidden] { display: none !important; }
 .download-main { padding-top: 0; background: #fff; }
@@ -497,7 +511,9 @@ p { margin-top: 0; }
   .included-line ul { display: grid; }
   .final-cta-inner { gap: 38px; padding: 48px 36px; }
   .cta-panel { padding: 38px 0 0; border-top: 1px solid rgba(255,255,255,.22); border-left: 0; }
-  .footer-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-cta { align-items: flex-start; flex-direction: column; gap: 28px; }
+  .footer-main { grid-template-columns: 1.4fr repeat(3, 1fr); gap: 28px; }
+  .footer-nav { padding-left: 20px; }
   .client-actions { grid-template-columns: 1fr; }
   .client-card { min-height: 320px; }
   .client-security { grid-template-columns: 1fr; gap: 18px; }
@@ -554,8 +570,14 @@ p { margin-top: 0; }
   .final-cta { padding-top: 0; background: var(--navy); }
   .final-cta-inner { width: 100%; padding-inline: 24px; border-radius: 0; }
   .site-footer { margin-top: 0; }
-  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-  .footer-bottom { flex-direction: column; gap: 8px; }
+  .footer-cta { padding-block: 42px 34px; }
+  .footer-actions { width: 100%; flex-direction: column; }
+  .footer-actions .button { width: 100%; }
+  .footer-main { grid-template-columns: 1fr; gap: 34px; padding-block: 34px 40px; }
+  .footer-primary { grid-column: auto; }
+  .footer-nav { padding-top: 26px; border-top: 1px solid rgba(183,198,220,.22); }
+  .footer-bottom { flex-direction: column; gap: 10px; }
+  .footer-trust { text-align: left; }
   .quote-dialog { width: calc(100% - 20px); max-height: 96vh; border-radius: 14px; }
   .quote-dialog-inner { max-height: 96vh; }
   .quote-dialog-header { padding: 24px 20px 20px; }
