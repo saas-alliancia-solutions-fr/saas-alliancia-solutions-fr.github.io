@@ -362,6 +362,33 @@ p { margin-top: 0; }
 .contact-form textarea { min-height: 145px; padding: 13px; resize: vertical; }
 .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus, .custom-select-button:focus-visible, .custom-select.open .custom-select-button { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(53,107,255,.14); }
 .contact-form input:user-invalid, .contact-form select:user-invalid, .contact-form textarea:user-invalid { border-color: var(--coral); }
+.contact-page-main { background: #fff; }
+.contact-hero { padding: 40px 0 32px; background: var(--ice); }
+.contact-hero-inner { text-align: center; }
+.contact-hero h1 { margin-bottom: 15px; font-size: clamp(3rem, 4.4vw, 4.25rem); }
+.contact-hero-inner > p { max-width: 780px; margin: 0 auto; color: #415169; font-size: 1.18rem; }
+.contact-paths { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 32px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; }
+.contact-paths a { display: grid; grid-template-columns: 54px 1fr auto; min-width: 0; align-items: center; gap: 16px; padding: 22px 30px; color: var(--navy); text-decoration: none; }
+.contact-paths a + a { border-left: 1px solid var(--line); }
+.contact-paths svg { width: 44px; height: 44px; fill: none; stroke: var(--blue); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.contact-paths span { display: grid; min-width: 0; gap: 4px; }
+.contact-paths strong { font: 700 1.06rem "Manrope", sans-serif; }
+.contact-paths small { color: var(--muted); font-size: .84rem; }
+.contact-paths b { color: var(--blue); font-size: 1.45rem; transition: transform .18s; }
+.contact-paths a:hover, .contact-paths a:focus-visible { background: #fff; }
+.contact-paths a:hover b, .contact-paths a:focus-visible b { transform: translateX(4px); }
+.contact-page-form { scroll-margin-top: 82px; padding-block: 78px; }
+.contact-page-form .contact-grid { gap: 70px; }
+.contact-page-form .contact-form { gap: 16px; padding: 34px; }
+.contact-page-form .contact-form input, .contact-page-form .contact-form select, .contact-page-form .custom-select-button { min-height: 48px; }
+.contact-page-form .contact-form textarea { min-height: 120px; }
+.contact-page-form .contact-copy h2 { max-width: 520px; font-size: clamp(2.75rem, 4.2vw, 4.15rem); }
+.contact-email { display: grid; gap: 3px; margin: 28px 0 0; }
+.contact-email span { color: #b7c5d6; font-size: .82rem; }
+.contact-email a { width: fit-content; color: #fff; font-weight: 700; text-decoration-color: var(--mint-strong); text-underline-offset: 4px; }
+.contact-page-form .form-submit { width: fit-content; min-width: 220px; border: 0; cursor: pointer; }
+.contact-page-form .form-submit span { margin-left: 8px; }
+.contact-footer .footer-main { border-top: 0; }
 .custom-select { position: relative; font-weight: 500; }
 .custom-select-native { position: absolute; width: 1px !important; height: 1px; min-height: 0 !important; margin: -1px; padding: 0 !important; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0 !important; }
 .custom-select-button { position: relative; min-height: 50px; padding: 0 46px 0 13px; text-align: left; cursor: pointer; }
@@ -547,6 +574,9 @@ p { margin-top: 0; }
   .client-help { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; gap: 50px; }
   .contact-copy { position: static; }
+  .contact-hero { padding-block: 48px 38px; }
+  .contact-paths { grid-template-columns: 1fr; margin-top: 38px; }
+  .contact-paths a + a { border-top: 1px solid var(--line); border-left: 0; }
   .helpwire-hero-grid, .helpwire-trust-grid, .helpwire-cta-inner { grid-template-columns: 1fr; }
   .helpwire-hero-grid { min-height: 0; padding-top: 30px; }
   .helpwire-hero-copy { padding-bottom: 15px; }
@@ -623,6 +653,14 @@ p { margin-top: 0; }
   .contact-section { padding-block: 70px; }
   .contact-form { padding: 26px 20px; }
   .form-row { grid-template-columns: 1fr; }
+  .contact-hero { padding-block: 42px 30px; }
+  .contact-hero h1 { font-size: clamp(2.5rem, 11vw, 3.25rem); }
+  .contact-hero-inner > p { font-size: 1rem; }
+  .contact-paths { margin-top: 30px; }
+  .contact-paths a { grid-template-columns: 42px 1fr auto; padding: 21px 12px; }
+  .contact-paths svg { width: 34px; height: 34px; }
+  .contact-page-form .contact-form { padding: 26px 20px; }
+  .contact-page-form .form-submit { width: 100%; }
   .thanks-page { padding: 16px; }
   .thanks-card { padding: 45px 22px; }
   .helpwire-hero h1 { font-size: clamp(2.65rem, 12vw, 3.45rem); }

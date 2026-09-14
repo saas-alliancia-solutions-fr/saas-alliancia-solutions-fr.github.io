@@ -155,10 +155,14 @@
   };
 
   const contactReason = document.querySelector("[data-contact-reason-select]");
-  const requestedReason = new URLSearchParams(window.location.search).get("objet");
+  const contactParams = new URLSearchParams(window.location.search);
+  const requestedReason = contactParams.get("objet");
   if (contactReason && requestedReason && [...contactReason.options].some((option) => option.value === requestedReason)) {
     contactReason.value = requestedReason;
   }
+  const contactPlan = document.querySelector("[data-contact-plan]");
+  const requestedPlan = contactParams.get("formule");
+  if (contactPlan && requestedPlan) contactPlan.value = requestedPlan;
 
   document.querySelectorAll("[data-custom-select]").forEach(enhanceSelect);
 
