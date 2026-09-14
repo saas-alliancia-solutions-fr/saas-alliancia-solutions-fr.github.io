@@ -208,7 +208,7 @@ p { margin-top: 0; }
 .accordion article div { padding: 0 48px 22px 0; }
 .accordion article div p { margin: 0; color: var(--muted); }
 
-.final-cta { padding: 32px 0 0; }
+.final-cta { padding: 32px 0 64px; }
 .final-cta-inner { display: grid; grid-template-columns: 1fr .72fr; gap: 80px; align-items: center; padding: 64px 70px; border-radius: 18px; background: var(--navy); color: #fff; }
 .final-cta h2 { margin-bottom: 17px; font-size: clamp(2.4rem, 4vw, 3.7rem); }
 .final-cta p { max-width: 630px; margin: 0; color: #c2cede; }
@@ -618,7 +618,7 @@ p { margin-top: 0; }
   .retention-visual { min-height: 220px; }
   .retention-visual strong { font-size: 5rem; }
   .faq-section { padding-bottom: 55px; }
-  .final-cta { padding-top: 0; background: var(--navy); }
+  .final-cta { padding: 0 0 24px; background: #fff; }
   .final-cta-inner { width: 100%; padding-inline: 24px; border-radius: 0; }
   .site-footer { margin-top: 0; }
   .footer-cta { padding-block: 42px 34px; }
