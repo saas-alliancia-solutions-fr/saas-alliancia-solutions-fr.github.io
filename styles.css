@@ -468,10 +468,11 @@ p { margin-top: 0; }
 .helpwire-trust h2 { margin-bottom: 22px; }
 .helpwire-trust-lead { max-width: 560px; color: var(--muted); font-size: 1.15rem; }
 .helpwire-proof-list { max-width: 590px; margin: 42px 0 0; padding: 0; list-style: none; }
-.helpwire-proof-list li { display: flex; min-height: 70px; align-items: center; gap: 22px; border-bottom: 1px solid var(--line); font-size: 1.02rem; font-weight: 600; }
+.helpwire-proof-list li { display: flex; min-height: 76px; align-items: center; gap: 18px; border-bottom: 1px solid var(--line); font-size: 1.02rem; font-weight: 600; }
 .helpwire-proof-list li:first-child { border-top: 1px solid var(--line); }
-.helpwire-proof-list li > span { display: grid; width: 36px; height: 36px; flex: 0 0 auto; place-items: center; color: var(--blue); font-size: 1.6rem; }
-.helpwire-proof-list li:nth-child(even) > span { color: #16b87d; }
+.helpwire-proof-icon { display: grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; border: 1px solid #c9d6ff; border-radius: 12px; background: #f3f6ff; color: var(--blue); }
+.helpwire-proof-icon svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.helpwire-proof-list li:nth-child(even) .helpwire-proof-icon { border-color: #bdebd9; background: #effbf6; color: #129b69; }
 .helpwire-consent-visual { position: relative; min-height: 470px; overflow: hidden; border: 1px solid #9db7ff; border-radius: 14px; background: linear-gradient(145deg, #f7faff, #eaf1ff); box-shadow: var(--shadow); }
 .helpwire-window-bar { display: flex; gap: 7px; height: 36px; align-items: center; padding: 0 14px; border-bottom: 1px solid #b9caff; background: rgba(255,255,255,.74); }
 .helpwire-window-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--coral); }
