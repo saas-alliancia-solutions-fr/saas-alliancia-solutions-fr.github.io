@@ -1,5 +1,5 @@
 .auth-page, .portal-page { min-height: 100vh; background: #f5f8ff; }
-.auth-layout { display: grid; min-height: 100vh; grid-template-columns: minmax(420px, .92fr) minmax(560px, 1.08fr); }
+.auth-layout { display: grid; min-height: calc(100vh - 88px); grid-template-columns: minmax(420px, .92fr) minmax(560px, 1.08fr); }
 .auth-brand-panel { display: flex; min-height: 100vh; flex-direction: column; justify-content: center; padding: clamp(48px, 7vw, 105px); background: #10233f; color: #fff; }
 .auth-brand { display: flex; align-items: center; gap: 22px; color: #fff; text-decoration: none; }
 .auth-brand img { width: 68px; height: 68px; padding: 8px; border-radius: 14px; background: #fff; object-fit: contain; }
