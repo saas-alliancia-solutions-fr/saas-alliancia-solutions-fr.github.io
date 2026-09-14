@@ -3,6 +3,24 @@
   const button = document.createElement("button");
   let ticking = false;
 
+  document.querySelectorAll("[data-year]").forEach((node) => {
+    node.textContent = new Date().getFullYear();
+  });
+
+  const currentPath = window.location.pathname.replace(/\/index\.html$/, "/");
+  document.querySelectorAll("a[href]").forEach((link) => {
+    const url = new URL(link.href, window.location.href);
+    const linkPath = url.pathname.replace(/\/index\.html$/, "/");
+    if (url.origin === window.location.origin && !url.hash && linkPath === currentPath) {
+      link.setAttribute("aria-current", "page");
+    }
+  });
+
+  const header = document.querySelector("[data-header]");
+  const updateHeader = () => header?.classList.toggle("scrolled", window.scrollY > 12);
+  updateHeader();
+  window.addEventListener("scroll", updateHeader, { passive: true });
+
   button.type = "button";
   button.className = "back-to-top";
   button.setAttribute("aria-label", "Revenir en haut de la page");

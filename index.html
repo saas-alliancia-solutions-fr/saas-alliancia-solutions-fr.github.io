@@ -12,26 +12,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20260911-17">
+  <link rel="stylesheet" href="/styles.css?v=20260914-1">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:title" content="SAAS — Vos données sauvegardées. Votre activité protégée.">
   <meta property="og:description" content="Une sauvegarde cloud française, configurée pour vous en 60 minutes et restaurable 24h/24.">
   <meta property="og:url" content="https://saas.alliancia-solutions.fr/">
   <meta property="og:image" content="https://saas.alliancia-solutions.fr/assets/saas-hero-v3.png">
+  <meta property="og:image:alt" content="Sauvegarde cloud française SAAS pour TPE et PME">
+  <meta name="twitter:card" content="summary_large_image">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "SAAS — Service d’Archivage Automatique Sécurisé",
-    "description": "Sauvegarde cloud française avec accompagnement, rétention de 365 jours et restauration en libre-service.",
-    "provider": {
-      "@type": "Organization",
-      "name": "Alliancia Solutions",
-      "url": "https://alliancia-solutions.fr"
-    },
-    "areaServed": "FR",
-    "audience": {"@type": "BusinessAudience", "audienceType": "TPE et PME"}
+    "@graph": [
+      {"@type":"Organization","@id":"https://saas.alliancia-solutions.fr/#organization","name":"Alliancia Solutions","url":"https://alliancia-solutions.fr","logo":"https://saas.alliancia-solutions.fr/assets/alliancia-logo.png","address":{"@type":"PostalAddress","streetAddress":"5 rue Grenouillère","postalCode":"68230","addressLocality":"Turckheim","addressCountry":"FR"}},
+      {"@type":"WebSite","@id":"https://saas.alliancia-solutions.fr/#website","url":"https://saas.alliancia-solutions.fr/","name":"SAAS — Service d’Archivage Automatique Sécurisé","publisher":{"@id":"https://saas.alliancia-solutions.fr/#organization"},"inLanguage":"fr-FR"},
+      {"@type":"Service","name":"SAAS — Service d’Archivage Automatique Sécurisé","description":"Sauvegarde cloud française avec accompagnement, rétention de 365 jours et restauration en libre-service.","provider":{"@id":"https://saas.alliancia-solutions.fr/#organization"},"areaServed":"FR","audience":{"@type":"BusinessAudience","audienceType":"TPE et PME"}}
+    ]
   }
   </script>
 </head>
@@ -305,8 +302,8 @@
       </form>
     </div>
   </dialog>
-  <script src="/site-ui.js?v=20260911-1" defer></script>
+  <script src="/site-ui.js?v=20260914-1" defer></script>
   <script src="/config.js"></script>
-  <script src="/script.js?v=20260906-14" defer></script>
+  <script src="/script.js?v=20260914-1" defer></script>
 </body>
 </html>

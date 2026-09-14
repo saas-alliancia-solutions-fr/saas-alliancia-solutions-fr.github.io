@@ -1,12 +1,7 @@
 (() => {
-  const header = document.querySelector("[data-header]");
   const menuButton = document.querySelector("[data-menu-toggle]");
   const nav = document.querySelector("[data-nav]");
   const bookingUrl = window.SAAS_CONFIG?.bookingUrl;
-
-  document.querySelectorAll("[data-year]").forEach((node) => {
-    node.textContent = new Date().getFullYear();
-  });
 
   if (bookingUrl) {
     document.querySelectorAll(".booking-link").forEach((link) => {
@@ -18,14 +13,17 @@
     });
   }
 
-  const updateHeader = () => header?.classList.toggle("scrolled", window.scrollY > 12);
-  updateHeader();
-  window.addEventListener("scroll", updateHeader, { passive: true });
-
   menuButton?.addEventListener("click", () => {
     const open = menuButton.getAttribute("aria-expanded") === "true";
     menuButton.setAttribute("aria-expanded", String(!open));
     nav?.classList.toggle("open", !open);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !nav?.classList.contains("open")) return;
+    nav.classList.remove("open");
+    menuButton?.setAttribute("aria-expanded", "false");
+    menuButton?.focus();
   });
 
   nav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
@@ -153,7 +151,14 @@
         button.focus();
       }
     });
+    select.addEventListener("change", render);
   };
+
+  const contactReason = document.querySelector("[data-contact-reason-select]");
+  const requestedReason = new URLSearchParams(window.location.search).get("objet");
+  if (contactReason && requestedReason && [...contactReason.options].some((option) => option.value === requestedReason)) {
+    contactReason.value = requestedReason;
+  }
 
   document.querySelectorAll("[data-custom-select]").forEach(enhanceSelect);
 
@@ -226,14 +231,12 @@
     });
   });
 
-  const contactReason = document.querySelector("[data-contact-reason-select]");
-  const requestedReason = new URLSearchParams(window.location.search).get("objet");
-  if (contactReason && requestedReason && [...contactReason.options].some((option) => option.value === requestedReason)) {
-    contactReason.value = requestedReason;
-  }
   document.querySelectorAll("[data-contact-reason]").forEach((link) => {
     link.addEventListener("click", () => {
-      if (contactReason) contactReason.value = link.dataset.contactReason;
+      if (contactReason) {
+        contactReason.value = link.dataset.contactReason;
+        contactReason.dispatchEvent(new Event("change", { bubbles: true }));
+      }
     });
   });
 
