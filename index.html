@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20260914-4">
+  <link rel="stylesheet" href="/styles.css?v=20260917-2">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:title" content="SAAS — Vos données sauvegardées. Votre activité protégée.">
@@ -25,7 +25,7 @@
   {
     "@context": "https://schema.org",
     "@graph": [
-      {"@type":"Organization","@id":"https://saas.alliancia-solutions.fr/#organization","name":"Alliancia Solutions","url":"https://alliancia-solutions.fr","logo":"https://saas.alliancia-solutions.fr/assets/alliancia-logo.png","address":{"@type":"PostalAddress","streetAddress":"5 rue Grenouillère","postalCode":"68230","addressLocality":"Turckheim","addressCountry":"FR"}},
+      {"@type":"Organization","@id":"https://saas.alliancia-solutions.fr/#organization","name":"Alliancia Solutions","url":"https://alliancia-solutions.fr","logo":"https://saas.alliancia-solutions.fr/assets/alliancia-logo-144-v1.png","address":{"@type":"PostalAddress","streetAddress":"5 rue Grenouillère","postalCode":"68230","addressLocality":"Turckheim","addressCountry":"FR"}},
       {"@type":"WebSite","@id":"https://saas.alliancia-solutions.fr/#website","url":"https://saas.alliancia-solutions.fr/","name":"SAAS — Service d’Archivage Automatique Sécurisé","publisher":{"@id":"https://saas.alliancia-solutions.fr/#organization"},"inLanguage":"fr-FR"},
       {"@type":"Service","name":"SAAS — Service d’Archivage Automatique Sécurisé","description":"Sauvegarde cloud française avec accompagnement, rétention de 365 jours et restauration en libre-service.","provider":{"@id":"https://saas.alliancia-solutions.fr/#organization"},"areaServed":"FR","audience":{"@type":"BusinessAudience","audienceType":"TPE et PME"}}
     ]
@@ -38,7 +38,7 @@
   <header class="site-header" data-header>
     <div class="container header-inner">
       <a class="brand" href="/" aria-label="SAAS, accueil">
-        <img src="/assets/alliancia-logo.png" alt="" width="48" height="48">
+        <img src="/assets/alliancia-logo-144-v1.png" decoding="async" alt="" width="48" height="48">
         <span class="brand-copy"><strong>SAAS</strong><small>Service d’Archivage<br>Automatique Sécurisé</small></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-menu-toggle>
@@ -68,7 +68,11 @@
           <p class="hero-note">30 minutes · Sans engagement · Avec un interlocuteur humain</p>
         </div>
         <div class="hero-media" aria-label="Ordinateur, NAS et serveur sauvegardés vers un cloud français sécurisé">
-          <img src="/assets/saas-hero-v3.png" alt="Ordinateur, NAS et serveur reliés à une sauvegarde cloud française sécurisée" width="1536" height="1024">
+          <picture>
+            <source type="image/avif" srcset="/assets/saas-hero-640-v1.avif 640w, /assets/saas-hero-1024-v1.avif 1024w, /assets/saas-hero-1536-v1.avif 1536w" sizes="(max-width: 760px) 100vw, 50vw">
+            <source type="image/webp" srcset="/assets/saas-hero-640-v1.webp 640w, /assets/saas-hero-1024-v1.webp 1024w, /assets/saas-hero-1536-v1.webp 1536w" sizes="(max-width: 760px) 100vw, 50vw">
+            <img src="/assets/saas-hero-1024-v1.jpg" alt="Ordinateur, NAS et serveur reliés à une sauvegarde cloud française sécurisée" width="1536" height="1024" fetchpriority="high" decoding="async">
+          </picture>
         </div>
       </div>
       <div class="container trust-strip" aria-label="Garanties principales">
@@ -217,7 +221,7 @@
         <div class="footer-actions"><a class="button" href="/contact.html">Nous contacter</a><a class="button button-secondary" href="/helpwire.html">Assistance à distance</a></div>
       </div>
       <div class="footer-main">
-        <div class="footer-primary"><img src="/assets/alliancia-logo.png" alt="" width="50" height="50"><strong>SAAS</strong><span>Service d’Archivage Automatique Sécurisé</span><p>La sauvegarde cloud française accompagnée par Alliancia Solutions.</p><address>5 rue Grenouillère · 68230 Turckheim, France</address></div>
+        <div class="footer-primary"><img src="/assets/alliancia-logo-144-v1.png" loading="lazy" decoding="async" alt="" width="50" height="50"><strong>SAAS</strong><span>Service d’Archivage Automatique Sécurisé</span><p>La sauvegarde cloud française accompagnée par Alliancia Solutions.</p><address>5 rue Grenouillère · 68230 Turckheim, France</address></div>
         <nav class="footer-nav" aria-label="Solution"><strong>Solution</strong><a href="/#solution">La solution</a><a href="/#fonctionnement">Comment ça marche</a><a href="/#tarifs">Tarifs</a><a href="/helpwire.html">Assistance à distance</a></nav>
         <nav class="footer-nav" aria-label="Espace client"><strong>Espace client</strong><a href="/connexion.html">Se connecter</a><a href="/espace-client.html">Téléchargements</a><a href="/contact.html?objet=Assistance%20technique#formulaire">Contacter l’assistance</a></nav>
         <nav class="footer-nav" aria-label="Informations"><strong>Informations</strong><a href="/contact.html">Nous contacter</a><a href="https://alliancia-solutions.fr">Alliancia Solutions</a><a href="/mentions-legales.html">Mentions légales</a><a href="/confidentialite.html">Confidentialité</a></nav>
@@ -226,7 +230,7 @@
     </div>
   </footer>
 
-  <script src="/site-ui.js?v=20260914-3" defer></script>
+  <script src="/site-ui.js?v=20260917-1" defer></script>
   <script src="/config.js"></script>
   <script src="/script.js?v=20260914-3" defer></script>
 </body>

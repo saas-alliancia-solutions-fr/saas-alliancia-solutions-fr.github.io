@@ -1,4 +1,10 @@
 (() => {
+  if ("serviceWorker" in navigator && window.location.protocol !== "file:") {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    }, { once: true });
+  }
+
   const main = document.querySelector("main");
   const button = document.createElement("button");
   let ticking = false;

@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20260914-5">
+  <link rel="stylesheet" href="/styles.css?v=20260917-2">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:title" content="Assistance à distance avec HelpWire — SAAS">
@@ -31,7 +31,7 @@
   <header class="site-header" data-header>
     <div class="container header-inner">
       <a class="brand" href="/" aria-label="SAAS, accueil">
-        <img src="/assets/alliancia-logo.png" alt="" width="48" height="48">
+        <img src="/assets/alliancia-logo-144-v1.png" decoding="async" alt="" width="48" height="48">
         <span class="brand-copy"><strong>SAAS</strong><small>Service d’Archivage<br>Automatique Sécurisé</small></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-menu-toggle>
@@ -61,7 +61,11 @@
           <small>Windows · macOS · Linux</small>
         </div>
         <div class="helpwire-hero-media">
-          <img src="/assets/helpwire-remote-support.png" alt="Ordinateur portable et poste de travail reliés pour une assistance à distance autorisée" width="1200" height="800">
+          <picture>
+            <source type="image/avif" srcset="/assets/helpwire-remote-support-640-v1.avif 640w, /assets/helpwire-remote-support-960-v1.avif 960w, /assets/helpwire-remote-support-1200-v1.avif 1200w" sizes="(max-width: 760px) 100vw, 50vw">
+            <source type="image/webp" srcset="/assets/helpwire-remote-support-640-v1.webp 640w, /assets/helpwire-remote-support-960-v1.webp 960w, /assets/helpwire-remote-support-1200-v1.webp 1200w" sizes="(max-width: 760px) 100vw, 50vw">
+            <img src="/assets/helpwire-remote-support-960-v1.png" alt="Ordinateur portable et poste de travail reliés pour une assistance à distance autorisée" width="1200" height="800" fetchpriority="high" decoding="async">
+          </picture>
         </div>
       </div>
     </section>
@@ -139,7 +143,7 @@
         <div class="footer-actions"><a class="button" href="/contact.html">Nous contacter</a><a class="button button-secondary" href="/helpwire.html">Assistance à distance</a></div>
       </div>
       <div class="footer-main">
-        <div class="footer-primary"><img src="/assets/alliancia-logo.png" alt="" width="50" height="50"><strong>SAAS</strong><span>Service d’Archivage Automatique Sécurisé</span><p>La sauvegarde cloud française accompagnée par Alliancia Solutions.</p><address>5 rue Grenouillère · 68230 Turckheim, France</address></div>
+        <div class="footer-primary"><img src="/assets/alliancia-logo-144-v1.png" loading="lazy" decoding="async" alt="" width="50" height="50"><strong>SAAS</strong><span>Service d’Archivage Automatique Sécurisé</span><p>La sauvegarde cloud française accompagnée par Alliancia Solutions.</p><address>5 rue Grenouillère · 68230 Turckheim, France</address></div>
         <nav class="footer-nav" aria-label="Solution"><strong>Solution</strong><a href="/#solution">La solution</a><a href="/#fonctionnement">Comment ça marche</a><a href="/#tarifs">Tarifs</a><a href="/helpwire.html">Assistance à distance</a></nav>
         <nav class="footer-nav" aria-label="Espace client"><strong>Espace client</strong><a href="/connexion.html">Se connecter</a><a href="/espace-client.html">Téléchargements</a><a href="/contact.html?objet=Assistance%20technique#formulaire">Contacter l’assistance</a></nav>
         <nav class="footer-nav" aria-label="Informations"><strong>Informations</strong><a href="/contact.html">Nous contacter</a><a href="https://alliancia-solutions.fr">Alliancia Solutions</a><a href="/mentions-legales.html">Mentions légales</a><a href="/confidentialite.html">Confidentialité</a></nav>
@@ -149,7 +153,7 @@
     </div>
   </footer>
 
-  <script src="/site-ui.js?v=20260914-3" defer></script>
+  <script src="/site-ui.js?v=20260917-1" defer></script>
   <script src="/script.js?v=20260914-3" defer></script>
 </body>
 </html>

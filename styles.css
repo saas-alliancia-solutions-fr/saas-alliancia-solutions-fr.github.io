@@ -70,6 +70,7 @@ p { margin-top: 0; }
 .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
 .hero-note { margin: 18px 0 0; color: var(--muted); font-size: .86rem; }
 .hero-media { display: flex; height: 560px; align-items: center; margin-right: -24px; overflow: hidden; }
+.hero-media picture { display: block; width: 100%; }
 .hero-media img { width: 100%; max-height: 560px; aspect-ratio: 1.5; object-fit: contain; mix-blend-mode: multiply; }
 .trust-strip { display: grid; grid-template-columns: repeat(4, 1fr); min-height: 92px; align-items: stretch; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .trust-strip div { display: flex; align-items: center; gap: 12px; padding: 18px 26px; border-right: 1px solid var(--line); font-size: .85rem; font-weight: 600; line-height: 1.35; }
@@ -475,6 +476,7 @@ p { margin-top: 0; }
 .helpwire-hero-copy > small { display: block; margin-top: 36px; color: var(--muted); font-size: .9rem; }
 .helpwire-hero-media { position: relative; min-width: 0; margin-right: -55px; }
 .helpwire-hero-media::after { content: ""; position: absolute; inset: 12% 4% 10% 14%; z-index: -1; border-radius: 50%; background: radial-gradient(circle, rgba(53,107,255,.08), transparent 68%); }
+.helpwire-hero-media picture { display: block; width: 100%; }
 .helpwire-hero-media img { width: 100%; max-height: 650px; object-fit: contain; }
 .helpwire-process { padding: 105px 0 80px; background: var(--ice); }
 .helpwire-section-heading { margin-bottom: 78px; text-align: center; }
