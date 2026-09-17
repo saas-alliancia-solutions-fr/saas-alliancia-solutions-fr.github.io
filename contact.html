@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20260917-4">
+  <link rel="stylesheet" href="/styles.css?v=20260917-5">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:title" content="Contact et assistance — SAAS">
@@ -33,7 +33,7 @@
   }
   </script>
 </head>
-<body>
+<body class="contact-page">
   <a class="skip-link" href="#contenu">Aller au contenu</a>
   <header class="site-header" data-header>
     <div class="container header-inner">
@@ -70,7 +70,7 @@
       </div>
     </section>
 
-    <section class="contact-section contact-page-form" id="formulaire" aria-labelledby="contact-form-title">
+    <section class="contact-section contact-page-form" aria-labelledby="contact-form-title">
       <div class="container contact-grid">
         <div class="contact-copy">
           <h2 id="contact-form-title">Parlez-nous de votre besoin.</h2>
@@ -86,7 +86,7 @@
             <a href="/helpwire.html">Découvrir HelpWire <span aria-hidden="true">→</span></a>
           </aside>
         </div>
-        <form class="contact-form" action="https://formsubmit.co/contact@alliancia-solutions.fr" method="POST" data-contact-form>
+        <form class="contact-form" id="formulaire" action="https://formsubmit.co/contact@alliancia-solutions.fr" method="POST" data-contact-form>
           <input type="hidden" name="_subject" value="Nouvelle demande depuis le site SAAS">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
@@ -94,9 +94,11 @@
           <input type="hidden" name="_url" value="https://saas.alliancia-solutions.fr/contact.html">
           <input type="hidden" name="Formule envisagée" value="" data-contact-plan>
           <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="contact-form-context" data-contact-plan-summary hidden>Votre demande concerne&nbsp;: <strong data-contact-plan-label></strong></p>
+          <p class="contact-response-time"><span aria-hidden="true">✓</span> Réponse généralement sous un jour ouvré.</p>
           <div class="form-row">
             <label><span class="field-label">Nom et prénom <span class="required-mark" aria-hidden="true">*</span></span><input type="text" name="Nom" autocomplete="name" required></label>
-            <label><span class="field-label">Société <span class="required-mark" aria-hidden="true">*</span></span><input type="text" name="Société" autocomplete="organization" required></label>
+            <label><span class="field-label">Société <span class="field-optional">(facultatif)</span></span><input type="text" name="Société" autocomplete="organization"></label>
           </div>
           <div class="form-row">
             <label><span class="field-label">Adresse e-mail <span class="required-mark" aria-hidden="true">*</span></span><input type="email" name="email" autocomplete="email" required></label>
@@ -106,7 +108,7 @@
             <label><span class="field-label">Objet de la demande <span class="required-mark" aria-hidden="true">*</span></span><select name="Objet" required data-contact-reason-select data-custom-select><option value="">Sélectionnez</option><option>Demande d’information</option><option>Diagnostic gratuit</option><option>Demande de devis</option><option>Question sur une formule</option><option>Assistance technique</option><option>Demande de numéro de contrat</option><option>Installation</option><option>Restauration de fichiers</option><option>Facturation ou abonnement</option><option>Autre demande</option></select></label>
             <label><span class="field-label">Équipement concerné</span><select name="Équipement" data-custom-select><option value="">Non précisé</option><option>Ordinateur Windows</option><option>Mac</option><option>Serveur</option><option>NAS Synology ou QNAP</option><option>Microsoft 365 ou Google Workspace</option><option>Autre équipement</option></select></label>
           </div>
-          <label><span class="field-label">Votre message <span class="required-mark" aria-hidden="true">*</span></span><textarea name="Message" rows="6" minlength="20" placeholder="Décrivez votre demande en quelques lignes…" required></textarea></label>
+          <label><span class="field-label">En quoi pouvons-nous vous aider&nbsp;? <span class="required-mark" aria-hidden="true">*</span></span><textarea name="Message" rows="4" minlength="20" aria-describedby="message-help" placeholder="Ex. Je souhaite protéger un NAS et trois postes." required></textarea><small class="field-help" id="message-help">20 caractères minimum — indiquez simplement le besoin, l’équipement concerné et l’urgence.</small></label>
           <label class="form-consent"><input type="checkbox" name="Consentement" value="Accepté" required><span>J’accepte que mes informations soient utilisées pour répondre à ma demande, conformément à la <a href="/confidentialite.html">politique de confidentialité</a>.</span></label>
           <button class="button form-submit" type="submit">Envoyer ma demande <span aria-hidden="true">→</span></button>
           <p class="form-note">Les champs marqués d’un * sont obligatoires.</p>
@@ -127,6 +129,6 @@
     </div>
   </footer>
   <script src="/site-ui.js?v=20260917-1" defer></script>
-  <script src="/script.js?v=20260914-3" defer></script>
+  <script src="/script.js?v=20260917-1" defer></script>
 </body>
 </html>

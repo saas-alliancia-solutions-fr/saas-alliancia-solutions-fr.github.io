@@ -161,8 +161,24 @@
     contactReason.value = requestedReason;
   }
   const contactPlan = document.querySelector("[data-contact-plan]");
+  const contactPlanSummary = document.querySelector("[data-contact-plan-summary]");
+  const contactPlanLabel = document.querySelector("[data-contact-plan-label]");
   const requestedPlan = contactParams.get("formule");
-  if (contactPlan && requestedPlan) contactPlan.value = requestedPlan;
+  if (requestedPlan) {
+    if (contactPlan) contactPlan.value = requestedPlan;
+    if (contactPlanSummary && contactPlanLabel) {
+      contactPlanLabel.textContent = requestedPlan;
+      contactPlanSummary.hidden = false;
+    }
+  }
+
+  const contactForm = document.querySelector("[data-contact-form]");
+  if (contactForm && window.location.hash === "#formulaire") {
+    window.addEventListener("load", async () => {
+      await document.fonts?.ready;
+      window.requestAnimationFrame(() => contactForm.scrollIntoView({ block: "start" }));
+    }, { once: true });
+  }
 
   document.querySelectorAll("[data-custom-select]").forEach(enhanceSelect);
 
