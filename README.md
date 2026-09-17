@@ -40,3 +40,13 @@ La fonction doit être appelée en `POST` avec `x-sync-secret: <KIWI_SYNC_SECRET
 ## Publication
 
 La branche `main` est déployée automatiquement par `.github/workflows/pages.yml`. Le fichier `CNAME` configure le domaine personnalisé.
+
+## Guides SEO
+
+Le hub `/guides.html` et ses sept guides thématiques sont générés depuis `scripts/generate-seo-pages.mjs`. Après une modification éditoriale ou structurelle, régénérer les pages avec :
+
+```bash
+node scripts/generate-seo-pages.mjs
+```
+
+Chaque guide conserve un titre, une description, une URL canonique, un fil d’Ariane structuré et un maillage vers les contenus complémentaires.

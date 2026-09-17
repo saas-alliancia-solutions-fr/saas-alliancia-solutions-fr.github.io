@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sauvegarde Microsoft 365 — Guide SAAS</title>
+  <meta name="description" content="Guide pour définir une stratégie de sauvegarde Microsoft 365 : Exchange, OneDrive, SharePoint, rétention, suppression et restauration.">
+  <meta name="theme-color" content="#10233f">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://saas.alliancia-solutions.fr/sauvegarde-microsoft-365.html">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20260917-4">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Sauvegarde Microsoft 365 — Guide SAAS">
+  <meta property="og:description" content="Guide pour définir une stratégie de sauvegarde Microsoft 365 : Exchange, OneDrive, SharePoint, rétention, suppression et restauration.">
+  <meta property="og:url" content="https://saas.alliancia-solutions.fr/sauvegarde-microsoft-365.html">
+  <meta property="og:image" content="https://saas.alliancia-solutions.fr/assets/saas-hero-v3.png">
+  <meta property="og:image:alt" content="SAAS, sauvegarde cloud française pour TPE et PME">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://saas.alliancia-solutions.fr/sauvegarde-microsoft-365.html#article","headline":"Sauvegarde Microsoft 365","description":"Guide pour définir une stratégie de sauvegarde Microsoft 365 : Exchange, OneDrive, SharePoint, rétention, suppression et restauration.","datePublished":"2026-09-17","dateModified":"2026-09-17","inLanguage":"fr-FR","mainEntityOfPage":"https://saas.alliancia-solutions.fr/sauvegarde-microsoft-365.html","author":{"@type":"Organization","name":"Alliancia Solutions","url":"https://alliancia-solutions.fr"},"publisher":{"@type":"Organization","@id":"https://saas.alliancia-solutions.fr/#organization","name":"Alliancia Solutions","logo":{"@type":"ImageObject","url":"https://saas.alliancia-solutions.fr/assets/alliancia-logo-144-v1.png"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://saas.alliancia-solutions.fr/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://saas.alliancia-solutions.fr/guides.html"},{"@type":"ListItem","position":3,"name":"Sauvegarde Microsoft 365","item":"https://saas.alliancia-solutions.fr/sauvegarde-microsoft-365.html"}]}]}</script>
+</head>
+<body class="guide-page">
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header" data-header>
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="SAAS, accueil"><img src="/assets/alliancia-logo-144-v1.png" decoding="async" alt="" width="48" height="48"><span class="brand-copy"><strong>SAAS</strong><small>Service d’Archivage<br>Automatique Sécurisé</small></span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-menu-toggle><span></span><span></span><span></span><span class="sr-only">Ouvrir le menu</span></button>
+      <nav id="main-nav" class="main-nav" aria-label="Navigation principale" data-nav><a href="/">Accueil</a><a href="/#solution">La solution</a><a href="/#tarifs">Tarifs</a><a href="/guides.html" aria-current="page">Guides</a><a href="/helpwire.html">Assistance</a><a href="/contact.html">Contact</a><a class="nav-account" href="/connexion.html">Se connecter</a></nav>
+    </div>
+  </header>
+  <main id="contenu">
+    <section class="guide-hero">
+      <div class="container guide-hero-grid">
+        <div class="guide-hero-copy">
+          <nav class="breadcrumbs" aria-label="Fil d’Ariane"><a href="/">Accueil</a><span aria-hidden="true">›</span><a href="/guides.html">Guides</a><span aria-hidden="true">›</span><span>Sauvegarde Microsoft 365</span></nav>
+          <h1>Sauvegarde Microsoft 365</h1><p>Les fonctions natives de Microsoft 365 et une sauvegarde répondent à des objectifs différents. Commencez par définir les données à récupérer et le délai attendu.</p>
+          <div class="guide-hero-actions"><a class="button booking-link" href="mailto:contact@alliancia-solutions.fr?subject=Diagnostic%20SAAS%20de%2030%20minutes">Planifier mon diagnostic</a><a class="text-link" href="#guide">Lire le guide ↓</a></div>
+          <p class="guide-meta">Publié par Alliancia Solutions · Mis à jour le 17 septembre 2026 · Lecture : 7 minutes</p>
+        </div>
+        <aside class="guide-answer" aria-label="Réponse courte"><strong>À retenir</strong><p>La disponibilité du service, la corbeille, les politiques de rétention et la sauvegarde ne sont pas interchangeables. Votre politique doit préciser les services couverts, la durée de récupération et le niveau de granularité attendu.</p><ul><li>Cartographier Exchange, OneDrive et SharePoint</li><li>Aligner rétention et risques</li><li>Tester la récupération d’un élément et d’un ensemble</li></ul></aside>
+      </div>
+    </section>
+    <section class="guide-content" id="guide">
+      <div class="container guide-layout">
+        <aside class="guide-toc"><strong>Dans ce guide</strong><nav aria-label="Sommaire"><a href="#responsabilites">Clarifier ce que vous voulez pouvoir récupérer</a><a href="#perimetre">Établir le périmètre par service</a><a href="#retention">Ne pas confondre rétention réglementaire et reprise</a><a href="#checklist">Checklist avant de choisir une solution</a><a href="#questions">Questions fréquentes</a></nav></aside>
+        <article class="guide-article">
+          <section id="responsabilites"><h2>Clarifier ce que vous voulez pouvoir récupérer</h2><p>Microsoft protège l’infrastructure de sa plateforme et propose des fonctions de conservation et de récupération. Votre organisation reste responsable de la configuration de ses politiques, des comptes, des droits et de la réponse à ses besoins métier.</p><p>Décrivez des scénarios concrets : un message supprimé, un dossier OneDrive écrasé, une bibliothèque SharePoint altérée ou le compte d’un collaborateur compromis. Chaque scénario peut nécessiter une durée et une granularité différentes.</p></section>
+<section id="perimetre"><h2>Établir le périmètre par service</h2><div class="guide-table-wrap"><table><thead><tr><th>Service</th><th>Données à examiner</th><th>Test recommandé</th></tr></thead><tbody><tr><td>Exchange Online</td><td>Boîtes, dossiers, messages et pièces jointes</td><td>Récupérer un message et un dossier</td></tr><tr><td>OneDrive</td><td>Fichiers utilisateurs et versions</td><td>Restaurer un fichier à une date choisie</td></tr><tr><td>SharePoint</td><td>Sites, bibliothèques et droits</td><td>Récupérer une bibliothèque représentative</td></tr><tr><td>Teams</td><td>Fichiers et données liées aux services sous-jacents</td><td>Identifier précisément la source à restaurer</td></tr></tbody></table></div></section>
+<section id="retention"><h2>Ne pas confondre rétention réglementaire et reprise</h2><p>Une politique de rétention vise à conserver ou supprimer des contenus selon des règles. Une stratégie de sauvegarde vise à restaurer un état exploitable après une erreur, un incident ou une suppression. Les deux peuvent coexister, mais leurs paramètres doivent être documentés séparément.</p><div class="guide-callout"><strong>Question utile</strong><p>Si un compte est compromis aujourd’hui, jusqu’à quelle date pouvez-vous revenir, et qui est autorisé à lancer la récupération ?</p></div></section>
+<section id="checklist"><h2>Checklist avant de choisir une solution</h2><ul class="guide-checklist"><li>Recenser les licences, comptes actifs et comptes à conserver</li><li>Identifier les espaces SharePoint et OneDrive critiques</li><li>Définir les durées de récupération par type de contenu</li><li>Contrôler la résidence, les accès administratifs et la traçabilité</li><li>Tester la restauration et la remise à disposition aux utilisateurs</li></ul></section>
+          <section id="questions" class="guide-faq"><h2>Questions fréquentes</h2><details><summary>La corbeille Microsoft 365 remplace-t-elle une sauvegarde ?</summary><p>Elle répond à certains scénarios de récupération, mais pas à tous les besoins de durée, de couverture ou d’indépendance. Il faut comparer ses limites à vos scénarios métier.</p></details><details><summary>Quels services faut-il protéger en priorité ?</summary><p>Commencez par ceux qui contiennent les données nécessaires à l’activité : généralement Exchange, OneDrive et SharePoint, puis examinez les dépendances de Teams.</p></details><details><summary>Faut-il sauvegarder les comptes supprimés ?</summary><p>Définissez une procédure de départ collaborateur : durée de conservation, transfert de propriété et date de suppression définitive.</p></details></section>
+          <section class="guide-sources" aria-labelledby="sources-title"><h2 id="sources-title">Sources utiles</h2><p>Ces ressources officielles permettent d’approfondir les recommandations et d’adapter la stratégie à votre contexte.</p><ul><li><a href="https://learn.microsoft.com/fr-fr/microsoft-365/backup/backup-privacy-security?view=o365-worldwide">Microsoft Learn — Confidentialité, sécurité et conformité dans Microsoft 365 Backup</a></li></ul></section>
+        </article>
+      </div>
+    </section>
+    <section class="related-guides" aria-labelledby="related-title"><div class="container"><div class="related-heading"><h2 id="related-title">Poursuivre avec un guide complémentaire</h2><a href="/guides.html">Voir tous les guides →</a></div><div class="related-grid"><a href="/sauvegarde-cloud-tpe-pme.html"><strong>Sauvegarde cloud pour TPE et PME</strong><span>Guide pratique pour choisir et organiser une sauvegarde cloud adaptée aux TPE et PME : données prioritaires, fréquence, restauration et budget.</span><b>Lire le guide →</b></a><a href="/protection-rancongiciels.html"><strong>Protection contre les rançongiciels</strong><span>Mesures concrètes pour protéger les sauvegardes d’une TPE ou PME contre un rançongiciel : séparation, historique, accès et tests de reprise.</span><b>Lire le guide →</b></a><a href="/sauvegarde-externalisee-france.html"><strong>Sauvegarde externalisée en France</strong><span>Critères pour choisir une sauvegarde externalisée en France : localisation, sécurité, rétention, restauration, réversibilité et accompagnement.</span><b>Lire le guide →</b></a></div></div></section>
+
+    <section class="guide-diagnostic" aria-labelledby="diagnostic-title">
+      <div class="container guide-diagnostic-inner"><div><h2 id="diagnostic-title">Votre sauvegarde résiste-t-elle au scénario qui vous concerne ?</h2><p>En 30 minutes, nous vérifions vos données, vos équipements, vos délais de reprise et le volume réellement utile.</p></div><div><a class="button booking-link" href="mailto:contact@alliancia-solutions.fr?subject=Diagnostic%20SAAS%20de%2030%20minutes">Planifier mon diagnostic</a><span>Gratuit · Sans engagement · En visioconférence</span></div></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-cta"><div class="footer-cta-copy"><h2>Un besoin ? <span>Parlons-en.</span></h2><p>Diagnostic, installation ou assistance à distance : un interlocuteur Alliancia vous répond.</p></div><div class="footer-actions"><a class="button" href="/contact.html">Nous contacter</a><a class="button button-secondary" href="/helpwire.html">Assistance à distance</a></div></div>
+      <div class="footer-main">
+        <div class="footer-primary"><img src="/assets/alliancia-logo-144-v1.png" loading="lazy" decoding="async" alt="" width="50" height="50"><strong>SAAS</strong><span>Service d’Archivage Automatique Sécurisé</span><p>La sauvegarde cloud française accompagnée par Alliancia Solutions.</p><address>5 rue Grenouillère · 68230 Turckheim, France</address></div>
+        <nav class="footer-nav" aria-label="Solution"><strong>Solution</strong><a href="/#solution">La solution</a><a href="/#fonctionnement">Comment ça marche</a><a href="/#tarifs">Tarifs</a><a href="/guides.html">Guides pratiques</a><a href="/helpwire.html">Assistance à distance</a></nav>
+        <nav class="footer-nav" aria-label="Espace client"><strong>Espace client</strong><a href="/connexion.html">Se connecter</a><a href="/espace-client.html">Téléchargements</a><a href="/contact.html?objet=Assistance%20technique#formulaire">Contacter l’assistance</a></nav>
+        <nav class="footer-nav" aria-label="Informations"><strong>Informations</strong><a href="/contact.html">Nous contacter</a><a href="https://alliancia-solutions.fr">Alliancia Solutions</a><a href="/mentions-legales.html">Mentions légales</a><a href="/confidentialite.html">Confidentialité</a></nav>
+      </div>
+      <div class="footer-bottom"><span>© <span data-year>2026</span> Alliancia Solutions</span><span class="footer-trust">Données hébergées en France · Infrastructure HDS &amp; ISO 27001</span></div>
+    </div>
+  </footer>
+  <script src="/site-ui.js?v=20260917-1" defer></script><script src="/config.js"></script><script src="/script.js?v=20260914-3" defer></script>
+</body>
+</html>

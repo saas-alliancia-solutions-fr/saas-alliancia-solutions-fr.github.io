@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://saas.alliancia-solutions.fr/</loc><lastmod>2026-09-14</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://saas.alliancia-solutions.fr/helpwire.html</loc><lastmod>2026-09-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://saas.alliancia-solutions.fr/espace-client.html</loc><lastmod>2026-09-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://saas.alliancia-solutions.fr/contact.html</loc><lastmod>2026-09-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/guides.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/sauvegarde-cloud-tpe-pme.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/sauvegarde-nas-synology-qnap.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/sauvegarde-microsoft-365.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/protection-rancongiciels.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/restauration-donnees-apres-incident.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/sauvegarde-externalisee-france.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/comparatif-sauvegarde-locale-cloud.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/helpwire.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/espace-client.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://saas.alliancia-solutions.fr/contact.html</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://saas.alliancia-solutions.fr/mentions-legales.html</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
   <url><loc>https://saas.alliancia-solutions.fr/confidentialite.html</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
 </urlset>
