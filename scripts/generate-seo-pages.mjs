@@ -10,6 +10,9 @@ const updatedLabel = "17 septembre 2026";
 const guides = [
   {
     slug: "sauvegarde-cloud-tpe-pme",
+    updated: "2026-09-24",
+    updatedLabel: "24 septembre 2026",
+    readingMinutes: 8,
     title: "Sauvegarde cloud pour TPE et PME",
     navTitle: "Sauvegarde cloud pour TPE et PME",
     description: "Guide pratique pour choisir et organiser une sauvegarde cloud adaptée aux TPE et PME : données prioritaires, fréquence, restauration et budget.",
@@ -20,12 +23,14 @@ const guides = [
       { id: "priorites", title: "Commencer par le risque métier, pas par le stockage", body: `<p>La première question n’est pas « combien de gigaoctets possédons-nous ? », mais « quelles données empêcheraient l’entreprise de travailler si elles disparaissaient demain ? ». Listez les fichiers clients, documents comptables, dossiers de production, bases métier et configurations qui conditionnent l’activité.</p><p>Pour chaque ensemble, définissez deux repères simples : la quantité de travail que vous acceptez de perdre et le temps maximal pendant lequel l’activité peut fonctionner sans ces données. Ces repères orientent la fréquence des sauvegardes et l’ordre de restauration.</p>` },
       { id: "perimetre", title: "Construire un périmètre de sauvegarde utile", body: `<div class="guide-table-wrap"><table><thead><tr><th>Élément</th><th>Question à poser</th><th>Décision attendue</th></tr></thead><tbody><tr><td>Postes de travail</td><td>Les fichiers restent-ils uniquement sur le poste ?</td><td>Inclure les dossiers métier et profils nécessaires</td></tr><tr><td>Serveurs et NAS</td><td>Quelles applications et données partagées y résident ?</td><td>Sauvegarder les volumes et dépendances critiques</td></tr><tr><td>Microsoft 365</td><td>Quelles données sont dans OneDrive, SharePoint ou Exchange ?</td><td>Vérifier la couverture et la rétention adaptées</td></tr><tr><td>Données hors site</td><td>Une copie est-elle séparée du réseau local ?</td><td>Prévoir une copie externalisée protégée</td></tr></tbody></table></div>` },
       { id: "methode", title: "Une méthode de mise en place en cinq étapes", body: `<ol class="guide-steps"><li><strong>Recenser</strong><span>Localisez les données et identifiez leur propriétaire métier.</span></li><li><strong>Prioriser</strong><span>Classez ce qui doit être restauré dans l’heure, la journée ou la semaine.</span></li><li><strong>Automatiser</strong><span>Planifiez les sauvegardes sans dépendre d’une manipulation quotidienne.</span></li><li><strong>Surveiller</strong><span>Traitez les alertes et les postes qui ne sauvegardent plus.</span></li><li><strong>Tester</strong><span>Restaurez un fichier puis un dossier représentatif et documentez la procédure.</span></li></ol>` },
+      { id: "controle", title: "Mettre en place un contrôle mensuel en quinze minutes", body: `<p>Une sauvegarde peut cesser de couvrir une donnée importante sans qu’aucune panne ne soit visible : nouveau poste, dossier déplacé, volume saturé ou compte désactivé. Un contrôle court et régulier évite que ces changements passent inaperçus.</p><div class="guide-table-wrap"><table><thead><tr><th>Contrôle</th><th>Preuve attendue</th><th>Action si anomalie</th></tr></thead><tbody><tr><td>Dernière sauvegarde</td><td>Date récente pour chaque équipement critique</td><td>Relancer l’agent et vérifier sa connexion</td></tr><tr><td>Volume protégé</td><td>Évolution cohérente avec l’activité</td><td>Rechercher un dossier exclu ou un stockage saturé</td></tr><tr><td>Alertes</td><td>Aucune erreur persistante non traitée</td><td>Attribuer un responsable et une échéance</td></tr><tr><td>Restauration témoin</td><td>Fichier ouvert et version vérifiée</td><td>Documenter l’échec et corriger avant clôture</td></tr></tbody></table></div><p>Conservez la date du test, le fichier restauré, la durée observée et le nom de la personne qui l’a réalisé. Cette trace transforme une simple sauvegarde déclarée en capacité de reprise vérifiée.</p>` },
       { id: "choix", title: "Ce que le diagnostic doit vous permettre de décider", body: `<p>À la fin du diagnostic, vous devez disposer d’un périmètre clair, d’un volume estimé, d’une fréquence, d’une durée de conservation et d’un scénario de restauration. Le coût devient alors comparable à un besoin concret, et non à une capacité de stockage abstraite.</p><div class="guide-callout"><strong>Conseil pratique</strong><p>Demandez une démonstration de restauration avec un fichier proche de votre usage réel. Une sauvegarde n’a de valeur que si la récupération est comprise et vérifiée.</p></div>` }
     ],
     faqs: [
       ["Combien de données faut-il sauvegarder ?", "Commencez par les données irremplaçables ou longues à reconstruire. Le diagnostic sert ensuite à mesurer ce périmètre et à choisir une marge raisonnable."],
       ["Faut-il sauvegarder tous les postes ?", "Pas nécessairement tout leur contenu, mais chaque emplacement contenant des données métier non centralisées doit être identifié et protégé."],
       ["Une sauvegarde automatique suffit-elle ?", "Non. Il faut aussi surveiller les échecs, conserver plusieurs versions et tester régulièrement une restauration."],
+      ["À quelle fréquence faut-il contrôler les sauvegardes ?", "Contrôlez les alertes au fil de l’eau et réalisez au minimum chaque mois une revue des équipements, du volume protégé et d’une restauration témoin."],
     ],
     sources: [{ label: "ANSSI — Fondamentaux de la sauvegarde des systèmes d’information", href: "https://cyber.gouv.fr/sites/default/files/document/anssi-fondamentaux-sauvegarde_systemes_dinformation_v1-0.pdf" }],
     related: ["comparatif-sauvegarde-locale-cloud", "sauvegarde-externalisee-france", "restauration-donnees-apres-incident"]
@@ -222,10 +227,11 @@ const diagnosticCta = `
 
 function articleSchema(guide) {
   const url = `${baseUrl}/${guide.slug}.html`;
+  const modified = guide.updated || updated;
   return {
     "@context": "https://schema.org",
     "@graph": [
-      { "@type": "Article", "@id": `${url}#article`, headline: guide.title, description: guide.description, datePublished: updated, dateModified: updated, inLanguage: "fr-FR", mainEntityOfPage: url, author: { "@type": "Organization", name: "Alliancia Solutions", url: "https://alliancia-solutions.fr" }, publisher: { "@type": "Organization", "@id": `${baseUrl}/#organization`, name: "Alliancia Solutions", logo: { "@type": "ImageObject", url: `${baseUrl}/assets/alliancia-logo-144-v1.png` } } },
+      { "@type": "Article", "@id": `${url}#article`, headline: guide.title, description: guide.description, datePublished: updated, dateModified: modified, inLanguage: "fr-FR", mainEntityOfPage: url, author: { "@type": "Organization", name: "Alliancia Solutions", url: "https://alliancia-solutions.fr" }, publisher: { "@type": "Organization", "@id": `${baseUrl}/#organization`, name: "Alliancia Solutions", logo: { "@type": "ImageObject", url: `${baseUrl}/assets/alliancia-logo-144-v1.png` } } },
       { "@type": "BreadcrumbList", itemListElement: [
         { "@type": "ListItem", position: 1, name: "Accueil", item: `${baseUrl}/` },
         { "@type": "ListItem", position: 2, name: "Guides", item: `${baseUrl}/guides.html` },
@@ -249,7 +255,7 @@ ${header(true)}
           <nav class="breadcrumbs" aria-label="Fil d’Ariane"><a href="/">Accueil</a><span aria-hidden="true">›</span><a href="/guides.html">Guides</a><span aria-hidden="true">›</span><span>${guide.title}</span></nav>
           <h1>${guide.title}</h1><p>${guide.lede}</p>
           <div class="guide-hero-actions"><a class="button booking-link" href="mailto:contact@alliancia-solutions.fr?subject=Diagnostic%20SAAS%20de%2030%20minutes">Planifier mon diagnostic</a><a class="text-link" href="#guide">Lire le guide ↓</a></div>
-          <p class="guide-meta">Publié par Alliancia Solutions · Mis à jour le ${updatedLabel} · Lecture : 7 minutes</p>
+          <p class="guide-meta">Publié par Alliancia Solutions · Mis à jour le ${guide.updatedLabel || updatedLabel} · Lecture : ${guide.readingMinutes || 7} minutes</p>
         </div>
         <aside class="guide-answer" aria-label="Réponse courte"><strong>À retenir</strong><p>${guide.answer}</p><ul>${guide.takeaways.map((item) => `<li>${item}</li>`).join("")}</ul></aside>
       </div>

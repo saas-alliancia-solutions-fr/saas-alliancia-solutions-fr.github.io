@@ -2,6 +2,13 @@
 
 Site vitrine du **Service d’Archivage Automatique Sécurisé**, publié sur GitHub Pages à l’adresse `https://saas.alliancia-solutions.fr`.
 
+## Ressources publiques
+
+- [Découvrir le service SAAS](https://saas.alliancia-solutions.fr/)
+- [Guides pratiques de sauvegarde et de restauration](https://saas.alliancia-solutions.fr/guides.html)
+- [Choisir une sauvegarde cloud pour une TPE ou PME](https://saas.alliancia-solutions.fr/sauvegarde-cloud-tpe-pme.html)
+- [Préparer la restauration des données après un incident](https://saas.alliancia-solutions.fr/restauration-donnees-apres-incident.html)
+
 ## Aperçu local
 
 ```bash
