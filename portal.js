@@ -3,13 +3,14 @@
   const configured = Boolean(config.supabaseUrl && config.supabasePublishableKey && window.supabase?.createClient);
   const client = configured ? window.supabase.createClient(config.supabaseUrl, config.supabasePublishableKey) : null;
   const isLocalDemo = location.hostname === "127.0.0.1" && new URLSearchParams(location.search).get("demo") === "1";
+  const requestedPortalView = new URLSearchParams(location.search).get("next");
   const authLinkType = new URLSearchParams(location.hash.slice(1)).get("type");
   const needsPasswordSetup = ["invite", "recovery"].includes(authLinkType) || new URLSearchParams(location.search).get("reset") === "1";
 
   const openAuthorizedSpace = async (session) => {
     if (!session?.user || !client) return;
     const { data: administrator } = await client.from("app_admins").select("role").eq("user_id", session.user.id).eq("active", true).maybeSingle();
-    location.replace(administrator ? "/administration.html" : "/portail.html");
+    location.replace(administrator ? "/administration.html" : requestedPortalView === "downloads" ? "/portail.html#downloads" : "/portail.html");
   };
 
   const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, (character) => ({
@@ -211,6 +212,20 @@
     button.disabled = false;
   }));
 
+  const activatePortalView = (view, { updateHash = true, smooth = true } = {}) => {
+    const panel = document.querySelector(`[data-view-panel="${view}"]`);
+    if (!panel) return;
+    document.querySelectorAll(".portal-sidebar [data-portal-view]").forEach((button) => button.classList.toggle("active", button.dataset.portalView === view));
+    document.querySelectorAll("[data-view-panel]").forEach((item) => {
+      const active = item.dataset.viewPanel === view;
+      item.hidden = !active;
+      item.classList.toggle("active", active);
+    });
+    document.querySelector(".portal-sidebar")?.classList.remove("open");
+    if (updateHash) history.replaceState(null, "", `#${view}`);
+    window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
+  };
+
   const renderPortal = (state) => {
     portalState = state;
     const name = state.user.user_metadata?.full_name || state.user.email.split("@")[0];
@@ -236,14 +251,15 @@
     bindInvoiceDownloads();
     loading.hidden = true;
     shell.hidden = false;
+    activatePortalView(location.hash.slice(1) || "overview", { updateHash: false, smooth: false });
   };
 
   const loadPortal = async () => {
     if (isLocalDemo) { renderPortal(demoData); return; }
-    if (!client) { location.replace("/connexion.html"); return; }
+    if (!client) { location.replace(`/connexion.html${location.hash === "#downloads" ? "?next=downloads" : ""}`); return; }
     const { data: sessionData } = await client.auth.getSession();
     const user = sessionData.session?.user;
-    if (!user) { location.replace("/connexion.html"); return; }
+    if (!user) { location.replace(`/connexion.html${location.hash === "#downloads" ? "?next=downloads" : ""}`); return; }
     const { data: membership, error: membershipError } = await client.from("organization_members").select("organization_id, role, organizations(id,name)").eq("user_id", user.id).limit(1).maybeSingle();
     if (membershipError || !membership?.organizations) {
       loading.innerHTML = "<strong>Votre compte n’est associé à aucune entreprise.</strong><p>Contactez Alliancia Solutions pour finaliser votre accès.</p>";
@@ -266,12 +282,48 @@
     renderPortal({ user, organization: membership.organizations, subscription: subscription.data, usage: usage.data || [], alerts: alerts.data || [], invoices: invoices.data || [], requests: requests.data || [], devices: devices.data || [] });
   };
 
-  document.querySelectorAll("[data-portal-view]").forEach((control) => control.addEventListener("click", () => {
-    const view = control.dataset.portalView;
-    document.querySelectorAll(".portal-sidebar [data-portal-view]").forEach((button) => button.classList.toggle("active", button.dataset.portalView === view));
-    document.querySelectorAll("[data-view-panel]").forEach((panel) => { panel.hidden = panel.dataset.viewPanel !== view; panel.classList.toggle("active", panel.dataset.viewPanel === view); });
-    document.querySelector(".portal-sidebar")?.classList.remove("open");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  document.querySelectorAll("[data-portal-view]").forEach((control) => control.addEventListener("click", () => activatePortalView(control.dataset.portalView)));
+  window.addEventListener("hashchange", () => activatePortalView(location.hash.slice(1) || "overview", { updateHash: false, smooth: false }));
+
+  const activateDownloadPlatform = (platform) => {
+    document.querySelectorAll("[data-download-tab]").forEach((tab) => {
+      const active = tab.dataset.downloadTab === platform;
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+    });
+    document.querySelectorAll("[data-download-panel]").forEach((panel) => { panel.hidden = panel.dataset.downloadPanel !== platform; });
+  };
+  const downloadTabs = [...document.querySelectorAll("[data-download-tab]")];
+  downloadTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => activateDownloadPlatform(tab.dataset.downloadTab));
+    tab.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      let targetIndex = event.key === "Home" ? 0 : event.key === "End" ? downloadTabs.length - 1 : index + (event.key === "ArrowRight" ? 1 : -1);
+      targetIndex = (targetIndex + downloadTabs.length) % downloadTabs.length;
+      downloadTabs[targetIndex].click();
+      downloadTabs[targetIndex].focus();
+    });
+  });
+  document.querySelectorAll("[data-portal-copy]").forEach((button) => button.addEventListener("click", async () => {
+    const value = button.parentElement?.querySelector("code")?.textContent.trim();
+    if (!value) return;
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      const input = document.createElement("textarea");
+      input.value = value;
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.append(input);
+      input.select();
+      document.execCommand("copy");
+      input.remove();
+    }
+    const label = button.textContent;
+    button.textContent = "Copié";
+    window.setTimeout(() => { button.textContent = label; }, 1200);
   }));
   document.querySelector("[data-portal-menu]")?.addEventListener("click", () => document.querySelector(".portal-sidebar")?.classList.toggle("open"));
   document.querySelector("[data-logout]")?.addEventListener("click", async () => { if (client) await client.auth.signOut(); location.replace("/connexion.html"); });

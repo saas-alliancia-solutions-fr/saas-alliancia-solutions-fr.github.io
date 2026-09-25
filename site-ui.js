@@ -2,7 +2,9 @@
   const GOOGLE_ADS_ID = "AW-18420987244";
   const GOOGLE_ADS_CONTACT_LABEL = "RNryCKLO2YQdEOzq589E";
   const CONSENT_STORAGE_KEY = "saas_google_ads_consent";
+  const isPrivateSurface = document.body.matches(".portal-page, .auth-page");
 
+  if (!isPrivateSurface) {
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function gtag() {
     window.dataLayer.push(arguments);
@@ -80,6 +82,7 @@
       sendContactConversion();
       consentBanner.remove();
     });
+  }
   }
 
   if ("serviceWorker" in navigator && window.location.protocol !== "file:") {
