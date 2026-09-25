@@ -192,6 +192,30 @@
 
   const billingButtons = document.querySelectorAll("[data-billing]");
   const pricingTable = document.querySelector(".pricing-table");
+  const loyaltyDiscounts = [0, 0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2];
+  const priceFormatter = new Intl.NumberFormat("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  const renderPricingTrend = (target, period) => {
+    const basePrice = Number(target.dataset[`${period}Base`]);
+    if (!Number.isFinite(basePrice)) return;
+
+    const unit = period === "annual" ? "€/an" : "€/mois";
+    const prices = loyaltyDiscounts.map((discount) => Math.round(((basePrice * (1 - discount)) + 1e-9) * 100) / 100);
+    const plottedYears = period === "monthly" ? prices.map((_, index) => index).slice(1) : prices.map((_, index) => index);
+    const pointX = (position) => 18 + (position * (324 / (plottedYears.length - 1)));
+    const points = plottedYears.map((yearIndex, position) => `${pointX(position)},${4 + (position * (16 / (plottedYears.length - 1)))}`).join(" ");
+    const description = plottedYears.map((yearIndex) => `année ${yearIndex + 1} : ${priceFormatter.format(prices[yearIndex])} ${unit}`).join(", ");
+    const circles = plottedYears.map((yearIndex, position) => `<circle cx="${pointX(position)}" cy="${4 + (position * (16 / (plottedYears.length - 1)))}" r="${position === 0 || position === plottedYears.length - 1 ? 2.6 : 1.8}" fill="${position === 0 || position === plottedYears.length - 1 ? "#16855f" : "#ffffff"}" stroke="#16855f" stroke-width="1.25"><title>Année ${yearIndex + 1} : ${priceFormatter.format(prices[yearIndex])} ${unit}</title></circle>`).join("");
+    const visibleYears = [1, 4, 8];
+    const values = visibleYears.map((index) => {
+      const plottedPosition = plottedYears.indexOf(index);
+      const left = (pointX(plottedPosition) / 360) * 100;
+      return `<span style="left:${left}%"><small>A${index + 1}</small><strong>${priceFormatter.format(prices[index])}</strong></span>`;
+    }).join("");
+
+    target.innerHTML = `<span class="price-trend" role="img" aria-label="Évolution du tarif fidélité ${target.dataset.planLabel} : ${description}"><svg viewBox="0 0 360 24" aria-hidden="true" focusable="false"><polyline points="${points}" fill="none" stroke="#32b47d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />${circles}</svg><span class="price-trend-values">${values}</span></span>`;
+  };
+
+  document.querySelectorAll("[data-saving]").forEach((saving) => renderPricingTrend(saving, "annual"));
   billingButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const period = button.dataset.billing;
@@ -205,10 +229,14 @@
       });
       pricingTable?.classList.toggle("monthly", period === "monthly");
       document.querySelectorAll("[data-saving]").forEach((saving) => {
-        if (!saving.dataset.annualLabel) saving.dataset.annualLabel = saving.textContent;
-        saving.textContent = period === "monthly" ? "Disponible après un an de service" : saving.dataset.annualLabel;
+        renderPricingTrend(saving, period);
       });
-      pricingTable?.setAttribute("aria-label", period === "monthly" ? "Tarifs mensuels SAAS disponibles après douze mois de service" : "Tarifs annuels SAAS");
+      document.querySelectorAll("[data-annual-loyalty]").forEach((loyalty) => {
+        loyalty.hidden = period === "monthly";
+      });
+      const advantageHeader = document.querySelector("[data-advantage-header]");
+      if (advantageHeader) advantageHeader.textContent = period === "monthly" ? "Votre tarif fidélité (€ HT/mois)" : "Votre tarif fidélité (€ HT/an)";
+      pricingTable?.setAttribute("aria-label", period === "monthly" ? "Tarifs mensuels SAAS disponibles dès la deuxième année" : "Tarifs annuels SAAS");
     });
   });
 

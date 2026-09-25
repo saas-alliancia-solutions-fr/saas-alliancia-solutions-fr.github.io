@@ -169,23 +169,48 @@ p { margin-top: 0; }
 .billing-toggle button { min-height: 42px; padding: 0 16px; border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; font-weight: 700; }
 .billing-toggle button.active { background: var(--navy); color: #fff; }
 .billing-toggle button span { display: inline-block; margin-left: 6px; padding: 2px 6px; border-radius: 20px; background: var(--mint); color: var(--navy); font-size: .65rem; }
+.loyalty-discount { display: grid; grid-template-columns: .8fr 1.2fr; gap: 38px; align-items: center; margin-bottom: 24px; padding: 26px 28px; border: 1px solid #b9d9cd; border-radius: var(--radius); background: linear-gradient(135deg, #effcf4 0%, #fff 72%); }
+.loyalty-copy .eyebrow { color: #16855f; font-size: .72rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+.loyalty-copy h3 { margin: 6px 0 8px; font-size: 1.35rem; }
+.loyalty-copy p { margin: 0; color: var(--muted); font-size: .92rem; }
+.loyalty-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.loyalty-steps li { min-height: 82px; padding: 14px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.loyalty-steps li.highlight { border-color: #96d9bd; background: #e5f9ee; }
+.loyalty-steps strong, .loyalty-steps span { display: block; }
+.loyalty-steps strong { margin-bottom: 7px; color: var(--navy); font-size: .76rem; }
+.loyalty-steps span { color: var(--muted); font-size: .74rem; line-height: 1.35; }
+.loyalty-steps .highlight span { color: #127651; font-weight: 800; }
 .starter-pricing { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 18px; }
-.starter-pricing article { position: relative; min-height: 180px; padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.starter-pricing article { position: relative; min-height: 164px; padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
 .starter-pricing article > strong { display: block; font: 800 1.45rem "Manrope", sans-serif; }
-.starter-pricing article p { margin: 12px 0 0; font: 700 1.1rem "Manrope", sans-serif; }
+.starter-description { display: block; margin-top: 3px; padding-right: 96px; color: var(--muted); font-size: .88rem; }
+.starter-pricing article p { margin: 10px 0 0; font: 700 1.1rem "Manrope", sans-serif; }
 .starter-pricing article small { display: block; min-height: 25px; color: var(--muted); }
-.starter-pricing article a { position: absolute; bottom: 20px; color: var(--blue); font-weight: 700; text-decoration: none; }
+.starter-pricing .starter-loyalty { min-height: 0; color: #16855f; font-size: .78rem; font-weight: 700; }
+.starter-price-row { display: grid; grid-template-columns: minmax(135px, .55fr) minmax(0, 1fr); align-items: center; gap: 18px; margin-top: 9px; }
+.starter-price-row p { margin-top: 0 !important; }
+.starter-pricing .price-trend { margin-top: 0; }
+.starter-pricing .price-trend-values small { min-height: 0; }
+.starter-pricing article a { position: absolute; top: 24px; right: 24px; color: var(--blue); font-weight: 700; text-decoration: none; white-space: nowrap; }
 .plan-badge { position: absolute; top: 22px; right: 20px; padding: 3px 8px; border-radius: 20px; background: var(--mint); font-size: .66rem; font-weight: 700; }
 .pricing-table { overflow: hidden; border: 1px solid #cdd8e8; border-radius: var(--radius); background: #fff; box-shadow: 0 16px 50px rgba(16,35,63,.06); }
-.pricing-row { display: grid; grid-template-columns: 1.35fr 1fr 1fr .45fr; align-items: center; min-height: 84px; border-bottom: 1px solid var(--line); }
+.pricing-row { display: grid; grid-template-columns: 1.2fr .88fr 1.45fr .35fr; align-items: center; min-height: 84px; border-bottom: 1px solid var(--line); }
 .pricing-row:last-child { border-bottom: 0; }
 .pricing-row > div { padding: 15px 24px; }
 .pricing-header { min-height: 54px; background: var(--navy); color: #dbe7f5; font-size: .76rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 .pricing-row strong, .pricing-row small { display: block; }
 .pricing-row small { margin-top: 3px; color: var(--muted); }
-.pricing-row a { color: var(--blue); font-weight: 700; text-decoration: none; }
-.pricing-row [data-saving] { color: #16855f; font-size: .88rem; font-weight: 700; }
-.pricing-row.monthly [data-saving] { color: var(--muted); font-weight: 500; }
+.pricing-row a { display: inline-flex; align-items: center; gap: 6px; color: var(--blue); font-weight: 700; text-decoration: none; white-space: nowrap; }
+.pricing-row [data-saving] { display: block; color: #16855f; }
+.price-trend { display: block; width: min(100%, 360px); }
+.price-trend svg { display: block; width: 100%; height: 24px; overflow: visible; }
+.price-trend polyline { fill: none; stroke: #32b47d; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+.price-trend circle { fill: #fff; stroke: #16855f; stroke-width: 1.5; }
+.price-trend circle:first-of-type, .price-trend circle:last-of-type { fill: #16855f; }
+.price-trend-values { position: relative; display: block; height: 28px; margin-top: 4px; }
+.price-trend-values span { position: absolute; top: 0; min-width: 0; text-align: center; transform: translateX(-50%); }
+.price-trend-values small { display: block; margin: 0 0 2px; color: var(--muted); font: 600 .55rem "Manrope", sans-serif; }
+.price-trend-values strong { display: block; color: #08724f; font: 800 .63rem "Manrope", sans-serif; letter-spacing: -.025em; white-space: nowrap; }
 .pricing-row.recommended { position: relative; background: #effcf4; }
 .pricing-row.recommended::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--mint-strong); }
 .included-line { display: flex; align-items: center; gap: 30px; margin-top: 28px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
@@ -691,8 +716,13 @@ p { margin-top: 0; }
   .benefits-grid, .platforms-grid, .retention-grid, .faq-grid { gap: 48px; }
   .faq-grid > div:first-child { position: static; }
   .retention-visual { min-height: 260px; }
+  .loyalty-discount { grid-template-columns: 1fr; gap: 22px; }
+  .loyalty-steps { grid-template-columns: repeat(4, minmax(150px, 1fr)); overflow-x: auto; padding-bottom: 5px; scroll-snap-type: x mandatory; }
+  .loyalty-steps li { scroll-snap-align: start; }
   .starter-pricing { grid-template-columns: repeat(2, minmax(240px, 1fr)); overflow-x: auto; scroll-snap-type: x mandatory; }
   .starter-pricing article { scroll-snap-align: start; }
+  .starter-price-row { display: block; }
+  .starter-pricing .price-trend { margin-top: 7px; }
   .pricing-table { display: grid; grid-template-columns: repeat(5, minmax(260px, 1fr)); overflow-x: auto; border-radius: 0; border-inline: 0; scroll-snap-type: x mandatory; }
   .pricing-header { display: none; }
   .pricing-row { display: flex; min-height: 310px; flex-direction: column; align-items: flex-start; border-right: 1px solid var(--line); border-bottom: 0; scroll-snap-align: start; }
@@ -781,6 +811,8 @@ p { margin-top: 0; }
   .retention-grid { gap: 35px; }
   .retention-visual { min-height: 220px; }
   .retention-visual strong { font-size: 5rem; }
+  .loyalty-discount { margin-inline: -8px; padding: 24px 20px; }
+  .loyalty-steps { grid-template-columns: repeat(4, minmax(138px, 1fr)); }
   .faq-section { padding-bottom: 55px; }
   .final-cta { padding: 0 0 24px; background: #fff; }
   .final-cta-inner { width: 100%; padding-inline: 24px; border-radius: 0; }
@@ -906,7 +938,8 @@ p { margin-top: 0; }
 .consent-banner a { color: #fff; text-decoration: underline; }
 .consent-actions { display: flex; flex: 0 0 auto; gap: .6rem; }
 .consent-actions .button { min-width: 110px; margin: 0; }
-.consent-actions .button-secondary { color: #fff; border-color: rgba(255, 255, 255, .55); }
+.consent-actions .button-secondary { color: var(--navy); background: #fff; border-color: rgba(255, 255, 255, .72); }
+.consent-actions .button-secondary:hover { color: #fff; background: var(--blue-dark); border-color: var(--blue-dark); }
 
 @media (max-width: 720px) {
   .consent-banner { align-items: stretch; flex-direction: column; }
