@@ -880,3 +880,36 @@ p { margin-top: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+/* Google Ads consent */
+.consent-banner {
+  position: fixed;
+  z-index: 1000;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1rem 1.15rem;
+  color: #fff;
+  background: #10233f;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 18px 50px rgba(4, 18, 39, 0.28);
+}
+
+.consent-banner strong { display: block; margin-bottom: .25rem; }
+.consent-banner p { margin: 0; color: rgba(255, 255, 255, .82); font-size: .92rem; }
+.consent-banner a { color: #fff; text-decoration: underline; }
+.consent-actions { display: flex; flex: 0 0 auto; gap: .6rem; }
+.consent-actions .button { min-width: 110px; margin: 0; }
+.consent-actions .button-secondary { color: #fff; border-color: rgba(255, 255, 255, .55); }
+
+@media (max-width: 720px) {
+  .consent-banner { align-items: stretch; flex-direction: column; }
+  .consent-actions { width: 100%; }
+  .consent-actions .button { flex: 1; }
+}

@@ -1,4 +1,87 @@
 (() => {
+  const GOOGLE_ADS_ID = "AW-18420987244";
+  const GOOGLE_ADS_CONTACT_LABEL = "RNryCKLO2YQdEOzq589E";
+  const CONSENT_STORAGE_KEY = "saas_google_ads_consent";
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function gtag() {
+    window.dataLayer.push(arguments);
+  };
+
+  const storedConsent = window.localStorage.getItem(CONSENT_STORAGE_KEY);
+  window.gtag("consent", "default", {
+    ad_storage: "denied",
+    analytics_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    wait_for_update: 500,
+  });
+  window.gtag("js", new Date());
+  window.gtag("config", GOOGLE_ADS_ID);
+
+  if (storedConsent === "granted") {
+    window.gtag("consent", "update", {
+      ad_storage: "granted",
+      analytics_storage: "granted",
+      ad_user_data: "granted",
+      ad_personalization: "granted",
+    });
+  }
+
+  const googleTag = document.createElement("script");
+  googleTag.async = true;
+  googleTag.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`;
+  document.head.append(googleTag);
+
+  const sendContactConversion = () => {
+    if (!document.querySelector('[data-conversion-page="lead"]')) return;
+    const conversionKey = "saas_google_ads_contact_conversion";
+    if (window.sessionStorage.getItem(conversionKey)) return;
+    window.gtag("event", "conversion", {
+      send_to: `${GOOGLE_ADS_ID}/${GOOGLE_ADS_CONTACT_LABEL}`,
+    });
+    window.sessionStorage.setItem(conversionKey, "sent");
+  };
+
+  if (!document.querySelector('[data-conversion-page="lead"]')) {
+    window.sessionStorage.removeItem("saas_google_ads_contact_conversion");
+  }
+
+  if (storedConsent) {
+    sendContactConversion();
+  } else {
+    const consentBanner = document.createElement("section");
+    consentBanner.className = "consent-banner";
+    consentBanner.setAttribute("aria-label", "Choix de confidentialité");
+    consentBanner.innerHTML = `
+      <div>
+        <strong>Mesure d’audience et publicité</strong>
+        <p>Avec votre accord, Google Ads nous aide à mesurer les demandes reçues et l’efficacité de nos annonces. Vous pouvez refuser sans limiter l’accès au site. <a href="/confidentialite.html">En savoir plus</a>.</p>
+      </div>
+      <div class="consent-actions">
+        <button type="button" class="button button-secondary" data-consent="denied">Refuser</button>
+        <button type="button" class="button" data-consent="granted">Accepter</button>
+      </div>`;
+    document.body.append(consentBanner);
+
+    consentBanner.addEventListener("click", (event) => {
+      const consentButton = event.target.closest("[data-consent]");
+      if (!consentButton) return;
+      const consent = consentButton.dataset.consent;
+      window.localStorage.setItem(CONSENT_STORAGE_KEY, consent);
+      if (consent === "granted") {
+        window.gtag("consent", "update", {
+          ad_storage: "granted",
+          analytics_storage: "granted",
+          ad_user_data: "granted",
+          ad_personalization: "granted",
+        });
+      }
+      sendContactConversion();
+      consentBanner.remove();
+    });
+  }
+
   if ("serviceWorker" in navigator && window.location.protocol !== "file:") {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("/sw.js").catch(() => {});
