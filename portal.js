@@ -229,9 +229,10 @@
   const renderPortal = (state) => {
     portalState = state;
     const name = state.user.user_metadata?.full_name || state.user.email.split("@")[0];
+    const displayEmail = state.user.user_metadata?.display_email || state.user.email;
     setText("[data-organization-name]", state.organization.name);
     setText("[data-user-name]", name);
-    setText("[data-user-email]", state.user.email);
+    setText("[data-user-email]", displayEmail);
     setText("[data-user-initials]", name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("").toUpperCase());
     setText("[data-backup-status]", state.subscription?.status === "active" ? "Sauvegardes opérationnelles" : "Situation à vérifier");
     setText("[data-storage-used]", formatBytes(state.subscription?.storage_used_bytes));
