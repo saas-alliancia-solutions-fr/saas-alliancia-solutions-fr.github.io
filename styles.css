@@ -938,8 +938,8 @@ p { margin-top: 0; }
 .consent-banner a { color: #fff; text-decoration: underline; }
 .consent-actions { display: flex; flex: 0 0 auto; gap: .6rem; }
 .consent-actions .button { min-width: 110px; margin: 0; }
-.consent-actions .button-secondary { color: var(--navy); background: #fff; border-color: rgba(255, 255, 255, .72); }
-.consent-actions .button-secondary:hover { color: #fff; background: var(--blue-dark); border-color: var(--blue-dark); }
+.consent-actions .button.button-secondary { color: #10233f !important; -webkit-text-fill-color: #10233f; background: #fff; border-color: #c9d6e8; opacity: 1; }
+.consent-actions .button.button-secondary:hover, .consent-actions .button.button-secondary:focus-visible { color: #10233f !important; -webkit-text-fill-color: #10233f; background: #eef3ff; border-color: #8da9df; }
 
 @media (max-width: 720px) {
   .consent-banner { align-items: stretch; flex-direction: column; }
