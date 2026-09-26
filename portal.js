@@ -192,6 +192,78 @@
     host.innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" role="img" aria-label="Évolution du volume sauvegardé"><defs><linearGradient id="usage-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#356bff" stop-opacity=".2"/><stop offset="1" stop-color="#356bff" stop-opacity=".02"/></linearGradient></defs><line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="#dbe3ef"/><line x1="${pad}" y1="${height / 2}" x2="${width - pad}" y2="${height / 2}" stroke="#edf1f7"/><polygon points="${area}" fill="url(#usage-fill)"/><polyline points="${points}" fill="none" stroke="#356bff" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>`;
   };
 
+  const renderStatistics = (state) => {
+    const usage = state.usage || [];
+    const devices = state.devices || [];
+    const subscription = state.subscription || {};
+    const currentBytes = Number(subscription.storage_used_bytes || usage.at(-1)?.storage_bytes || 0);
+    const limitBytes = Number(subscription.storage_limit_bytes || 0);
+    const firstBytes = Number(usage[0]?.storage_bytes || 0);
+    const deltaBytes = currentBytes - firstBytes;
+    const deltaPercent = firstBytes ? (deltaBytes / firstBytes) * 100 : 0;
+    const capacityPercent = limitBytes ? Math.min(100, (currentBytes / limitBytes) * 100) : 0;
+    const activeDevices = devices.filter((device) => device.active !== false).length;
+    const totalSources = devices.reduce((total, device) => total + Number(device.source_count || 0), 0);
+    const latestBackup = devices.reduce((latest, device) => {
+      const timestamp = new Date(device.last_backup_at || 0).getTime();
+      return timestamp > latest ? timestamp : latest;
+    }, 0);
+    const trendTone = deltaBytes >= 0 ? "up" : "down";
+    const trendLabel = firstBytes ? `${deltaBytes >= 0 ? "+" : "−"}${formatBytes(Math.abs(deltaBytes))} (${Math.abs(deltaPercent).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %)` : "Pas encore de comparaison";
+
+    setText("[data-stat-current-volume]", formatBytes(currentBytes));
+    setText("[data-stat-volume-change]", firstBytes ? `${trendLabel} sur la période` : "Évolution indisponible");
+
+    const kpis = document.querySelector("[data-stat-kpis]");
+    if (kpis) kpis.innerHTML = `
+      <article><span>Volume protégé</span><strong>${escapeHtml(formatBytes(currentBytes))}</strong><small class="${trendTone}">${firstBytes ? `${escapeHtml(trendLabel)} sur 30 jours` : "Première mesure en attente"}</small></article>
+      <article><span>Capacité utilisée</span><strong>${limitBytes ? `${capacityPercent.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %` : "—"}</strong><small>${limitBytes ? `${escapeHtml(formatBytes(Math.max(0, limitBytes - currentBytes)))} disponibles` : "Capacité non renseignée"}</small></article>
+      <article><span>Équipements actifs</span><strong>${activeDevices}</strong><small>${devices.length ? `${activeDevices} sur ${devices.length} opérationnels` : "Aucun équipement renseigné"}</small></article>
+      <article><span>Sources protégées</span><strong>${totalSources}</strong><small>${latestBackup ? `Dernière activité ${escapeHtml(relativeBackup(new Date(latestBackup).toISOString()).toLowerCase())}` : "Aucune activité récente"}</small></article>`;
+
+    const capacity = document.querySelector("[data-stat-capacity]");
+    if (capacity) capacity.innerHTML = `<div class="portal-panel-heading"><div><h2>Capacité de stockage</h2><p>Consommation de votre formule ${escapeHtml(subscription.plan_name || "SAAS")}</p></div></div><div class="portal-capacity-content"><div class="portal-capacity-ring" style="--capacity:${capacityPercent.toFixed(1)}"><span><strong>${limitBytes ? Math.round(capacityPercent) : "—"}<small>${limitBytes ? "%" : ""}</small></strong><em>utilisé</em></span></div><dl><div><dt>Volume protégé</dt><dd>${escapeHtml(formatBytes(currentBytes))}</dd></div><div><dt>Capacité totale</dt><dd>${limitBytes ? escapeHtml(formatBytes(limitBytes)) : "Non renseignée"}</dd></div><div><dt>Disponible</dt><dd>${limitBytes ? escapeHtml(formatBytes(Math.max(0, limitBytes - currentBytes))) : "—"}</dd></div></dl></div>`;
+
+    const devicePanel = document.querySelector("[data-stat-devices]");
+    if (devicePanel) {
+      const storedTotal = devices.reduce((total, device) => total + Number(device.stored_bytes || 0), 0);
+      const deviceRows = [...devices].sort((a, b) => Number(b.stored_bytes || 0) - Number(a.stored_bytes || 0)).slice(0, 4).map((device) => {
+        const share = storedTotal ? Math.max(2, Number(device.stored_bytes || 0) / storedTotal * 100) : 0;
+        return `<li><div><strong>${escapeHtml(device.name)}</strong><span>${escapeHtml(device.device_type || "Équipement")}</span></div><b>${escapeHtml(formatBytes(device.stored_bytes))}</b><i><span style="width:${share.toFixed(1)}%"></span></i></li>`;
+      }).join("");
+      devicePanel.innerHTML = `<div class="portal-panel-heading"><div><h2>Répartition par équipement</h2><p>Principaux volumes actuellement stockés</p></div></div>${deviceRows ? `<ul class="portal-device-share">${deviceRows}</ul>` : '<div class="portal-empty">Aucun équipement sauvegardé.</div>'}`;
+    }
+
+    const summary = document.querySelector("[data-stat-summary]");
+    if (summary) {
+      summary.innerHTML = `<div class="portal-panel-heading"><div><h2>À retenir</h2><p>Lecture rapide de votre situation</p></div></div><ul class="portal-stat-insights"><li><span class="good">✓</span><div><strong>${activeDevices === devices.length && devices.length ? "Tous les équipements sont actifs" : `${activeDevices} équipement${activeDevices > 1 ? "s" : ""} actif${activeDevices > 1 ? "s" : ""}`}</strong><small>${devices.length ? `${devices.length} équipement${devices.length > 1 ? "s" : ""} suivi${devices.length > 1 ? "s" : ""} dans votre espace` : "Ajoutez un équipement pour commencer le suivi"}</small></div></li><li><span>↗</span><div><strong>${firstBytes ? `${trendLabel} en 30 jours` : "Tendance en cours de calcul"}</strong><small>Évolution du volume réellement protégé</small></div></li><li><span class="${capacityPercent >= 80 ? "attention" : "good"}">${capacityPercent >= 80 ? "!" : "✓"}</span><div><strong>${limitBytes ? capacityPercent >= 80 ? "Capacité à surveiller" : "Capacité suffisante" : "Capacité non renseignée"}</strong><small>${limitBytes ? `${escapeHtml(formatBytes(Math.max(0, limitBytes - currentBytes)))} restent disponibles` : "Contactez Alliancia pour connaître votre quota"}</small></div></li></ul><button type="button" class="portal-inline-action" data-portal-view="backups">Voir le détail des sauvegardes →</button>`;
+      summary.querySelector("[data-portal-view]")?.addEventListener("click", () => activatePortalView("backups"));
+    }
+
+    const chart = document.querySelector("[data-usage-chart-full]");
+    if (!chart || !usage.length) return;
+    const width = 1000, height = 330, left = 70, right = 22, top = 24, bottom = 48;
+    const values = usage.map((item) => Number(item.storage_bytes || 0));
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+    const range = Math.max(maxValue - minValue, maxValue * .08, 1);
+    const chartMin = Math.max(0, minValue - range * .35);
+    const chartMax = maxValue + range * .35;
+    const x = (index) => left + index * ((width - left - right) / Math.max(values.length - 1, 1));
+    const y = (value) => top + (chartMax - value) / (chartMax - chartMin) * (height - top - bottom);
+    const points = values.map((value, index) => `${x(index)},${y(value)}`).join(" ");
+    const area = `${left},${height - bottom} ${points} ${width - right},${height - bottom}`;
+    const grid = Array.from({ length: 4 }, (_, index) => {
+      const value = chartMin + (chartMax - chartMin) * (3 - index) / 3;
+      const lineY = top + index * ((height - top - bottom) / 3);
+      return `<line x1="${left}" y1="${lineY}" x2="${width - right}" y2="${lineY}"/><text x="${left - 12}" y="${lineY + 4}" text-anchor="end">${escapeHtml(formatBytes(value))}</text>`;
+    }).join("");
+    const labelIndexes = [...new Set([0, Math.floor((usage.length - 1) / 2), usage.length - 1])];
+    const labels = labelIndexes.map((index) => `<text x="${x(index)}" y="${height - 15}" text-anchor="${index === 0 ? "start" : index === usage.length - 1 ? "end" : "middle"}">${new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" }).format(new Date(usage[index].measured_on))}</text>`).join("");
+    const lastX = x(values.length - 1), lastY = y(values.at(-1));
+    chart.innerHTML = `<svg class="portal-stat-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Le volume protégé est de ${escapeHtml(formatBytes(currentBytes))}, ${escapeHtml(trendLabel)} sur les 30 derniers jours"><defs><linearGradient id="stat-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#356bff" stop-opacity=".22"/><stop offset="1" stop-color="#356bff" stop-opacity=".02"/></linearGradient></defs><g class="portal-stat-grid">${grid}</g><polygon points="${area}" fill="url(#stat-fill)"/><polyline points="${points}" fill="none" stroke="#356bff" stroke-width="3" vector-effect="non-scaling-stroke"/><circle cx="${lastX}" cy="${lastY}" r="6" fill="#fff" stroke="#356bff" stroke-width="4" vector-effect="non-scaling-stroke"/><g class="portal-stat-axis">${labels}</g></svg>`;
+  };
+
   const renderDevices = (devices) => {
     if (!devices.length) return '<div class="portal-empty">Aucun équipement sauvegardé pour le moment.</div>';
     return `<table class="portal-table portal-devices-table"><thead><tr><th>Équipement</th><th>Type</th><th>Sources</th><th>Volume source</th><th>Volume stocké</th><th>Dernière sauvegarde</th><th>État</th></tr></thead><tbody>${devices.map((device) => {
@@ -248,7 +320,7 @@
     document.querySelector("[data-requests-list]").innerHTML = renderTable("requests", state.requests);
     document.querySelector("[data-backups-list]").innerHTML = renderDevices(state.devices || []);
     renderChart("[data-usage-chart]", state.usage);
-    renderChart("[data-usage-chart-full]", state.usage);
+    renderStatistics(state);
     bindInvoiceDownloads();
     loading.hidden = true;
     shell.hidden = false;

@@ -93,14 +93,58 @@
 .portal-panel-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
 .portal-panel-heading h2 { margin: 0; font-size: 1.05rem; letter-spacing: -.02em; }
 .portal-panel-heading p { margin: 2px 0 0; color: #5d6b7f; font-size: .78rem; }
-.portal-panel-heading > div:last-child { display: grid; text-align: right; }
-.portal-panel-heading > div:last-child strong { color: #356bff; font: 800 1.35rem "Manrope", sans-serif; }
-.portal-panel-heading > div:last-child small { color: #5d6b7f; }
+.portal-panel-heading > div + div { display: grid; text-align: right; }
+.portal-panel-heading > div + div strong { color: #356bff; font: 800 1.35rem "Manrope", sans-serif; }
+.portal-panel-heading > div + div small { color: #5d6b7f; }
 .portal-panel-heading button { padding: 0; border: 0; background: transparent; color: #356bff; cursor: pointer; font-size: .75rem; font-weight: 700; }
 .portal-chart { display: grid; min-height: 178px; margin-top: 10px; place-items: center; color: #7b8899; }
 .portal-chart svg { width: 100%; height: 178px; overflow: visible; }
-.portal-chart-large { min-height: 480px; }
-.portal-chart-large svg { height: 450px; }
+.portal-chart-large { min-height: 310px; }
+.portal-chart-large svg { height: auto; }
+.portal-section-eyebrow { display: block; margin-bottom: 6px; color: #356bff; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.portal-period-badge { padding: 8px 12px; border: 1px solid #d4def0; border-radius: 999px; background: #fff; color: #52637a; font-size: .76rem; font-weight: 700; white-space: nowrap; }
+.portal-stat-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+.portal-stat-kpis article { min-width: 0; padding: 19px 20px; border: 1px solid #dbe3ef; border-radius: 12px; background: #fff; box-shadow: 0 8px 22px rgba(16,35,63,.035); }
+.portal-stat-kpis span, .portal-stat-kpis small { display: block; color: #64748a; font-size: .72rem; }
+.portal-stat-kpis strong { display: block; margin: 7px 0 5px; font: 800 clamp(1.35rem, 2vw, 1.7rem) "Manrope", sans-serif; letter-spacing: -.04em; }
+.portal-stat-kpis small.up { color: #16855f; }
+.portal-stat-kpis small.down { color: #a85f08; }
+.portal-stat-chart-panel { padding: 24px 25px 16px; }
+.portal-stat-chart-panel .portal-chart { margin-top: 12px; }
+.portal-stat-svg { overflow: visible; }
+.portal-stat-grid line { stroke: #e5ebf4; stroke-width: 1; }
+.portal-stat-grid text, .portal-stat-axis text { fill: #738197; font: 12px "DM Sans", sans-serif; }
+.portal-stat-details { display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 18px; margin-top: 18px; }
+.portal-stat-details .portal-data-panel { min-height: 285px; }
+.portal-capacity-content { display: grid; grid-template-columns: 126px 1fr; gap: 22px; align-items: center; margin-top: 25px; }
+.portal-capacity-ring { position: relative; display: grid; width: 122px; height: 122px; place-items: center; border-radius: 50%; background: conic-gradient(#356bff calc(var(--capacity) * 1%), #e7edf7 0); }
+.portal-capacity-ring::before { content: ""; width: 88px; height: 88px; border-radius: 50%; background: #fff; }
+.portal-capacity-ring > span { position: absolute; display: grid; text-align: center; }
+.portal-capacity-ring strong { font: 800 1.45rem "Manrope", sans-serif; }
+.portal-capacity-ring strong small { font-size: .75rem; }
+.portal-capacity-ring em { color: #66758a; font-size: .66rem; font-style: normal; }
+.portal-capacity-content dl { margin: 0; }
+.portal-capacity-content dl > div { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid #edf1f7; }
+.portal-capacity-content dl > div:last-child { border-bottom: 0; }
+.portal-capacity-content dt { color: #66758a; font-size: .74rem; }
+.portal-capacity-content dd { margin: 0; font-size: .76rem; font-weight: 800; }
+.portal-device-share { display: grid; gap: 15px; margin: 22px 0 0; padding: 0; list-style: none; }
+.portal-device-share li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 18px; }
+.portal-device-share li > div { display: grid; min-width: 0; }
+.portal-device-share strong { overflow: hidden; font-size: .8rem; text-overflow: ellipsis; white-space: nowrap; }
+.portal-device-share span { color: #718096; font-size: .68rem; }
+.portal-device-share b { font-size: .76rem; }
+.portal-device-share i { height: 6px; grid-column: 1 / -1; overflow: hidden; border-radius: 99px; background: #e7edf7; }
+.portal-device-share i span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #356bff, #6c96ff); }
+.portal-stat-insights { display: grid; gap: 15px; margin: 21px 0 18px; padding: 0; list-style: none; }
+.portal-stat-insights li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
+.portal-stat-insights li > span { display: grid; width: 27px; height: 27px; place-items: center; border-radius: 8px; background: #eaf0ff; color: #356bff; font-weight: 800; }
+.portal-stat-insights li > span.good { background: #def9ea; color: #16855f; }
+.portal-stat-insights li > span.attention { background: #fff3df; color: #a85f08; }
+.portal-stat-insights li div { display: grid; }
+.portal-stat-insights strong { font-size: .78rem; }
+.portal-stat-insights small { margin-top: 2px; color: #718096; font-size: .69rem; line-height: 1.4; }
+.portal-inline-action { padding: 0; border: 0; background: transparent; color: #2455dd; cursor: pointer; font: 800 .75rem "DM Sans", sans-serif; }
 .portal-overview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 22px; }
 .portal-data-panel { min-width: 0; padding: 21px; }
 .portal-full-panel { min-height: 420px; }
@@ -250,6 +294,9 @@
   .portal-status-strip article:nth-child(2) { border-right: 0; }
   .portal-status-strip article:nth-child(-n+2) { border-bottom: 1px solid #dbe3ef; }
   .portal-overview-grid { grid-template-columns: 1fr; }
+  .portal-stat-kpis { grid-template-columns: repeat(2, 1fr); }
+  .portal-stat-details { grid-template-columns: 1fr 1fr; }
+  .portal-stat-summary { grid-column: 1 / -1; }
   .portal-platform-panel { grid-template-columns: 1fr; }
   .portal-help-summary { grid-template-columns: repeat(2, 1fr); }
   .portal-guide, .portal-guide-reverse { grid-template-columns: 1fr; }
@@ -277,6 +324,9 @@
   .portal-account > div, .portal-account button { display: none; }
   .portal-title-row { flex-direction: column; }
   .portal-title-row .button { width: 100%; }
+  .portal-period-badge { align-self: flex-start; }
+  .portal-stat-details { grid-template-columns: 1fr; }
+  .portal-stat-summary { grid-column: auto; }
   .portal-download-help { align-items: stretch; flex-direction: column; }
   .portal-download-help .button { width: 100%; }
   .portal-help-summary { grid-template-columns: 1fr 1fr; }
@@ -288,6 +338,18 @@
   .portal-topbar { padding-inline: 16px; }
   .portal-company strong { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .portal-status-strip { grid-template-columns: 1fr; }
+  .portal-stat-kpis { grid-template-columns: 1fr 1fr; gap: 9px; }
+  .portal-stat-kpis article { padding: 15px 14px; }
+  .portal-stat-kpis strong { font-size: 1.25rem; }
+  .portal-stat-chart-panel { margin-inline: -6px; padding: 18px 10px 10px; }
+  .portal-stat-chart-panel .portal-panel-heading { padding-inline: 5px; }
+  .portal-stat-chart-panel .portal-panel-heading > div + div { display: none; }
+  .portal-chart-large { min-height: 245px; overflow-x: auto; place-items: stretch; }
+  .portal-chart-large svg { min-width: 620px; height: 245px; }
+  .portal-stat-details { margin-inline: -6px; }
+  .portal-capacity-content { grid-template-columns: 110px 1fr; gap: 15px; }
+  .portal-capacity-ring { width: 106px; height: 106px; }
+  .portal-capacity-ring::before { width: 76px; height: 76px; }
   .portal-status-strip article { border-right: 0; border-bottom: 1px solid #dbe3ef; }
   .portal-status-strip article:last-child { border-bottom: 0; }
   .portal-chart-panel, .portal-data-panel { margin-inline: -6px; padding: 18px 14px; }

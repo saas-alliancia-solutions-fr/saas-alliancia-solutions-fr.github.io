@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css?v=20260925-2">
-  <link rel="stylesheet" href="/portal.css?v=20260926-1">
+  <link rel="stylesheet" href="/portal.css?v=20260926-2">
 </head>
 <body class="portal-page" data-portal-page>
   <svg class="portal-icon-sprite" aria-hidden="true">
@@ -78,7 +78,22 @@
         <section class="portal-view" data-view-panel="requests" hidden><div class="portal-title-row"><div><h1>Vos demandes</h1><p>Suivez vos échanges avec Alliancia Solutions.</p></div><button class="button" type="button" data-new-request>+ Nouvelle demande</button></div><section class="portal-data-panel portal-full-panel"><div data-requests-list></div></section></section>
         <section class="portal-view" data-view-panel="backups" hidden><div class="portal-title-row"><div><h1>Vos sauvegardes</h1><p>Contrôlez les équipements protégés et la date de leur dernière sauvegarde.</p></div></div><section class="portal-data-panel portal-full-panel"><div data-backups-list></div></section></section>
         <section class="portal-view" data-view-panel="invoices" hidden><div class="portal-title-row"><div><h1>Vos factures</h1><p>Consultez vos échéances et téléchargez vos documents.</p></div></div><section class="portal-data-panel portal-full-panel"><div data-invoices-list></div></section></section>
-        <section class="portal-view" data-view-panel="statistics" hidden><div class="portal-title-row"><div><h1>Vos statistiques</h1><p>Suivez l’évolution du volume protégé et de vos équipements.</p></div></div><section class="portal-chart-panel portal-full-panel"><div class="portal-chart portal-chart-large" data-usage-chart-full><p>Aucune mesure disponible pour le moment.</p></div></section></section>
+        <section class="portal-view portal-statistics" data-view-panel="statistics" hidden>
+          <div class="portal-title-row">
+            <div><span class="portal-section-eyebrow">Pilotage de la protection</span><h1>Vos statistiques</h1><p>Visualisez l’évolution de vos sauvegardes et anticipez vos besoins de stockage.</p></div>
+            <span class="portal-period-badge">30 derniers jours</span>
+          </div>
+          <div class="portal-stat-kpis" data-stat-kpis></div>
+          <section class="portal-chart-panel portal-stat-chart-panel">
+            <div class="portal-panel-heading"><div><h2>Évolution du volume protégé</h2><p>Mesures quotidiennes sur les 30 derniers jours</p></div><div><strong data-stat-current-volume>—</strong><small data-stat-volume-change>Évolution indisponible</small></div></div>
+            <div class="portal-chart portal-chart-large" data-usage-chart-full><p>Aucune mesure disponible pour le moment.</p></div>
+          </section>
+          <div class="portal-stat-details">
+            <section class="portal-data-panel portal-capacity-panel" data-stat-capacity></section>
+            <section class="portal-data-panel" data-stat-devices></section>
+            <section class="portal-data-panel portal-stat-summary" data-stat-summary></section>
+          </div>
+        </section>
         <section class="portal-view" data-view-panel="alerts" hidden><div class="portal-title-row"><div><h1>Vos alertes</h1><p>Identifiez rapidement les événements nécessitant votre attention.</p></div></div><section class="portal-data-panel portal-full-panel"><div data-alerts-list></div></section></section>
         <section class="portal-view" data-view-panel="downloads" hidden>
           <div class="portal-title-row"><div><h1>Télécharger le client SAAS</h1><p>Installez le logiciel adapté à votre équipement depuis votre espace sécurisé.</p></div><a class="button" href="/contact.html?objet=Demande%20de%20numéro%20de%20contrat#formulaire">Demander mon numéro de contrat</a></div>
@@ -173,6 +188,6 @@
   <script src="/site-ui.js?v=20260925-3" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/config.js?v=20260905-1"></script>
-  <script src="/portal.js?v=20260925-5" defer></script>
+  <script src="/portal.js?v=20260926-1" defer></script>
 </body>
 </html>
