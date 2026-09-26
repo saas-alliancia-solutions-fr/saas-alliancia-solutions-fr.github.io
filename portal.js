@@ -147,7 +147,7 @@
     user: { id: "demo", email: "client@entreprise.fr", user_metadata: { full_name: "Claire Martin" } },
     organization: { id: 1, name: "Entreprise Démo" },
     subscription: { plan_name: "500 Go", storage_limit_bytes: 500 * 1024 ** 3, storage_used_bytes: 248 * 1024 ** 3, retention_days: 365, status: "active", last_backup_at: new Date(Date.now() - 18 * 60000).toISOString() },
-    usage: Array.from({ length: 30 }, (_, index) => ({ measured_on: new Date(Date.now() - (29 - index) * 86400000).toISOString(), storage_bytes: (208 + index * 1.35 + Math.sin(index / 3) * 5) * 1024 ** 3, protected_devices: 12 })),
+    usage: Array.from({ length: 730 }, (_, index) => ({ measured_on: new Date(Date.now() - (729 - index) * 86400000).toISOString(), storage_bytes: (105 + index * .196 + Math.sin(index / 24) * 3) * 1024 ** 3, protected_devices: 12 })),
     devices: [
       { name: "Poste direction", device_type: "Windows", source_bytes: 128 * 1024 ** 3, stored_bytes: 76 * 1024 ** 3, source_count: 4, last_backup_at: new Date(Date.now() - 18 * 60000).toISOString(), backup_alert: false, missing_backup_alert: false, backup_running: false, active: true },
       { name: "NAS comptabilité", device_type: "NAS", source_bytes: 320 * 1024 ** 3, stored_bytes: 172 * 1024 ** 3, source_count: 6, last_backup_at: new Date(Date.now() - 31 * 60000).toISOString(), backup_alert: false, missing_backup_alert: false, backup_running: false, active: true }
@@ -249,8 +249,19 @@
     });
   };
 
-  const renderStatistics = (state) => {
-    const usage = state.usage || [];
+  const statisticPeriods = new Map([
+    [30, { label: "30 jours", range: "les 30 derniers jours" }],
+    [90, { label: "3 mois", range: "les 3 derniers mois" }],
+    [180, { label: "6 mois", range: "les 6 derniers mois" }],
+    [365, { label: "1 an", range: "la dernière année" }],
+    [730, { label: "2 ans", range: "les 2 dernières années" }]
+  ]);
+
+  const renderStatistics = (state, period = 30) => {
+    const periodConfig = statisticPeriods.get(period) || statisticPeriods.get(30);
+    const periodLabel = periodConfig.label;
+    const allUsage = state.usage || [];
+    const usage = allUsage.slice(-period);
     const devices = state.devices || [];
     const subscription = state.subscription || {};
     const currentBytes = Number(subscription.storage_used_bytes || usage.at(-1)?.storage_bytes || 0);
@@ -268,12 +279,18 @@
     const trendTone = deltaBytes >= 0 ? "up" : "down";
     const trendLabel = firstBytes ? `${deltaBytes >= 0 ? "+" : "−"}${formatBytes(Math.abs(deltaBytes))} (${Math.abs(deltaPercent).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %)` : "Pas encore de comparaison";
 
+    document.querySelectorAll("[data-stat-period]").forEach((button) => {
+      const active = Number(button.dataset.statPeriod) === period;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    setText("[data-stat-period-description]", `Mesures quotidiennes sur ${periodConfig.range}`);
     setText("[data-stat-current-volume]", formatBytes(currentBytes));
     setText("[data-stat-volume-change]", firstBytes ? `${trendLabel} sur la période` : "Évolution indisponible");
 
     const kpis = document.querySelector("[data-stat-kpis]");
     if (kpis) kpis.innerHTML = `
-      <article><span>Volume protégé</span><strong>${escapeHtml(formatBytes(currentBytes))}</strong><small class="${trendTone}">${firstBytes ? `${escapeHtml(trendLabel)} sur 30 jours` : "Première mesure en attente"}</small></article>
+      <article><span>Volume protégé</span><strong>${escapeHtml(formatBytes(currentBytes))}</strong><small class="${trendTone}">${firstBytes ? `${escapeHtml(trendLabel)} sur ${escapeHtml(periodLabel)}` : "Première mesure en attente"}</small></article>
       <article><span>Capacité utilisée</span><strong>${limitBytes ? `${capacityPercent.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %` : "—"}</strong><small>${limitBytes ? `${escapeHtml(formatBytes(Math.max(0, limitBytes - currentBytes)))} disponibles` : "Capacité non renseignée"}</small></article>
       <article><span>Équipements actifs</span><strong>${activeDevices}</strong><small>${devices.length ? `${activeDevices} sur ${devices.length} opérationnels` : "Aucun équipement renseigné"}</small></article>
       <article><span>Sources protégées</span><strong>${totalSources}</strong><small>${latestBackup ? `Dernière activité ${escapeHtml(relativeBackup(new Date(latestBackup).toISOString()).toLowerCase())}` : "Aucune activité récente"}</small></article>`;
@@ -293,7 +310,7 @@
 
     const summary = document.querySelector("[data-stat-summary]");
     if (summary) {
-      summary.innerHTML = `<div class="portal-panel-heading"><div><h2>À retenir</h2><p>Lecture rapide de votre situation</p></div></div><ul class="portal-stat-insights"><li><span class="good">✓</span><div><strong>${activeDevices === devices.length && devices.length ? "Tous les équipements sont actifs" : `${activeDevices} équipement${activeDevices > 1 ? "s" : ""} actif${activeDevices > 1 ? "s" : ""}`}</strong><small>${devices.length ? `${devices.length} équipement${devices.length > 1 ? "s" : ""} suivi${devices.length > 1 ? "s" : ""} dans votre espace` : "Ajoutez un équipement pour commencer le suivi"}</small></div></li><li><span>↗</span><div><strong>${firstBytes ? `${trendLabel} en 30 jours` : "Tendance en cours de calcul"}</strong><small>Évolution du volume réellement protégé</small></div></li><li><span class="${capacityPercent >= 80 ? "attention" : "good"}">${capacityPercent >= 80 ? "!" : "✓"}</span><div><strong>${limitBytes ? capacityPercent >= 80 ? "Capacité à surveiller" : "Capacité suffisante" : "Capacité non renseignée"}</strong><small>${limitBytes ? `${escapeHtml(formatBytes(Math.max(0, limitBytes - currentBytes)))} restent disponibles` : "Contactez Alliancia pour connaître votre quota"}</small></div></li></ul><button type="button" class="portal-inline-action" data-portal-view="backups">Voir le détail des sauvegardes →</button>`;
+      summary.innerHTML = `<div class="portal-panel-heading"><div><h2>À retenir</h2><p>Lecture rapide de votre situation</p></div></div><ul class="portal-stat-insights"><li><span class="good">✓</span><div><strong>${activeDevices === devices.length && devices.length ? "Tous les équipements sont actifs" : `${activeDevices} équipement${activeDevices > 1 ? "s" : ""} actif${activeDevices > 1 ? "s" : ""}`}</strong><small>${devices.length ? `${devices.length} équipement${devices.length > 1 ? "s" : ""} suivi${devices.length > 1 ? "s" : ""} dans votre espace` : "Ajoutez un équipement pour commencer le suivi"}</small></div></li><li><span>↗</span><div><strong>${firstBytes ? `${trendLabel} en ${periodLabel}` : "Tendance en cours de calcul"}</strong><small>Évolution du volume réellement protégé</small></div></li><li><span class="${capacityPercent >= 80 ? "attention" : "good"}">${capacityPercent >= 80 ? "!" : "✓"}</span><div><strong>${limitBytes ? capacityPercent >= 80 ? "Capacité à surveiller" : "Capacité suffisante" : "Capacité non renseignée"}</strong><small>${limitBytes ? `${escapeHtml(formatBytes(Math.max(0, limitBytes - currentBytes)))} restent disponibles` : "Contactez Alliancia pour connaître votre quota"}</small></div></li></ul><button type="button" class="portal-inline-action" data-portal-view="backups">Voir le détail des sauvegardes →</button>`;
       summary.querySelector("[data-portal-view]")?.addEventListener("click", () => activatePortalView("backups"));
     }
 
@@ -301,6 +318,7 @@
     if (!chart || !usage.length) return;
     const width = 1000, height = 330, left = 70, right = 22, top = 24, bottom = 48;
     const values = usage.map((item) => Number(item.storage_bytes || 0));
+    if (currentBytes) values[values.length - 1] = currentBytes;
     const minValue = Math.min(...values);
     const maxValue = Math.max(...values);
     const range = Math.max(maxValue - minValue, maxValue * .08, 1);
@@ -318,7 +336,7 @@
     const labelIndexes = [...new Set([0, Math.floor((usage.length - 1) / 2), usage.length - 1])];
     const labels = labelIndexes.map((index) => `<text x="${x(index)}" y="${height - 15}" text-anchor="${index === 0 ? "start" : index === usage.length - 1 ? "end" : "middle"}">${new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" }).format(new Date(usage[index].measured_on))}</text>`).join("");
     const lastX = x(values.length - 1), lastY = y(values.at(-1));
-    chart.innerHTML = `<svg class="portal-stat-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Le volume protégé est de ${escapeHtml(formatBytes(currentBytes))}, ${escapeHtml(trendLabel)} sur les 30 derniers jours"><defs><linearGradient id="stat-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#356bff" stop-opacity=".22"/><stop offset="1" stop-color="#356bff" stop-opacity=".02"/></linearGradient></defs><g class="portal-stat-grid">${grid}</g><polygon points="${area}" fill="url(#stat-fill)"/><polyline points="${points}" fill="none" stroke="#356bff" stroke-width="3" vector-effect="non-scaling-stroke"/><circle cx="${lastX}" cy="${lastY}" r="6" fill="#fff" stroke="#356bff" stroke-width="4" vector-effect="non-scaling-stroke"/><g class="portal-stat-axis">${labels}</g></svg>`;
+    chart.innerHTML = `<svg class="portal-stat-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Le volume protégé est de ${escapeHtml(formatBytes(currentBytes))}, ${escapeHtml(trendLabel)} sur ${escapeHtml(periodLabel)}"><defs><linearGradient id="stat-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#356bff" stop-opacity=".22"/><stop offset="1" stop-color="#356bff" stop-opacity=".02"/></linearGradient></defs><g class="portal-stat-grid">${grid}</g><polygon points="${area}" fill="url(#stat-fill)"/><polyline points="${points}" fill="none" stroke="#356bff" stroke-width="3" vector-effect="non-scaling-stroke"/><circle cx="${lastX}" cy="${lastY}" r="6" fill="#fff" stroke="#356bff" stroke-width="4" vector-effect="non-scaling-stroke"/><g class="portal-stat-axis">${labels}</g></svg>`;
   };
 
   const renderDevices = (devices) => {
@@ -379,6 +397,7 @@
     renderOverviewChart(state);
     renderStatistics(state);
     document.querySelectorAll("[data-usage-period]").forEach((button) => button.addEventListener("click", () => renderOverviewChart(state, Number(button.dataset.usagePeriod))));
+    document.querySelectorAll("[data-stat-period]").forEach((button) => button.addEventListener("click", () => renderStatistics(state, Number(button.dataset.statPeriod))));
     bindInvoiceDownloads();
     loading.hidden = true;
     shell.hidden = false;
@@ -399,7 +418,7 @@
     const organizationId = membership.organization_id;
     const [subscription, usage, alerts, invoices, requests, devices] = await Promise.all([
       client.from("subscriptions").select("*").eq("organization_id", organizationId).maybeSingle(),
-      client.from("usage_daily").select("*").eq("organization_id", organizationId).order("measured_on", { ascending: true }).limit(30),
+      client.from("usage_daily").select("*").eq("organization_id", organizationId).order("measured_on", { ascending: false }).limit(730),
       client.from("alerts").select("*").eq("organization_id", organizationId).order("occurred_at", { ascending: false }).limit(100),
       client.from("invoices").select("*").eq("organization_id", organizationId).order("issued_at", { ascending: false }).limit(100),
       client.from("support_requests").select("*").eq("organization_id", organizationId).order("updated_at", { ascending: false }).limit(100),
@@ -410,7 +429,7 @@
       loading.innerHTML = "<strong>Impossible de charger votre espace.</strong><p>Réessayez dans quelques instants ou contactez l’assistance.</p>";
       return;
     }
-    renderPortal({ user, organization: membership.organizations, subscription: subscription.data, usage: usage.data || [], alerts: alerts.data || [], invoices: invoices.data || [], requests: requests.data || [], devices: devices.data || [] });
+    renderPortal({ user, organization: membership.organizations, subscription: subscription.data, usage: [...(usage.data || [])].reverse(), alerts: alerts.data || [], invoices: invoices.data || [], requests: requests.data || [], devices: devices.data || [] });
   };
 
   document.querySelectorAll("[data-portal-view]").forEach((control) => control.addEventListener("click", () => activatePortalView(control.dataset.portalView)));

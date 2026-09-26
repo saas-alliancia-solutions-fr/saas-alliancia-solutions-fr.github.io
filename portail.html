@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css?v=20260925-2">
-  <link rel="stylesheet" href="/portal.css?v=20260926-4">
+  <link rel="stylesheet" href="/portal.css?v=20260926-5">
 </head>
 <body class="portal-page" data-portal-page>
   <svg class="portal-icon-sprite" aria-hidden="true">
@@ -86,11 +86,17 @@
         <section class="portal-view portal-statistics" data-view-panel="statistics" hidden>
           <div class="portal-title-row">
             <div><span class="portal-section-eyebrow">Pilotage de la protection</span><h1>Vos statistiques</h1><p>Visualisez l’évolution de vos sauvegardes et anticipez vos besoins de stockage.</p></div>
-            <span class="portal-period-badge">30 derniers jours</span>
+            <div class="portal-period-selector" role="group" aria-label="Période des statistiques">
+              <button type="button" class="active" data-stat-period="30" aria-pressed="true">30 jours</button>
+              <button type="button" data-stat-period="90" aria-pressed="false">3 mois</button>
+              <button type="button" data-stat-period="180" aria-pressed="false">6 mois</button>
+              <button type="button" data-stat-period="365" aria-pressed="false">1 an</button>
+              <button type="button" data-stat-period="730" aria-pressed="false">2 ans</button>
+            </div>
           </div>
           <div class="portal-stat-kpis" data-stat-kpis></div>
           <section class="portal-chart-panel portal-stat-chart-panel">
-            <div class="portal-panel-heading"><div><h2>Évolution du volume protégé</h2><p>Mesures quotidiennes sur les 30 derniers jours</p></div><div><strong data-stat-current-volume>—</strong><small data-stat-volume-change>Évolution indisponible</small></div></div>
+            <div class="portal-panel-heading"><div><h2>Évolution du volume protégé</h2><p data-stat-period-description>Mesures quotidiennes sur les 30 derniers jours</p></div><div><strong data-stat-current-volume>—</strong><small data-stat-volume-change>Évolution indisponible</small></div></div>
             <div class="portal-chart portal-chart-large" data-usage-chart-full><p>Aucune mesure disponible pour le moment.</p></div>
           </section>
           <div class="portal-stat-details">
@@ -195,6 +201,6 @@
   <script src="/site-ui.js?v=20260925-3" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/config.js?v=20260905-1"></script>
-  <script src="/portal.js?v=20260926-3" defer></script>
+  <script src="/portal.js?v=20260926-4" defer></script>
 </body>
 </html>

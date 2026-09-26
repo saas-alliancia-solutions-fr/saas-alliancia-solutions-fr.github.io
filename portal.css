@@ -128,7 +128,11 @@
 .portal-chart-large { min-height: 310px; }
 .portal-chart-large svg { height: auto; }
 .portal-section-eyebrow { display: block; margin-bottom: 6px; color: #356bff; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-.portal-period-badge { padding: 8px 12px; border: 1px solid #d4def0; border-radius: 999px; background: #fff; color: #52637a; font-size: .76rem; font-weight: 700; white-space: nowrap; }
+.portal-period-selector { display: flex; gap: 4px; padding: 4px; border: 1px solid #d4def0; border-radius: 999px; background: #fff; box-shadow: 0 6px 18px rgba(16,35,63,.035); }
+.portal-period-selector button { min-height: 32px; padding: 6px 11px; border: 0; border-radius: 999px; background: transparent; color: #64748a; cursor: pointer; font: 700 .72rem "DM Sans", sans-serif; white-space: nowrap; transition: background .18s ease, color .18s ease, box-shadow .18s ease; }
+.portal-period-selector button:hover { color: #2455dd; }
+.portal-period-selector button:focus-visible { outline: 3px solid rgba(53,107,255,.24); outline-offset: 2px; }
+.portal-period-selector button.active { background: #356bff; color: #fff; box-shadow: 0 4px 10px rgba(53,107,255,.24); }
 .portal-stat-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
 .portal-stat-kpis article { min-width: 0; padding: 19px 20px; border: 1px solid #dbe3ef; border-radius: 12px; background: #fff; box-shadow: 0 8px 22px rgba(16,35,63,.035); }
 .portal-stat-kpis span, .portal-stat-kpis small { display: block; color: #64748a; font-size: .72rem; }
@@ -358,7 +362,7 @@
   .portal-account > div, .portal-account button { display: none; }
   .portal-title-row { flex-direction: column; }
   .portal-title-row .button { width: 100%; }
-  .portal-period-badge { align-self: flex-start; }
+  .portal-period-selector { align-self: flex-start; max-width: 100%; overflow-x: auto; }
   .portal-overview-chart-toolbar, .portal-overview-chart-footer { align-items: flex-start; flex-direction: column; }
   .portal-chart-periods { order: -1; }
   .portal-stat-details { grid-template-columns: 1fr; }
@@ -375,6 +379,8 @@
   .portal-company strong { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .portal-status-strip { grid-template-columns: 1fr; }
   .portal-stat-kpis { grid-template-columns: 1fr 1fr; gap: 9px; }
+  .portal-period-selector { width: 100%; border-radius: 12px; }
+  .portal-period-selector button { flex: 1 0 auto; }
   .portal-overview-insights span:nth-child(3) { display: none; }
   .portal-overview-chart-panel .portal-chart { min-height: 185px; }
   .portal-overview-plot, .portal-overview-plot svg { height: 158px; }
