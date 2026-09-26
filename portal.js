@@ -29,6 +29,7 @@
     const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
     return `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 1 }).format(bytes / (1024 ** index))} ${units[index]}`;
   };
+  const formatAmount = (value) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(Number(value || 0) / 100);
   const relativeBackup = (value) => {
     if (!value) return "Non renseignée";
     const minutes = Math.max(0, Math.round((Date.now() - new Date(value).getTime()) / 60000));
@@ -177,7 +178,10 @@
     const items = limit ? rows.slice(0, limit) : rows;
     if (!items.length) return '<div class="portal-empty">Aucune donnée disponible pour le moment.</div>';
     if (type === "alerts") return `<table class="portal-table"><thead><tr><th>Niveau</th><th>Message</th><th>Date</th></tr></thead><tbody>${items.map((item) => `<tr><td><span class="portal-severity ${escapeHtml(item.severity)}"></span>${item.severity === "critical" ? "Critique" : item.severity === "warning" ? "Attention" : "Information"}</td><td>${escapeHtml(item.title)}</td><td>${formatDate(item.occurred_at, true)}</td></tr>`).join("")}</tbody></table>`;
-    if (type === "invoices") return `<table class="portal-table"><thead><tr><th>N° de facture</th><th>Date</th><th>Montant</th><th>Statut</th><th></th></tr></thead><tbody>${items.map((item) => `<tr><td>${escapeHtml(item.invoice_number)}</td><td>${formatDate(item.issued_at)}</td><td>${new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format((item.amount_cents || 0) / 100)} HT</td><td><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span></td><td>${item.file_path ? `<button class="portal-download" type="button" data-invoice-path="${escapeHtml(item.file_path)}">Télécharger</button>` : "—"}</td></tr>`).join("")}</tbody></table>`;
+    if (type === "invoices") {
+      const detailed = !limit;
+      return `<table class="portal-table portal-invoices-table"><thead><tr><th>N° de facture</th><th>Date</th><th>Montant</th><th>Statut</th><th>${detailed ? "Actions" : ""}</th></tr></thead><tbody>${items.map((item) => `<tr><td><strong>${escapeHtml(item.invoice_number)}</strong></td><td>${formatDate(item.issued_at)}</td><td>${formatAmount(item.amount_cents)} HT</td><td><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span></td><td>${detailed ? `<div class="portal-row-actions"><button class="portal-row-action" type="button" data-invoice-view="${escapeHtml(item.invoice_number)}">Consulter</button>${item.file_path ? `<button class="portal-row-action secondary" type="button" data-invoice-path="${escapeHtml(item.file_path)}">PDF</button>` : `<a class="portal-row-action secondary" href="/contact.html?objet=Demande%20de%20duplicata%20de%20facture&facture=${encodeURIComponent(item.invoice_number)}#formulaire">Duplicata</a>`}</div>` : item.file_path ? `<button class="portal-download" type="button" data-invoice-path="${escapeHtml(item.file_path)}">Télécharger</button>` : "—"}</td></tr>`).join("")}</tbody></table>`;
+    }
     const editable = !limit;
     return `<table class="portal-table portal-requests-table"><thead><tr><th>Référence</th><th>Objet</th><th>Statut</th><th>Mise à jour</th>${editable ? '<th><span class="visually-hidden">Actions</span></th>' : ""}</tr></thead><tbody>${items.map((item) => `<tr><td>#D-${String(item.id).padStart(5, "0")}</td><td><strong>${escapeHtml(item.subject)}</strong><small>${escapeHtml(item.category || "Autre")}</small></td><td><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span></td><td>${formatDate(item.updated_at, true)}</td>${editable ? `<td><button class="portal-row-action" type="button" data-request-edit="${Number(item.id)}" ${["resolved", "closed"].includes(item.status) ? "disabled title=\"Une demande clôturée ne peut plus être modifiée\"" : ""}>Modifier</button></td>` : ""}</tr>`).join("")}</tbody></table>`;
   };
@@ -349,15 +353,60 @@
     }).join("")}</tbody></table>`;
   };
 
-  const bindInvoiceDownloads = () => document.querySelectorAll("[data-invoice-path]").forEach((button) => button.addEventListener("click", async () => {
-    if (!client) return;
+  const downloadInvoice = async (path, button) => {
+    if (!client || !path) return;
     button.disabled = true;
     button.textContent = "Préparation…";
-    const { data, error } = await client.storage.from("invoices").createSignedUrl(button.dataset.invoicePath, 60);
+    const { data, error } = await client.storage.from("invoices").createSignedUrl(path, 60);
     if (!error && data?.signedUrl) window.open(data.signedUrl, "_blank", "noopener,noreferrer");
-    button.textContent = error ? "Indisponible" : "Télécharger";
+    button.textContent = error ? "Indisponible" : button.dataset.invoiceDownloadLabel || "Télécharger";
     button.disabled = false;
-  }));
+  };
+  const bindInvoiceDownloads = (root = document) => root.querySelectorAll("[data-invoice-path]").forEach((button) => button.addEventListener("click", () => downloadInvoice(button.dataset.invoicePath, button)));
+
+  const invoiceDialog = document.querySelector("[data-invoice-dialog]");
+  const showInvoice = (invoice) => {
+    setText("[data-invoice-title]", invoice.invoice_number);
+    setText("[data-invoice-date]", formatDate(invoice.issued_at));
+    setText("[data-invoice-amount]", `${formatAmount(invoice.amount_cents)} HT`);
+    setText("[data-invoice-reference]", invoice.invoice_number);
+    const status = document.querySelector("[data-invoice-status-label]");
+    status.textContent = statusLabel[invoice.status] || invoice.status || "Non renseigné";
+    status.className = `portal-status ${invoice.status || ""}`;
+    setText("[data-invoice-document-state]", invoice.file_path ? "Document PDF disponible" : "PDF non joint à cette facture");
+    const download = document.querySelector("[data-invoice-download]");
+    const duplicate = document.querySelector("[data-invoice-duplicate]");
+    download.hidden = !invoice.file_path;
+    download.dataset.invoicePath = invoice.file_path || "";
+    download.dataset.invoiceDownloadLabel = "Télécharger le PDF";
+    download.textContent = "Télécharger le PDF";
+    duplicate.hidden = Boolean(invoice.file_path);
+    duplicate.href = `/contact.html?objet=Demande%20de%20duplicata%20de%20facture&facture=${encodeURIComponent(invoice.invoice_number)}#formulaire`;
+    invoiceDialog?.showModal();
+  };
+
+  const bindInvoiceActions = (root) => {
+    root.querySelectorAll("[data-invoice-view]").forEach((button) => button.addEventListener("click", () => {
+      const invoice = portalState?.invoices.find((item) => item.invoice_number === button.dataset.invoiceView);
+      if (invoice) showInvoice(invoice);
+    }));
+    bindInvoiceDownloads(root);
+  };
+
+  const renderInvoiceViews = () => {
+    if (!portalState) return;
+    const search = document.querySelector("[data-invoice-search]")?.value.trim().toLocaleLowerCase("fr-FR") || "";
+    const status = document.querySelector("[data-invoice-status]")?.value || "";
+    const year = document.querySelector("[data-invoice-year]")?.value || "";
+    const invoices = portalState.invoices.filter((invoice) => {
+      const invoiceYear = invoice.issued_at ? String(new Date(invoice.issued_at).getFullYear()) : "";
+      return (!search || String(invoice.invoice_number || "").toLocaleLowerCase("fr-FR").includes(search)) && (!status || invoice.status === status) && (!year || invoiceYear === year);
+    });
+    const host = document.querySelector("[data-invoices-list]");
+    host.innerHTML = renderTable("invoices", invoices);
+    setText("[data-invoice-count]", `${invoices.length} facture${invoices.length > 1 ? "s" : ""}`);
+    bindInvoiceActions(host);
+  };
 
   const activatePortalView = (view, { updateHash = true, smooth = true } = {}) => {
     const panel = document.querySelector(`[data-view-panel="${view}"]`);
@@ -391,14 +440,17 @@
     document.querySelector("[data-invoices-preview]").innerHTML = renderTable("invoices", state.invoices, 4);
     document.querySelector("[data-requests-preview]").innerHTML = renderTable("requests", state.requests, 4);
     document.querySelector("[data-alerts-list]").innerHTML = renderTable("alerts", state.alerts);
-    document.querySelector("[data-invoices-list]").innerHTML = renderTable("invoices", state.invoices);
     document.querySelector("[data-requests-list]").innerHTML = renderTable("requests", state.requests);
     document.querySelector("[data-backups-list]").innerHTML = renderDevices(state.devices || []);
+    const invoiceYear = document.querySelector("[data-invoice-year]");
+    const years = [...new Set(state.invoices.map((invoice) => invoice.issued_at ? new Date(invoice.issued_at).getFullYear() : null).filter(Boolean))].sort((a, b) => b - a);
+    invoiceYear.innerHTML = '<option value="">Toutes les années</option>' + years.map((year) => `<option value="${year}">${year}</option>`).join("");
+    renderInvoiceViews();
     renderOverviewChart(state);
     renderStatistics(state);
     document.querySelectorAll("[data-usage-period]").forEach((button) => button.addEventListener("click", () => renderOverviewChart(state, Number(button.dataset.usagePeriod))));
     document.querySelectorAll("[data-stat-period]").forEach((button) => button.addEventListener("click", () => renderStatistics(state, Number(button.dataset.statPeriod))));
-    bindInvoiceDownloads();
+    bindInvoiceDownloads(document.querySelector("[data-invoices-preview]"));
     loading.hidden = true;
     shell.hidden = false;
     activatePortalView(location.hash.slice(1) || "overview", { updateHash: false, smooth: false });
@@ -477,6 +529,11 @@
   }));
   document.querySelector("[data-portal-menu]")?.addEventListener("click", () => document.querySelector(".portal-sidebar")?.classList.toggle("open"));
   document.querySelector("[data-logout]")?.addEventListener("click", async () => { if (client) await client.auth.signOut(); location.replace("/connexion.html"); });
+  document.querySelector("[data-invoice-search]")?.addEventListener("input", renderInvoiceViews);
+  document.querySelector("[data-invoice-status]")?.addEventListener("change", renderInvoiceViews);
+  document.querySelector("[data-invoice-year]")?.addEventListener("change", renderInvoiceViews);
+  document.querySelector("[data-invoice-close]")?.addEventListener("click", () => invoiceDialog?.close());
+  document.querySelector("[data-invoice-download]")?.addEventListener("click", (event) => downloadInvoice(event.currentTarget.dataset.invoicePath, event.currentTarget));
 
   const requestDialog = document.querySelector("[data-request-dialog]");
   const requestForm = document.querySelector("[data-request-form]");

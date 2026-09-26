@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css?v=20260925-2">
-  <link rel="stylesheet" href="/portal.css?v=20260926-5">
+  <link rel="stylesheet" href="/portal.css?v=20260926-6">
 </head>
 <body class="portal-page" data-portal-page>
   <svg class="portal-icon-sprite" aria-hidden="true">
@@ -82,7 +82,18 @@
 
         <section class="portal-view" data-view-panel="requests" hidden><div class="portal-title-row"><div><h1>Vos demandes</h1><p>Suivez vos échanges avec Alliancia Solutions.</p></div><button class="button" type="button" data-new-request>+ Nouvelle demande</button></div><section class="portal-data-panel portal-full-panel"><div data-requests-list></div></section></section>
         <section class="portal-view" data-view-panel="backups" hidden><div class="portal-title-row"><div><h1>Vos sauvegardes</h1><p>Contrôlez les équipements protégés et la date de leur dernière sauvegarde.</p></div></div><section class="portal-data-panel portal-full-panel"><div data-backups-list></div></section></section>
-        <section class="portal-view" data-view-panel="invoices" hidden><div class="portal-title-row"><div><h1>Vos factures</h1><p>Consultez vos échéances et téléchargez vos documents.</p></div></div><section class="portal-data-panel portal-full-panel"><div data-invoices-list></div></section></section>
+        <section class="portal-view" data-view-panel="invoices" hidden>
+          <div class="portal-title-row"><div><h1>Vos factures</h1><p>Retrouvez, consultez et téléchargez vos documents de facturation.</p></div><a class="button button-secondary" href="/contact.html?objet=Question%20de%20facturation#formulaire">Contacter la facturation</a></div>
+          <section class="portal-data-panel portal-full-panel portal-invoices-panel">
+            <div class="portal-invoice-toolbar" aria-label="Filtrer les factures">
+              <label><span>Rechercher</span><input type="search" placeholder="N° de facture" autocomplete="off" data-invoice-search></label>
+              <label><span>Statut</span><select data-invoice-status><option value="">Tous les statuts</option><option value="paid">Payée</option><option value="sent">Envoyée</option><option value="overdue">En retard</option><option value="draft">Brouillon</option></select></label>
+              <label><span>Année</span><select data-invoice-year><option value="">Toutes les années</option></select></label>
+              <span class="portal-invoice-count" data-invoice-count aria-live="polite"></span>
+            </div>
+            <div data-invoices-list></div>
+          </section>
+        </section>
         <section class="portal-view portal-statistics" data-view-panel="statistics" hidden>
           <div class="portal-title-row">
             <div><span class="portal-section-eyebrow">Pilotage de la protection</span><h1>Vos statistiques</h1><p>Visualisez l’évolution de vos sauvegardes et anticipez vos besoins de stockage.</p></div>
@@ -198,9 +209,21 @@
       <button class="button" type="submit" data-request-submit>Envoyer la demande</button>
     </form>
   </dialog>
+  <dialog class="request-dialog invoice-dialog" data-invoice-dialog aria-labelledby="invoice-title">
+    <div class="invoice-dialog-shell">
+      <header><div><span>Facture</span><h2 id="invoice-title" data-invoice-title>—</h2></div><button type="button" data-invoice-close aria-label="Fermer">×</button></header>
+      <div class="invoice-dialog-status"><span data-invoice-status-label></span><small data-invoice-document-state></small></div>
+      <dl>
+        <div><dt>Date d’émission</dt><dd data-invoice-date>—</dd></div>
+        <div><dt>Montant HT</dt><dd data-invoice-amount>—</dd></div>
+        <div><dt>Référence</dt><dd><code data-invoice-reference>—</code><button type="button" data-portal-copy>Copier</button></dd></div>
+      </dl>
+      <div class="invoice-dialog-actions"><button class="button" type="button" data-invoice-download>Télécharger le PDF</button><a class="button button-secondary" href="/contact.html?objet=Demande%20de%20duplicata%20de%20facture#formulaire" data-invoice-duplicate>Demander un duplicata</a></div>
+    </div>
+  </dialog>
   <script src="/site-ui.js?v=20260925-3" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/config.js?v=20260905-1"></script>
-  <script src="/portal.js?v=20260926-4" defer></script>
+  <script src="/portal.js?v=20260926-5" defer></script>
 </body>
 </html>

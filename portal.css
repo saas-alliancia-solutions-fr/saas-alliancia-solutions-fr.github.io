@@ -185,7 +185,16 @@
 .portal-requests-table td:nth-child(2) strong, .portal-requests-table td:nth-child(2) small { display: block; }
 .portal-requests-table td:nth-child(2) small { margin-top: 3px; color: #718096; font-size: .68rem; }
 .portal-requests-table th:nth-child(5), .portal-requests-table td:nth-child(5) { width: 86px; text-align: right; }
-.portal-row-action { padding: 6px 9px; border: 1px solid #cfdcff; border-radius: 7px; background: #fff; color: #2455dd; cursor: pointer; font-size: .7rem; font-weight: 800; }
+.portal-invoice-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr) 180px 150px auto; gap: 12px; align-items: end; margin-bottom: 14px; padding-bottom: 18px; border-bottom: 1px solid #e4eaf3; }
+.portal-invoice-toolbar label { display: grid; gap: 6px; color: #5d6b7f; font-size: .7rem; font-weight: 700; }
+.portal-invoice-toolbar input, .portal-invoice-toolbar select { width: 100%; height: 42px; padding: 0 12px; border: 1px solid #cbd6e6; border-radius: 8px; background: #fff; color: #10233f; font: 500 .78rem "DM Sans", sans-serif; outline: 0; }
+.portal-invoice-toolbar input:focus, .portal-invoice-toolbar select:focus { border-color: #356bff; box-shadow: 0 0 0 3px rgba(53,107,255,.12); }
+.portal-invoice-count { padding-bottom: 12px; color: #718096; font-size: .72rem; text-align: right; white-space: nowrap; }
+.portal-invoices-table th:last-child, .portal-invoices-table td:last-child { width: 220px; text-align: right; }
+.portal-row-actions { display: flex; justify-content: flex-end; gap: 7px; }
+.portal-row-actions .portal-row-action { white-space: nowrap; }
+.portal-row-action.secondary { border-color: #dbe3ef; color: #52637a; }
+.portal-row-action { display: inline-flex; align-items: center; justify-content: center; padding: 6px 9px; border: 1px solid #cfdcff; border-radius: 7px; background: #fff; color: #2455dd; cursor: pointer; font-size: .7rem; font-weight: 800; text-decoration: none; }
 .portal-row-action:hover { border-color: #356bff; background: #eef3ff; }
 .portal-row-action:disabled { border-color: #e2e8f1; background: #f7f9fc; color: #9aa6b6; cursor: not-allowed; }
 .portal-empty { display: grid; min-height: 180px; place-items: center; color: #7b8899; font-size: .86rem; text-align: center; }
@@ -324,6 +333,23 @@
 .request-dialog > form > .button { width: 100%; border: 0; cursor: pointer; }
 .request-dialog [data-request-feedback] { min-height: 1em; margin: 0; color: #c43d2d; font-size: .82rem; }
 .request-dialog [data-request-feedback].success { color: #16855f; }
+.invoice-dialog { width: min(calc(100% - 30px), 560px); }
+.invoice-dialog-shell { display: grid; gap: 22px; padding: 32px; }
+.invoice-dialog header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.invoice-dialog header span { display: block; margin-bottom: 4px; color: #356bff; font-size: .68rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.invoice-dialog header h2 { margin: 0; font-size: 1.7rem; }
+.invoice-dialog header > button { width: 38px; height: 38px; flex: 0 0 38px; border: 1px solid #dbe3ef; border-radius: 50%; background: #fff; cursor: pointer; font-size: 1.5rem; }
+.invoice-dialog-status { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 15px; border-radius: 10px; background: #f4f7fc; }
+.invoice-dialog-status small { color: #66758a; font-size: .72rem; text-align: right; }
+.invoice-dialog dl { display: grid; gap: 0; margin: 0; border-block: 1px solid #e4eaf3; }
+.invoice-dialog dl > div { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 15px 0; border-bottom: 1px solid #edf1f7; }
+.invoice-dialog dl > div:last-child { border-bottom: 0; }
+.invoice-dialog dt { color: #66758a; font-size: .78rem; }
+.invoice-dialog dd { display: flex; align-items: center; gap: 10px; margin: 0; font-size: .82rem; font-weight: 800; text-align: right; }
+.invoice-dialog code { font: 700 .78rem "DM Sans", sans-serif; }
+.invoice-dialog dd button { padding: 5px 7px; border: 1px solid #d5dff0; border-radius: 6px; background: #fff; color: #2455dd; cursor: pointer; font-size: .66rem; font-weight: 800; }
+.invoice-dialog-actions { display: flex; gap: 10px; }
+.invoice-dialog-actions .button { min-height: 46px; flex: 1; justify-content: center; border: 1px solid #356bff; }
 
 @media (max-width: 1100px) {
   .auth-layout { grid-template-columns: .8fr 1.2fr; }
@@ -366,6 +392,9 @@
   .portal-overview-chart-toolbar, .portal-overview-chart-footer { align-items: flex-start; flex-direction: column; }
   .portal-chart-periods { order: -1; }
   .portal-stat-details { grid-template-columns: 1fr; }
+  .portal-invoice-toolbar { grid-template-columns: 1fr 1fr; }
+  .portal-invoice-toolbar label:first-child { grid-column: 1 / -1; }
+  .portal-invoice-count { grid-column: 1 / -1; padding: 0; text-align: left; }
   .portal-stat-summary { grid-column: auto; }
   .portal-download-help { align-items: stretch; flex-direction: column; }
   .portal-download-help .button { width: 100%; }
@@ -401,6 +430,11 @@
   .portal-chart-panel, .portal-data-panel { margin-inline: -6px; padding: 18px 14px; }
   .portal-table { font-size: .72rem; }
   .portal-table th:nth-child(n+4), .portal-table td:nth-child(n+4) { display: none; }
+  .portal-invoices-table th:nth-child(2), .portal-invoices-table td:nth-child(2), .portal-invoices-table th:nth-child(3), .portal-invoices-table td:nth-child(3) { display: none; }
+  .portal-invoices-table th:nth-child(4), .portal-invoices-table td:nth-child(4), .portal-invoices-table th:nth-child(5), .portal-invoices-table td:nth-child(5) { display: table-cell; }
+  .portal-invoices-table th:last-child, .portal-invoices-table td:last-child { width: auto; }
+  .portal-row-actions { flex-direction: column; align-items: stretch; }
+  .portal-row-actions .portal-row-action { padding: 7px 8px; }
   .portal-requests-table th:nth-child(5), .portal-requests-table td:nth-child(5) { display: table-cell; }
   .portal-download-notice { align-items: flex-start; padding: 16px; }
   .portal-platform-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-inline: -6px; overflow: visible; border-radius: 10px; }
@@ -418,5 +452,7 @@
   .portal-help-fake-button { margin-inline: 16px; }
   .portal-help-checklist { margin-inline: -6px; }
   .request-dialog form { padding: 24px 20px; }
+  .invoice-dialog-shell { padding: 25px 20px; }
+  .invoice-dialog-actions { flex-direction: column; }
 }
 @media (prefers-reduced-motion: reduce) { .portal-loading span { animation-duration: .01ms; animation-iteration-count: 1; } }
