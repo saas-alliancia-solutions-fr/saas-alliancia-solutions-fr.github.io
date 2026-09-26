@@ -38,6 +38,123 @@
     return formatDate(value, true);
   };
 
+  let portalSelectIndex = 0;
+  const enhancePortalSelect = (select) => {
+    if (select.dataset.customSelectEnhanced === "true") return;
+    select.dataset.customSelectEnhanced = "true";
+    const options = [...select.options];
+    const required = select.required;
+    const fieldLabel = select.closest("label")?.querySelector(":scope > span");
+    const wrapper = document.createElement("div");
+    const button = document.createElement("button");
+    const list = document.createElement("ul");
+    const listId = `portal-select-${++portalSelectIndex}-options`;
+    let activeIndex = Math.max(select.selectedIndex, 0);
+
+    wrapper.className = "custom-select";
+    button.type = "button";
+    button.className = "custom-select-button";
+    button.setAttribute("role", "combobox");
+    button.setAttribute("aria-haspopup", "listbox");
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-controls", listId);
+    if (fieldLabel) {
+      fieldLabel.id ||= `${listId}-label`;
+      button.setAttribute("aria-labelledby", fieldLabel.id);
+    }
+    if (required) button.setAttribute("aria-required", "true");
+    list.id = listId;
+    list.className = "custom-select-list";
+    list.setAttribute("role", "listbox");
+    list.hidden = true;
+
+    const optionNodes = options.map((option, index) => {
+      const item = document.createElement("li");
+      item.className = "custom-select-option";
+      item.textContent = option.textContent;
+      item.setAttribute("role", "option");
+      item.setAttribute("aria-selected", String(option.selected));
+      item.dataset.value = option.value;
+      item.addEventListener("mousedown", (event) => event.preventDefault());
+      item.addEventListener("click", () => choose(index));
+      list.append(item);
+      return item;
+    });
+
+    const render = () => {
+      const selected = options[select.selectedIndex] || options[0];
+      button.textContent = selected.textContent;
+      button.classList.toggle("is-placeholder", !selected.value);
+      button.classList.toggle("is-invalid", required && !selected.value && select.dataset.touched === "true");
+      optionNodes.forEach((item, index) => {
+        item.setAttribute("aria-selected", String(index === select.selectedIndex));
+        item.classList.toggle("is-active", index === activeIndex);
+      });
+    };
+    const close = () => {
+      wrapper.classList.remove("open");
+      button.setAttribute("aria-expanded", "false");
+      list.hidden = true;
+    };
+    const open = () => {
+      wrapper.classList.add("open");
+      button.setAttribute("aria-expanded", "true");
+      list.hidden = false;
+      activeIndex = Math.max(select.selectedIndex, 0);
+      render();
+    };
+    const choose = (index) => {
+      select.selectedIndex = index;
+      select.dataset.touched = "true";
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      activeIndex = index;
+      render();
+      close();
+      button.focus();
+    };
+
+    select.classList.add("custom-select-native");
+    select.required = false;
+    select.tabIndex = -1;
+    select.setAttribute("aria-hidden", "true");
+    select.after(wrapper);
+    wrapper.append(select, button, list);
+    render();
+
+    button.addEventListener("click", () => list.hidden ? open() : close());
+    button.addEventListener("keydown", (event) => {
+      if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+        event.preventDefault();
+        if (list.hidden) open();
+        if (event.key === "ArrowDown") activeIndex = Math.min(activeIndex + 1, options.length - 1);
+        if (event.key === "ArrowUp") activeIndex = Math.max(activeIndex - 1, 0);
+        if (event.key === "Home") activeIndex = 0;
+        if (event.key === "End") activeIndex = options.length - 1;
+        render();
+        optionNodes[activeIndex]?.scrollIntoView({ block: "nearest" });
+      } else if (["Enter", " "].includes(event.key)) {
+        event.preventDefault();
+        if (list.hidden) open(); else choose(activeIndex);
+      } else if (event.key === "Escape") {
+        close();
+      } else if (event.key === "Tab") {
+        close();
+      }
+    });
+    document.addEventListener("click", (event) => {
+      if (!wrapper.contains(event.target)) close();
+    });
+    select.form?.addEventListener("submit", (event) => {
+      if (required && !select.value) {
+        event.preventDefault();
+        select.dataset.touched = "true";
+        render();
+        button.focus();
+      }
+    });
+    select.addEventListener("change", render);
+  };
+
   const loginForm = document.querySelector("[data-login-form]");
   if (loginForm) {
     const setupNotice = document.querySelector("[data-auth-setup]");
@@ -537,6 +654,7 @@
     const invoiceYear = document.querySelector("[data-invoice-year]");
     const years = [...new Set(state.invoices.map((invoice) => invoice.issued_at ? new Date(invoice.issued_at).getFullYear() : null).filter(Boolean))].sort((a, b) => b - a);
     invoiceYear.innerHTML = '<option value="">Toutes les années</option>' + years.map((year) => `<option value="${year}">${year}</option>`).join("");
+    document.querySelectorAll("[data-custom-select]").forEach(enhancePortalSelect);
     renderInvoiceViews();
     renderAlertViews();
     renderOverviewChart(state);

@@ -189,6 +189,11 @@
 .portal-invoice-toolbar label, .portal-alert-toolbar label { display: grid; gap: 6px; color: #5d6b7f; font-size: .7rem; font-weight: 700; }
 .portal-invoice-toolbar input, .portal-invoice-toolbar select, .portal-alert-toolbar input, .portal-alert-toolbar select { width: 100%; height: 42px; padding: 0 12px; border: 1px solid #cbd6e6; border-radius: 8px; background: #fff; color: #10233f; font: 500 .78rem "DM Sans", sans-serif; outline: 0; }
 .portal-invoice-toolbar input:focus, .portal-invoice-toolbar select:focus, .portal-alert-toolbar input:focus, .portal-alert-toolbar select:focus { border-color: #356bff; box-shadow: 0 0 0 3px rgba(53,107,255,.12); }
+.portal-page .custom-select { min-width: 0; }
+.portal-page .custom-select.open { z-index: 30; }
+.portal-page .custom-select-button { min-height: 42px; padding-right: 40px; font-size: .78rem; }
+.portal-page .custom-select-list { min-width: max(100%, 180px); }
+.request-dialog .custom-select-button { min-height: 48px; font-size: .9rem; }
 .portal-invoice-count, .portal-alert-count { padding-bottom: 12px; color: #718096; font-size: .72rem; text-align: right; white-space: nowrap; }
 .portal-invoices-table th:last-child, .portal-invoices-table td:last-child { width: 220px; text-align: right; }
 .portal-alerts-table td:nth-child(2) strong, .portal-alerts-table td:nth-child(2) small { display: block; }

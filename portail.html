@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css?v=20260925-2">
-  <link rel="stylesheet" href="/portal.css?v=20260926-7">
+  <link rel="stylesheet" href="/portal.css?v=20260926-8">
 </head>
 <body class="portal-page" data-portal-page>
   <svg class="portal-icon-sprite" aria-hidden="true">
@@ -87,8 +87,8 @@
           <section class="portal-data-panel portal-full-panel portal-invoices-panel">
             <div class="portal-invoice-toolbar" aria-label="Filtrer les factures">
               <label><span>Rechercher</span><input type="search" placeholder="N° de facture" autocomplete="off" data-invoice-search></label>
-              <label><span>Statut</span><select data-invoice-status><option value="">Tous les statuts</option><option value="paid">Payée</option><option value="sent">Envoyée</option><option value="overdue">En retard</option><option value="draft">Brouillon</option></select></label>
-              <label><span>Année</span><select data-invoice-year><option value="">Toutes les années</option></select></label>
+              <label><span>Statut</span><select data-invoice-status data-custom-select><option value="">Tous les statuts</option><option value="paid">Payée</option><option value="sent">Envoyée</option><option value="overdue">En retard</option><option value="draft">Brouillon</option></select></label>
+              <label><span>Année</span><select data-invoice-year data-custom-select><option value="">Toutes les années</option></select></label>
               <span class="portal-invoice-count" data-invoice-count aria-live="polite"></span>
             </div>
             <div data-invoices-list></div>
@@ -121,8 +121,8 @@
           <section class="portal-data-panel portal-full-panel portal-alerts-panel">
             <div class="portal-alert-toolbar" aria-label="Filtrer les alertes">
               <label><span>Rechercher</span><input type="search" placeholder="Message ou source" autocomplete="off" data-alert-search></label>
-              <label><span>Niveau</span><select data-alert-severity><option value="">Tous les niveaux</option><option value="critical">Critique</option><option value="warning">Attention</option><option value="info">Information</option></select></label>
-              <label><span>État</span><select data-alert-status><option value="">Tous les états</option><option value="open">Non lue</option><option value="acknowledged">Lue</option><option value="resolved">Résolue</option></select></label>
+              <label><span>Niveau</span><select data-alert-severity data-custom-select><option value="">Tous les niveaux</option><option value="critical">Critique</option><option value="warning">Attention</option><option value="info">Information</option></select></label>
+              <label><span>État</span><select data-alert-status data-custom-select><option value="">Tous les états</option><option value="open">Non lue</option><option value="acknowledged">Lue</option><option value="resolved">Résolue</option></select></label>
               <span class="portal-alert-count" data-alert-count aria-live="polite"></span>
             </div>
             <p class="portal-alert-feedback" data-alert-feedback aria-live="polite"></p>
@@ -214,8 +214,8 @@
       <input type="hidden" name="id">
       <p class="request-dialog-context" data-request-context>Décrivez votre besoin : votre demande sera transmise à l’équipe Alliancia.</p>
       <label>Objet<input type="text" name="subject" minlength="5" required></label>
-      <label>Catégorie<select name="category" required><option>Assistance technique</option><option>Installation</option><option>Restauration</option><option>Facturation</option><option>Contrat</option><option>Autre</option></select></label>
-      <label>Priorité<select name="priority" required><option value="normal">Normale</option><option value="high">Élevée</option><option value="urgent">Urgente</option></select></label>
+      <label><span>Catégorie</span><select name="category" required data-custom-select><option>Assistance technique</option><option>Installation</option><option>Restauration</option><option>Facturation</option><option>Contrat</option><option>Autre</option></select></label>
+      <label><span>Priorité</span><select name="priority" required data-custom-select><option value="normal">Normale</option><option value="high">Élevée</option><option value="urgent">Urgente</option></select></label>
       <label>Votre message<textarea name="message" rows="6" minlength="20" required></textarea></label>
       <p data-request-feedback aria-live="polite"></p>
       <button class="button" type="submit" data-request-submit>Envoyer la demande</button>
@@ -246,6 +246,6 @@
   <script src="/site-ui.js?v=20260925-3" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/config.js?v=20260905-1"></script>
-  <script src="/portal.js?v=20260926-6" defer></script>
+  <script src="/portal.js?v=20260926-7" defer></script>
 </body>
 </html>
