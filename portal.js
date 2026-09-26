@@ -162,8 +162,8 @@
       { invoice_number: "F-2026-0032", issued_at: "2026-07-15", amount_cents: 66000, status: "paid", file_path: null }
     ],
     requests: [
-      { id: 56, subject: "Accès à une sauvegarde", category: "Restauration", status: "in_progress", priority: "normal", updated_at: new Date().toISOString() },
-      { id: 51, subject: "Ajout d’un utilisateur", category: "Contrat", status: "in_progress", priority: "normal", updated_at: new Date(Date.now() - 86400000).toISOString() }
+      { id: 56, subject: "Accès à une sauvegarde", category: "Restauration", status: "in_progress", priority: "normal", message: "Je souhaite récupérer un dossier supprimé sur le poste de direction.", updated_at: new Date().toISOString() },
+      { id: 51, subject: "Ajout d’un utilisateur", category: "Contrat", status: "in_progress", priority: "normal", message: "Pouvez-vous ajouter un accès pour notre nouvelle collaboratrice ?", updated_at: new Date(Date.now() - 86400000).toISOString() }
     ]
   };
 
@@ -178,7 +178,8 @@
     if (!items.length) return '<div class="portal-empty">Aucune donnée disponible pour le moment.</div>';
     if (type === "alerts") return `<table class="portal-table"><thead><tr><th>Niveau</th><th>Message</th><th>Date</th></tr></thead><tbody>${items.map((item) => `<tr><td><span class="portal-severity ${escapeHtml(item.severity)}"></span>${item.severity === "critical" ? "Critique" : item.severity === "warning" ? "Attention" : "Information"}</td><td>${escapeHtml(item.title)}</td><td>${formatDate(item.occurred_at, true)}</td></tr>`).join("")}</tbody></table>`;
     if (type === "invoices") return `<table class="portal-table"><thead><tr><th>N° de facture</th><th>Date</th><th>Montant</th><th>Statut</th><th></th></tr></thead><tbody>${items.map((item) => `<tr><td>${escapeHtml(item.invoice_number)}</td><td>${formatDate(item.issued_at)}</td><td>${new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format((item.amount_cents || 0) / 100)} HT</td><td><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span></td><td>${item.file_path ? `<button class="portal-download" type="button" data-invoice-path="${escapeHtml(item.file_path)}">Télécharger</button>` : "—"}</td></tr>`).join("")}</tbody></table>`;
-    return `<table class="portal-table"><thead><tr><th>Référence</th><th>Objet</th><th>Statut</th><th>Mise à jour</th></tr></thead><tbody>${items.map((item) => `<tr><td>#D-${String(item.id).padStart(5, "0")}</td><td>${escapeHtml(item.subject)}</td><td><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span></td><td>${formatDate(item.updated_at, true)}</td></tr>`).join("")}</tbody></table>`;
+    const editable = !limit;
+    return `<table class="portal-table portal-requests-table"><thead><tr><th>Référence</th><th>Objet</th><th>Statut</th><th>Mise à jour</th>${editable ? '<th><span class="visually-hidden">Actions</span></th>' : ""}</tr></thead><tbody>${items.map((item) => `<tr><td>#D-${String(item.id).padStart(5, "0")}</td><td><strong>${escapeHtml(item.subject)}</strong><small>${escapeHtml(item.category || "Autre")}</small></td><td><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span></td><td>${formatDate(item.updated_at, true)}</td>${editable ? `<td><button class="portal-row-action" type="button" data-request-edit="${Number(item.id)}" ${["resolved", "closed"].includes(item.status) ? "disabled title=\"Une demande clôturée ne peut plus être modifiée\"" : ""}>Modifier</button></td>` : ""}</tr>`).join("")}</tbody></table>`;
   };
 
   const renderOverviewChart = (state, period = 30) => {
@@ -459,26 +460,81 @@
   document.querySelector("[data-logout]")?.addEventListener("click", async () => { if (client) await client.auth.signOut(); location.replace("/connexion.html"); });
 
   const requestDialog = document.querySelector("[data-request-dialog]");
-  document.querySelectorAll("[data-new-request]").forEach((button) => button.addEventListener("click", () => requestDialog?.showModal()));
+  const requestForm = document.querySelector("[data-request-form]");
+  const requestTitle = document.querySelector("[data-request-title]");
+  const requestContext = document.querySelector("[data-request-context]");
+  const requestSubmit = document.querySelector("[data-request-submit]");
+  const prepareNewRequest = () => {
+    requestForm?.reset();
+    requestForm.elements.id.value = "";
+    requestTitle.textContent = "Nouvelle demande";
+    requestContext.textContent = "Décrivez votre besoin : votre demande sera transmise à l’équipe Alliancia.";
+    requestSubmit.textContent = "Envoyer la demande";
+    document.querySelector("[data-request-feedback]").classList.remove("success");
+    document.querySelector("[data-request-feedback]").textContent = "";
+    requestDialog?.showModal();
+  };
+  const prepareRequestEdit = (request) => {
+    requestForm.reset();
+    requestForm.elements.id.value = request.id;
+    requestForm.elements.subject.value = request.subject || "";
+    requestForm.elements.category.value = request.category || "Autre";
+    requestForm.elements.priority.value = request.priority || "normal";
+    requestForm.elements.message.value = request.message || "";
+    requestTitle.textContent = `Modifier la demande #D-${String(request.id).padStart(5, "0")}`;
+    requestContext.textContent = "Le statut reste géré par l’équipe Alliancia. Vos modifications seront horodatées dans le suivi.";
+    requestSubmit.textContent = "Enregistrer les modifications";
+    document.querySelector("[data-request-feedback]").classList.remove("success");
+    document.querySelector("[data-request-feedback]").textContent = "";
+    requestDialog?.showModal();
+  };
+  const bindRequestEdits = () => document.querySelectorAll("[data-request-edit]").forEach((button) => button.addEventListener("click", () => {
+    const request = portalState?.requests.find((item) => Number(item.id) === Number(button.dataset.requestEdit));
+    if (request) prepareRequestEdit(request);
+  }));
+  const renderRequestViews = () => {
+    document.querySelector("[data-requests-preview]").innerHTML = renderTable("requests", portalState.requests, 4);
+    document.querySelector("[data-requests-list]").innerHTML = renderTable("requests", portalState.requests);
+    bindRequestEdits();
+  };
+  document.querySelectorAll("[data-new-request]").forEach((button) => button.addEventListener("click", prepareNewRequest));
   document.querySelector("[data-request-close]")?.addEventListener("click", () => requestDialog?.close());
-  document.querySelector("[data-request-form]")?.addEventListener("submit", async (event) => {
+  requestForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     const feedback = document.querySelector("[data-request-feedback]");
     const submit = form.querySelector("[type='submit']");
+    const payload = Object.fromEntries(new FormData(form));
+    const requestId = Number(payload.id || 0);
     submit.disabled = true;
     if (isLocalDemo) {
-      feedback.textContent = "Mode démonstration : la demande serait transmise ici.";
-      window.setTimeout(() => requestDialog.close(), 900);
+      if (requestId) {
+        const request = portalState.requests.find((item) => Number(item.id) === requestId);
+        Object.assign(request, { subject: payload.subject, category: payload.category, priority: payload.priority, message: payload.message, updated_at: new Date().toISOString() });
+        renderRequestViews();
+        feedback.classList.add("success");
+        feedback.textContent = "Modifications enregistrées en mode démonstration.";
+      } else {
+        feedback.textContent = "Mode démonstration : la demande serait transmise ici.";
+      }
+      window.setTimeout(() => requestDialog.close(), 700);
       submit.disabled = false;
       return;
     }
-    const payload = Object.fromEntries(new FormData(form));
-    const { error } = await client.from("support_requests").insert({ organization_id: portalState.organization.id, created_by: portalState.user.id, subject: payload.subject, category: payload.category, priority: payload.priority, message: payload.message });
-    feedback.textContent = error ? "La demande n’a pas pu être envoyée." : "Votre demande a bien été transmise.";
-    if (!error) window.setTimeout(() => location.reload(), 900);
+    const values = { subject: payload.subject.trim(), category: payload.category, priority: payload.priority, message: payload.message.trim() };
+    const result = requestId
+      ? await client.from("support_requests").update(values).eq("id", requestId).eq("organization_id", portalState.organization.id).select().single()
+      : await client.from("support_requests").insert({ organization_id: portalState.organization.id, created_by: portalState.user.id, ...values }).select().single();
+    feedback.classList.toggle("success", !result.error);
+    feedback.textContent = result.error ? "La demande n’a pas pu être enregistrée." : requestId ? "Les modifications ont bien été enregistrées." : "Votre demande a bien été transmise.";
+    if (!result.error) {
+      if (requestId) portalState.requests = portalState.requests.map((item) => Number(item.id) === requestId ? result.data : item);
+      else portalState.requests.unshift(result.data);
+      renderRequestViews();
+      window.setTimeout(() => requestDialog.close(), 700);
+    }
     submit.disabled = false;
   });
 
-  loadPortal();
+  loadPortal().then(() => bindRequestEdits());
 })();

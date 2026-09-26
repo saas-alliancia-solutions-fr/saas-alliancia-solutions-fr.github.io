@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css?v=20260925-2">
-  <link rel="stylesheet" href="/portal.css?v=20260926-3">
+  <link rel="stylesheet" href="/portal.css?v=20260926-4">
 </head>
 <body class="portal-page" data-portal-page>
   <svg class="portal-icon-sprite" aria-hidden="true">
@@ -181,18 +181,20 @@
 
   <dialog class="request-dialog" data-request-dialog aria-labelledby="request-title">
     <form data-request-form>
-      <div><h2 id="request-title">Nouvelle demande</h2><button type="button" data-request-close aria-label="Fermer">×</button></div>
+      <div><h2 id="request-title" data-request-title>Nouvelle demande</h2><button type="button" data-request-close aria-label="Fermer">×</button></div>
+      <input type="hidden" name="id">
+      <p class="request-dialog-context" data-request-context>Décrivez votre besoin : votre demande sera transmise à l’équipe Alliancia.</p>
       <label>Objet<input type="text" name="subject" minlength="5" required></label>
       <label>Catégorie<select name="category" required><option>Assistance technique</option><option>Installation</option><option>Restauration</option><option>Facturation</option><option>Contrat</option><option>Autre</option></select></label>
       <label>Priorité<select name="priority" required><option value="normal">Normale</option><option value="high">Élevée</option><option value="urgent">Urgente</option></select></label>
       <label>Votre message<textarea name="message" rows="6" minlength="20" required></textarea></label>
       <p data-request-feedback aria-live="polite"></p>
-      <button class="button" type="submit">Envoyer la demande</button>
+      <button class="button" type="submit" data-request-submit>Envoyer la demande</button>
     </form>
   </dialog>
   <script src="/site-ui.js?v=20260925-3" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/config.js?v=20260905-1"></script>
-  <script src="/portal.js?v=20260926-2" defer></script>
+  <script src="/portal.js?v=20260926-3" defer></script>
 </body>
 </html>

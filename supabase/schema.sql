@@ -157,6 +157,8 @@ drop policy if exists support_requests_select_member on public.support_requests;
 create policy support_requests_select_member on public.support_requests for select to authenticated using ((select public.is_org_member(organization_id)));
 drop policy if exists support_requests_insert_member on public.support_requests;
 create policy support_requests_insert_member on public.support_requests for insert to authenticated with check ((select public.is_org_member(organization_id)) and created_by = (select auth.uid()));
+drop policy if exists support_requests_update_member on public.support_requests;
+create policy support_requests_update_member on public.support_requests for update to authenticated using ((select public.is_org_member(organization_id)) and status not in ('resolved', 'closed')) with check ((select public.is_org_member(organization_id)));
 drop policy if exists invoices_select_member on public.invoices;
 create policy invoices_select_member on public.invoices for select to authenticated using ((select public.is_org_member(organization_id)));
 drop policy if exists usage_daily_select_member on public.usage_daily;
@@ -167,6 +169,7 @@ create policy alerts_select_member on public.alerts for select to authenticated 
 revoke all on all tables in schema public from anon, authenticated;
 grant select on public.organizations, public.profiles, public.organization_members, public.subscriptions, public.invoices, public.usage_daily, public.alerts to authenticated;
 grant select, insert on public.support_requests to authenticated;
+grant update (subject, category, priority, message) on public.support_requests to authenticated;
 grant usage, select on all sequences in schema public to authenticated;
 
 insert into storage.buckets (id, name, public)
