@@ -154,9 +154,9 @@
       { name: "NAS comptabilité", device_type: "NAS", source_bytes: 320 * 1024 ** 3, stored_bytes: 172 * 1024 ** 3, source_count: 6, last_backup_at: new Date(Date.now() - 31 * 60000).toISOString(), backup_alert: false, missing_backup_alert: false, backup_running: false, active: true }
     ],
     alerts: [
-      { severity: "info", title: "Sauvegarde effectuée avec succès", occurred_at: new Date(Date.now() - 18 * 60000).toISOString(), status: "open" },
-      { severity: "warning", title: "Espace de stockage utilisé à 80 %", occurred_at: new Date(Date.now() - 86400000).toISOString(), status: "open" },
-      { severity: "critical", title: "Échec de sauvegarde sur Serveur-01", occurred_at: new Date(Date.now() - 2 * 86400000).toISOString(), status: "open" }
+      { id: 103, severity: "info", title: "Sauvegarde effectuée avec succès", message: "La dernière sauvegarde du poste de direction s’est terminée sans erreur.", source: "Kiwi Backup", occurred_at: new Date(Date.now() - 18 * 60000).toISOString(), status: "open" },
+      { id: 102, severity: "warning", title: "Espace de stockage utilisé à 80 %", message: "Le volume protégé approche de la capacité prévue dans votre formule.", source: "SAAS", occurred_at: new Date(Date.now() - 86400000).toISOString(), status: "open" },
+      { id: 101, severity: "critical", title: "Échec de sauvegarde sur Serveur-01", message: "La dernière sauvegarde n’a pas pu être finalisée. Vérifiez que le serveur est allumé et connecté.", source: "Kiwi Backup", occurred_at: new Date(Date.now() - 2 * 86400000).toISOString(), status: "open" }
     ],
     invoices: [
       { invoice_number: "F-2026-0045", issued_at: "2026-08-15", amount_cents: 66000, status: "paid", file_path: null },
@@ -173,11 +173,16 @@
   const shell = document.querySelector("[data-portal-shell]");
   const setText = (selector, value) => { const node = document.querySelector(selector); if (node) node.textContent = value; };
   const statusLabel = { open: "Ouverte", acknowledged: "Prise en compte", resolved: "Résolue", draft: "Brouillon", sent: "Envoyée", paid: "Payée", overdue: "En retard", in_progress: "En cours", closed: "Clôturée" };
+  const alertSeverityLabel = { info: "Information", warning: "Attention", critical: "Critique" };
+  const alertStatusLabel = { open: "Non lue", acknowledged: "Lue", resolved: "Résolue" };
 
   const renderTable = (type, rows, limit) => {
     const items = limit ? rows.slice(0, limit) : rows;
     if (!items.length) return '<div class="portal-empty">Aucune donnée disponible pour le moment.</div>';
-    if (type === "alerts") return `<table class="portal-table"><thead><tr><th>Niveau</th><th>Message</th><th>Date</th></tr></thead><tbody>${items.map((item) => `<tr><td><span class="portal-severity ${escapeHtml(item.severity)}"></span>${item.severity === "critical" ? "Critique" : item.severity === "warning" ? "Attention" : "Information"}</td><td>${escapeHtml(item.title)}</td><td>${formatDate(item.occurred_at, true)}</td></tr>`).join("")}</tbody></table>`;
+    if (type === "alerts") {
+      const detailed = !limit;
+      return `<table class="portal-table portal-alerts-table"><thead><tr><th>Niveau</th><th>Message</th>${detailed ? "<th>État</th>" : ""}<th>Date</th>${detailed ? "<th>Actions</th>" : ""}</tr></thead><tbody>${items.map((item) => `<tr><td><span class="portal-severity ${escapeHtml(item.severity)}"></span>${alertSeverityLabel[item.severity] || escapeHtml(item.severity)}</td><td><strong>${escapeHtml(item.title)}</strong>${detailed ? `<small>${escapeHtml(item.source || "Source non renseignée")}</small>` : ""}</td>${detailed ? `<td><span class="portal-status ${escapeHtml(item.status)}">${alertStatusLabel[item.status] || escapeHtml(item.status)}</span></td>` : ""}<td>${formatDate(item.occurred_at, true)}</td>${detailed ? `<td><div class="portal-row-actions"><button class="portal-row-action" type="button" data-alert-view="${Number(item.id)}">Consulter</button>${item.status === "open" ? `<button class="portal-row-action secondary" type="button" data-alert-acknowledge-id="${Number(item.id)}">Marquer lue</button>` : ""}</div></td>` : ""}</tr>`).join("")}</tbody></table>`;
+    }
     if (type === "invoices") {
       const detailed = !limit;
       return `<table class="portal-table portal-invoices-table"><thead><tr><th>N° de facture</th><th>Date</th><th>Montant</th><th>Statut</th><th>${detailed ? "Actions" : ""}</th></tr></thead><tbody>${items.map((item) => `<tr><td><strong>${escapeHtml(item.invoice_number)}</strong></td><td>${formatDate(item.issued_at)}</td><td>${formatAmount(item.amount_cents)} HT</td><td><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span></td><td>${detailed ? `<div class="portal-row-actions"><button class="portal-row-action" type="button" data-invoice-view="${escapeHtml(item.invoice_number)}">Consulter</button>${item.file_path ? `<button class="portal-row-action secondary" type="button" data-invoice-path="${escapeHtml(item.file_path)}">PDF</button>` : `<a class="portal-row-action secondary" href="/contact.html?objet=Demande%20de%20duplicata%20de%20facture&facture=${encodeURIComponent(item.invoice_number)}#formulaire">Duplicata</a>`}</div>` : item.file_path ? `<button class="portal-download" type="button" data-invoice-path="${escapeHtml(item.file_path)}">Télécharger</button>` : "—"}</td></tr>`).join("")}</tbody></table>`;
@@ -408,6 +413,94 @@
     bindInvoiceActions(host);
   };
 
+  const alertDialog = document.querySelector("[data-alert-dialog]");
+  let selectedAlertId = null;
+  const showAlert = (alert) => {
+    selectedAlertId = Number(alert.id);
+    setText("[data-alert-title]", alert.title);
+    setText("[data-alert-message]", alert.message || "Aucun détail complémentaire n’a été transmis.");
+    setText("[data-alert-source]", alert.source || "Non renseignée");
+    setText("[data-alert-date]", formatDate(alert.occurred_at, true));
+    const severity = document.querySelector("[data-alert-severity-label]");
+    severity.innerHTML = `<span class="portal-severity ${escapeHtml(alert.severity)}"></span>${escapeHtml(alertSeverityLabel[alert.severity] || alert.severity)}`;
+    const status = document.querySelector("[data-alert-status-label]");
+    status.textContent = alertStatusLabel[alert.status] || alert.status;
+    status.className = `portal-status ${alert.status || ""}`;
+    const acknowledge = document.querySelector("[data-alert-acknowledge]");
+    acknowledge.hidden = alert.status !== "open";
+    acknowledge.disabled = false;
+    acknowledge.textContent = "Marquer comme lue";
+    const support = document.querySelector("[data-alert-support]");
+    support.href = `/contact.html?objet=Assistance%20technique&alerte=${encodeURIComponent(alert.title)}#formulaire`;
+    setText("[data-alert-dialog-feedback]", "");
+    alertDialog?.showModal();
+  };
+
+  const setAlertFeedback = (message, error = false) => {
+    const feedback = document.querySelector("[data-alert-feedback]");
+    feedback.textContent = message;
+    feedback.classList.toggle("error", error);
+    const dialogFeedback = document.querySelector("[data-alert-dialog-feedback]");
+    dialogFeedback.textContent = message;
+    dialogFeedback.classList.toggle("error", error);
+  };
+
+  const acknowledgeAlerts = async (alertId = null, trigger = null) => {
+    const openAlerts = portalState?.alerts.filter((alert) => alert.status === "open" && (!alertId || Number(alert.id) === Number(alertId))) || [];
+    if (!openAlerts.length) return;
+    if (trigger) {
+      trigger.disabled = true;
+      trigger.textContent = "Enregistrement…";
+    }
+    let error = null;
+    if (!isLocalDemo) ({ error } = await client.rpc("acknowledge_client_alerts", { target_alert_id: alertId || null }));
+    if (error) {
+      setAlertFeedback("La prise en compte n’a pas pu être enregistrée. Réessayez dans quelques instants.", true);
+      if (trigger) {
+        trigger.disabled = false;
+        trigger.textContent = alertId ? "Marquer comme lue" : "Tout marquer comme lu";
+      }
+      return;
+    }
+    const acknowledgedIds = new Set(openAlerts.map((alert) => Number(alert.id)));
+    portalState.alerts = portalState.alerts.map((alert) => acknowledgedIds.has(Number(alert.id)) ? { ...alert, status: "acknowledged" } : alert);
+    document.querySelector("[data-alerts-preview]").innerHTML = renderTable("alerts", portalState.alerts, 4);
+    renderAlertViews();
+    setAlertFeedback(alertId ? "Alerte marquée comme lue." : `${acknowledgedIds.size} alerte${acknowledgedIds.size > 1 ? "s" : ""} marquée${acknowledgedIds.size > 1 ? "s" : ""} comme lue${acknowledgedIds.size > 1 ? "s" : ""}.`);
+    if (alertId && alertDialog?.open) {
+      const updatedAlert = portalState.alerts.find((alert) => Number(alert.id) === Number(alertId));
+      alertDialog.close();
+      if (updatedAlert) showAlert(updatedAlert);
+      setAlertFeedback("Alerte marquée comme lue.");
+    }
+  };
+
+  const bindAlertActions = (root) => {
+    root.querySelectorAll("[data-alert-view]").forEach((button) => button.addEventListener("click", () => {
+      const alert = portalState?.alerts.find((item) => Number(item.id) === Number(button.dataset.alertView));
+      if (alert) showAlert(alert);
+    }));
+    root.querySelectorAll("[data-alert-acknowledge-id]").forEach((button) => button.addEventListener("click", () => acknowledgeAlerts(Number(button.dataset.alertAcknowledgeId), button)));
+  };
+
+  const renderAlertViews = () => {
+    if (!portalState) return;
+    const search = document.querySelector("[data-alert-search]")?.value.trim().toLocaleLowerCase("fr-FR") || "";
+    const severity = document.querySelector("[data-alert-severity]")?.value || "";
+    const status = document.querySelector("[data-alert-status]")?.value || "";
+    const alerts = portalState.alerts.filter((alert) => {
+      const haystack = `${alert.title || ""} ${alert.message || ""} ${alert.source || ""}`.toLocaleLowerCase("fr-FR");
+      return (!search || haystack.includes(search)) && (!severity || alert.severity === severity) && (!status || alert.status === status);
+    });
+    const host = document.querySelector("[data-alerts-list]");
+    host.innerHTML = renderTable("alerts", alerts);
+    setText("[data-alert-count]", `${alerts.length} alerte${alerts.length > 1 ? "s" : ""}`);
+    const acknowledgeAll = document.querySelector("[data-alert-acknowledge-all]");
+    acknowledgeAll.disabled = !portalState.alerts.some((alert) => alert.status === "open");
+    acknowledgeAll.textContent = acknowledgeAll.disabled ? "Toutes les alertes sont lues" : "Tout marquer comme lu";
+    bindAlertActions(host);
+  };
+
   const activatePortalView = (view, { updateHash = true, smooth = true } = {}) => {
     const panel = document.querySelector(`[data-view-panel="${view}"]`);
     if (!panel) return;
@@ -439,13 +532,13 @@
     document.querySelector("[data-alerts-preview]").innerHTML = renderTable("alerts", state.alerts, 4);
     document.querySelector("[data-invoices-preview]").innerHTML = renderTable("invoices", state.invoices, 4);
     document.querySelector("[data-requests-preview]").innerHTML = renderTable("requests", state.requests, 4);
-    document.querySelector("[data-alerts-list]").innerHTML = renderTable("alerts", state.alerts);
     document.querySelector("[data-requests-list]").innerHTML = renderTable("requests", state.requests);
     document.querySelector("[data-backups-list]").innerHTML = renderDevices(state.devices || []);
     const invoiceYear = document.querySelector("[data-invoice-year]");
     const years = [...new Set(state.invoices.map((invoice) => invoice.issued_at ? new Date(invoice.issued_at).getFullYear() : null).filter(Boolean))].sort((a, b) => b - a);
     invoiceYear.innerHTML = '<option value="">Toutes les années</option>' + years.map((year) => `<option value="${year}">${year}</option>`).join("");
     renderInvoiceViews();
+    renderAlertViews();
     renderOverviewChart(state);
     renderStatistics(state);
     document.querySelectorAll("[data-usage-period]").forEach((button) => button.addEventListener("click", () => renderOverviewChart(state, Number(button.dataset.usagePeriod))));
@@ -534,6 +627,12 @@
   document.querySelector("[data-invoice-year]")?.addEventListener("change", renderInvoiceViews);
   document.querySelector("[data-invoice-close]")?.addEventListener("click", () => invoiceDialog?.close());
   document.querySelector("[data-invoice-download]")?.addEventListener("click", (event) => downloadInvoice(event.currentTarget.dataset.invoicePath, event.currentTarget));
+  document.querySelector("[data-alert-search]")?.addEventListener("input", renderAlertViews);
+  document.querySelector("[data-alert-severity]")?.addEventListener("change", renderAlertViews);
+  document.querySelector("[data-alert-status]")?.addEventListener("change", renderAlertViews);
+  document.querySelector("[data-alert-acknowledge-all]")?.addEventListener("click", (event) => acknowledgeAlerts(null, event.currentTarget));
+  document.querySelector("[data-alert-close]")?.addEventListener("click", () => alertDialog?.close());
+  document.querySelector("[data-alert-acknowledge]")?.addEventListener("click", (event) => acknowledgeAlerts(selectedAlertId, event.currentTarget));
 
   const requestDialog = document.querySelector("[data-request-dialog]");
   const requestForm = document.querySelector("[data-request-form]");

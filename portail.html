@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css?v=20260925-2">
-  <link rel="stylesheet" href="/portal.css?v=20260926-6">
+  <link rel="stylesheet" href="/portal.css?v=20260926-7">
 </head>
 <body class="portal-page" data-portal-page>
   <svg class="portal-icon-sprite" aria-hidden="true">
@@ -116,7 +116,19 @@
             <section class="portal-data-panel portal-stat-summary" data-stat-summary></section>
           </div>
         </section>
-        <section class="portal-view" data-view-panel="alerts" hidden><div class="portal-title-row"><div><h1>Vos alertes</h1><p>Identifiez rapidement les événements nécessitant votre attention.</p></div></div><section class="portal-data-panel portal-full-panel"><div data-alerts-list></div></section></section>
+        <section class="portal-view" data-view-panel="alerts" hidden>
+          <div class="portal-title-row"><div><h1>Vos alertes</h1><p>Identifiez rapidement les événements nécessitant votre attention.</p></div><button class="button button-secondary" type="button" data-alert-acknowledge-all>Tout marquer comme lu</button></div>
+          <section class="portal-data-panel portal-full-panel portal-alerts-panel">
+            <div class="portal-alert-toolbar" aria-label="Filtrer les alertes">
+              <label><span>Rechercher</span><input type="search" placeholder="Message ou source" autocomplete="off" data-alert-search></label>
+              <label><span>Niveau</span><select data-alert-severity><option value="">Tous les niveaux</option><option value="critical">Critique</option><option value="warning">Attention</option><option value="info">Information</option></select></label>
+              <label><span>État</span><select data-alert-status><option value="">Tous les états</option><option value="open">Non lue</option><option value="acknowledged">Lue</option><option value="resolved">Résolue</option></select></label>
+              <span class="portal-alert-count" data-alert-count aria-live="polite"></span>
+            </div>
+            <p class="portal-alert-feedback" data-alert-feedback aria-live="polite"></p>
+            <div data-alerts-list></div>
+          </section>
+        </section>
         <section class="portal-view" data-view-panel="downloads" hidden>
           <div class="portal-title-row"><div><h1>Télécharger le client SAAS</h1><p>Installez le logiciel adapté à votre équipement depuis votre espace sécurisé.</p></div><a class="button" href="/contact.html?objet=Demande%20de%20numéro%20de%20contrat#formulaire">Demander mon numéro de contrat</a></div>
           <div class="portal-download-notice"><span aria-hidden="true"><svg><use href="#icon-shield-check"/></svg></span><div><strong>Téléchargement direct, sans quitter SAAS</strong><p>Choisissez votre plateforme ci-dessous. Votre numéro de contrat vous sera demandé pendant l’installation.</p></div></div>
@@ -221,9 +233,19 @@
       <div class="invoice-dialog-actions"><button class="button" type="button" data-invoice-download>Télécharger le PDF</button><a class="button button-secondary" href="/contact.html?objet=Demande%20de%20duplicata%20de%20facture#formulaire" data-invoice-duplicate>Demander un duplicata</a></div>
     </div>
   </dialog>
+  <dialog class="request-dialog invoice-dialog alert-dialog" data-alert-dialog aria-labelledby="alert-title">
+    <div class="invoice-dialog-shell">
+      <header><div><span>Alerte</span><h2 id="alert-title" data-alert-title>—</h2></div><button type="button" data-alert-close aria-label="Fermer">×</button></header>
+      <div class="invoice-dialog-status"><span data-alert-severity-label></span><span data-alert-status-label></span></div>
+      <p class="alert-dialog-message" data-alert-message></p>
+      <dl><div><dt>Source</dt><dd data-alert-source>—</dd></div><div><dt>Date</dt><dd data-alert-date>—</dd></div></dl>
+      <p class="portal-alert-feedback" data-alert-dialog-feedback aria-live="polite"></p>
+      <div class="invoice-dialog-actions"><button class="button" type="button" data-alert-acknowledge>Marquer comme lue</button><a class="button button-secondary" href="/contact.html?objet=Assistance%20technique#formulaire" data-alert-support>Contacter l’assistance</a></div>
+    </div>
+  </dialog>
   <script src="/site-ui.js?v=20260925-3" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/config.js?v=20260905-1"></script>
-  <script src="/portal.js?v=20260926-5" defer></script>
+  <script src="/portal.js?v=20260926-6" defer></script>
 </body>
 </html>
