@@ -264,11 +264,11 @@
   const demoData = {
     user: { id: "demo", email: "client@entreprise.fr", user_metadata: { full_name: "Claire Martin" } },
     organization: { id: 1, name: "Entreprise Démo" },
-    subscription: { plan_name: "500 Go", storage_limit_bytes: 500 * 1024 ** 3, storage_used_bytes: 248 * 1024 ** 3, retention_days: 365, status: "active", last_backup_at: new Date(Date.now() - 18 * 60000).toISOString() },
+    subscription: { plan_name: "500 Go", contract_number: "SAAS-DEM-2026-0042", storage_limit_bytes: 500 * 1024 ** 3, storage_used_bytes: 248 * 1024 ** 3, retention_days: 365, status: "active", last_backup_at: new Date(Date.now() - 18 * 60000).toISOString(), renewal_at: "2027-08-31" },
     usage: Array.from({ length: 730 }, (_, index) => ({ measured_on: new Date(Date.now() - (729 - index) * 86400000).toISOString(), storage_bytes: (105 + index * .196 + Math.sin(index / 24) * 3) * 1024 ** 3, protected_devices: 12 })),
     devices: [
-      { name: "Poste direction", device_type: "Windows", source_bytes: 128 * 1024 ** 3, stored_bytes: 76 * 1024 ** 3, source_count: 4, last_backup_at: new Date(Date.now() - 18 * 60000).toISOString(), backup_alert: false, missing_backup_alert: false, backup_running: false, active: true },
-      { name: "NAS comptabilité", device_type: "NAS", source_bytes: 320 * 1024 ** 3, stored_bytes: 172 * 1024 ** 3, source_count: 6, last_backup_at: new Date(Date.now() - 31 * 60000).toISOString(), backup_alert: false, missing_backup_alert: false, backup_running: false, active: true }
+      { id: 1, name: "Poste direction", device_type: "Windows 11 Pro", client_version: "5.2.3", source_bytes: 128 * 1024 ** 3, stored_bytes: 76 * 1024 ** 3, source_count: 4, last_backup_at: new Date(Date.now() - 18 * 60000).toISOString(), backup_alert: false, missing_backup_alert: false, backup_running: false, active: true },
+      { id: 2, name: "NAS comptabilité", device_type: "Synology DSM 7", client_version: "5.1.8", source_bytes: 320 * 1024 ** 3, stored_bytes: 172 * 1024 ** 3, source_count: 6, last_backup_at: new Date(Date.now() - 31 * 60000).toISOString(), backup_alert: false, missing_backup_alert: false, backup_running: false, active: true }
     ],
     alerts: [
       { id: 103, severity: "info", title: "Sauvegarde effectuée avec succès", message: "La dernière sauvegarde du poste de direction s’est terminée sans erreur.", source: "Kiwi Backup", occurred_at: new Date(Date.now() - 18 * 60000).toISOString(), status: "open" },
@@ -280,9 +280,11 @@
       { invoice_number: "F-2026-0032", issued_at: "2026-07-15", amount_cents: 66000, status: "paid", file_path: null }
     ],
     requests: [
-      { id: 56, subject: "Accès à une sauvegarde", category: "Restauration", status: "in_progress", priority: "normal", message: "Je souhaite récupérer un dossier supprimé sur le poste de direction.", updated_at: new Date().toISOString() },
+      { id: 56, subject: "Accès à une sauvegarde", category: "Restauration", status: "in_progress", priority: "normal", message: "Je souhaite récupérer un dossier supprimé sur le poste de direction.", updated_at: new Date().toISOString(), messages: [{ id: 1, author_type: "client", body: "Je souhaite récupérer un dossier supprimé sur le poste de direction.", created_at: new Date(Date.now() - 2 * 3600000).toISOString() }, { id: 2, author_type: "support", author_name: "Support Alliancia", body: "Nous avons localisé la sauvegarde. Pouvez-vous nous confirmer la date souhaitée ?", created_at: new Date(Date.now() - 50 * 60000).toISOString() }] },
       { id: 51, subject: "Ajout d’un utilisateur", category: "Contrat", status: "in_progress", priority: "normal", message: "Pouvez-vous ajouter un accès pour notre nouvelle collaboratrice ?", updated_at: new Date(Date.now() - 86400000).toISOString() }
-    ]
+    ],
+    requestMessages: [],
+    notificationPreferences: { backup_failure: true, storage_threshold: true, request_reply: true }
   };
 
   let portalState = null;
@@ -304,8 +306,8 @@
       const detailed = !limit;
       return `<table class="portal-table portal-invoices-table"><thead><tr><th>N° de facture</th><th>Date</th><th>Montant</th><th>Statut</th><th>${detailed ? "Actions" : ""}</th></tr></thead><tbody>${items.map((item) => `<tr><td><strong>${escapeHtml(item.invoice_number)}</strong></td><td>${formatDate(item.issued_at)}</td><td>${formatAmount(item.amount_cents)} HT</td><td><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span></td><td>${detailed ? `<div class="portal-row-actions"><button class="portal-row-action" type="button" data-invoice-view="${escapeHtml(item.invoice_number)}">Consulter</button>${item.file_path ? `<button class="portal-row-action secondary" type="button" data-invoice-path="${escapeHtml(item.file_path)}">PDF</button>` : `<a class="portal-row-action secondary" href="/contact.html?objet=Demande%20de%20duplicata%20de%20facture&facture=${encodeURIComponent(item.invoice_number)}#formulaire">Duplicata</a>`}</div>` : item.file_path ? `<button class="portal-download" type="button" data-invoice-path="${escapeHtml(item.file_path)}">Télécharger</button>` : "—"}</td></tr>`).join("")}</tbody></table>`;
     }
-    const editable = !limit;
-    return `<table class="portal-table portal-requests-table"><thead><tr><th>Référence</th><th>Objet</th><th>Statut</th><th>Mise à jour</th>${editable ? '<th><span class="visually-hidden">Actions</span></th>' : ""}</tr></thead><tbody>${items.map((item) => `<tr><td>#D-${String(item.id).padStart(5, "0")}</td><td><strong>${escapeHtml(item.subject)}</strong><small>${escapeHtml(item.category || "Autre")}</small></td><td><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span></td><td>${formatDate(item.updated_at, true)}</td>${editable ? `<td><button class="portal-row-action" type="button" data-request-edit="${Number(item.id)}" ${["resolved", "closed"].includes(item.status) ? "disabled title=\"Une demande clôturée ne peut plus être modifiée\"" : ""}>Modifier</button></td>` : ""}</tr>`).join("")}</tbody></table>`;
+    const detailed = !limit;
+    return `<div class="portal-request-list">${items.map((item) => `<button class="portal-request-card" type="button" data-request-open="${Number(item.id)}"><span class="portal-request-reference">#D-${String(item.id).padStart(5, "0")}</span><span class="portal-request-main"><strong>${escapeHtml(item.subject)}</strong><small>${escapeHtml(item.category || "Autre")} · ${escapeHtml(item.priority === "urgent" ? "Urgente" : item.priority === "high" ? "Élevée" : "Normale")}</small></span><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span><span class="portal-request-date">${formatDate(item.updated_at, true)}</span>${detailed ? '<span class="portal-request-arrow">→</span>' : ""}</button>`).join("")}</div>`;
   };
 
   const renderOverviewChart = (state, period = 30) => {
@@ -467,12 +469,12 @@
 
   const renderDevices = (devices) => {
     if (!devices.length) return '<div class="portal-empty">Aucun équipement sauvegardé pour le moment.</div>';
-    return `<table class="portal-table portal-devices-table"><thead><tr><th>Équipement</th><th>Type</th><th>Sources</th><th>Volume source</th><th>Volume stocké</th><th>Dernière sauvegarde</th><th>État</th></tr></thead><tbody>${devices.map((device) => {
+    return `<div class="portal-device-list">${devices.map((device, index) => {
       const needsAttention = device.backup_alert || device.missing_backup_alert || !device.active;
       const status = device.backup_running ? "Sauvegarde en cours" : needsAttention ? "À vérifier" : "Opérationnel";
       const tone = device.backup_running ? "in_progress" : needsAttention ? "attention" : "active";
-      return `<tr><td><strong>${escapeHtml(device.name)}</strong></td><td>${escapeHtml(device.device_type || "—")}</td><td>${Number(device.source_count || 0)}</td><td>${escapeHtml(formatBytes(device.source_bytes))}</td><td>${escapeHtml(formatBytes(device.stored_bytes))}</td><td>${escapeHtml(formatDate(device.last_backup_at, true))}</td><td><span class="portal-status ${tone}">${status}</span></td></tr>`;
-    }).join("")}</tbody></table>`;
+      return `<article class="portal-device-card"><div class="portal-device-icon"><svg aria-hidden="true"><use href="#icon-devices"/></svg></div><div class="portal-device-name"><strong>${escapeHtml(device.name)}</strong><small>${escapeHtml(device.device_type || "Équipement")} · Client ${escapeHtml(device.client_version || "à vérifier")}</small></div><span class="portal-status ${tone}">${status}</span><dl><div><dt>Sources</dt><dd>${Number(device.source_count || 0)}</dd></div><div><dt>Protégé</dt><dd>${escapeHtml(formatBytes(device.source_bytes))}</dd></div><div><dt>Stocké</dt><dd>${escapeHtml(formatBytes(device.stored_bytes))}</dd></div><div><dt>Dernière sauvegarde</dt><dd>${escapeHtml(relativeBackup(device.last_backup_at))}</dd></div></dl><button type="button" class="portal-row-action" data-device-open="${Number(device.id || index + 1)}">Voir la fiche</button></article>`;
+    }).join("")}</div>`;
   };
 
   const downloadInvoice = async (path, button) => {
@@ -618,16 +620,143 @@
     bindAlertActions(host);
   };
 
+  const closeMobileMenu = () => {
+    const sidebar = document.querySelector(".portal-sidebar");
+    const trigger = document.querySelector("[data-portal-menu]");
+    sidebar?.classList.remove("open");
+    document.body.classList.remove("portal-menu-open");
+    trigger?.setAttribute("aria-expanded", "false");
+    trigger?.setAttribute("aria-label", "Ouvrir le menu");
+  };
+
+  const renderOnboarding = (state) => {
+    const steps = [
+      { label: "Installer le client", complete: state.devices.length > 0, view: "downloads" },
+      { label: "Protéger un équipement", complete: state.devices.some((item) => item.active), view: "protection" },
+      { label: "Vérifier une sauvegarde", complete: Boolean(state.subscription?.last_backup_at), view: "protection" },
+      { label: "Tester une restauration", complete: state.requests.some((item) => item.category === "Restauration"), view: "restore" }
+    ];
+    const completed = steps.filter((step) => step.complete).length;
+    const percent = Math.round(completed / steps.length * 100);
+    setText("[data-onboarding-title]", percent === 100 ? "Votre espace est prêt" : "Votre espace est presque prêt");
+    setText("[data-onboarding-progress]", `${percent} %`);
+    setText("[data-onboarding-summary]", percent === 100 ? "Votre parcours de mise en service est terminé." : `${completed} étape${completed > 1 ? "s" : ""} sur ${steps.length} validée${completed > 1 ? "s" : ""}.`);
+    document.querySelector("[data-onboarding-bar]").style.width = `${percent}%`;
+    document.querySelector("[data-onboarding-steps]").innerHTML = steps.map((step) => `<button type="button" class="${step.complete ? "complete" : ""}" data-portal-view="${step.view}"><span>${step.complete ? "✓" : "○"}</span>${escapeHtml(step.label)}</button>`).join("");
+    document.querySelectorAll("[data-onboarding-steps] [data-portal-view]").forEach((button) => button.addEventListener("click", () => activatePortalView(button.dataset.portalView)));
+  };
+
+  const renderAccount = (state) => {
+    const name = state.user.user_metadata?.full_name || state.user.email.split("@")[0];
+    const displayEmail = state.user.user_metadata?.display_email || state.user.email;
+    const contract = state.subscription?.contract_number || `SAAS-${String(state.organization.id).padStart(6, "0")}`;
+    setText("[data-contract-number]", contract);
+    setText("[data-account-plan]", state.subscription?.plan_name || "Non renseignée");
+    setText("[data-account-retention]", `${state.subscription?.retention_days || 365} jours`);
+    setText("[data-account-renewal]", formatDate(state.subscription?.renewal_at));
+    setText("[data-account-organization]", state.organization.name);
+    setText("[data-account-user]", name);
+    setText("[data-account-email]", displayEmail);
+    Object.entries(state.notificationPreferences || {}).forEach(([key, value]) => {
+      const input = document.querySelector(`[data-notification="${key}"]`);
+      if (input) input.checked = value;
+    });
+  };
+
+  const bindDeviceCards = () => document.querySelectorAll("[data-device-open]").forEach((button) => button.addEventListener("click", () => {
+    const device = portalState.devices.find((item, index) => Number(item.id || index + 1) === Number(button.dataset.deviceOpen));
+    if (!device) return;
+    const dialog = document.querySelector("[data-device-dialog]");
+    dialog.dataset.deviceId = button.dataset.deviceOpen;
+    setText("[data-device-title]", device.name);
+    const healthy = device.active && !device.backup_alert && !device.missing_backup_alert;
+    document.querySelector("[data-device-health]").innerHTML = `<span class="portal-status ${healthy ? "active" : "attention"}">${healthy ? "Protection opérationnelle" : "Attention requise"}</span><small>Dernière activité ${escapeHtml(relativeBackup(device.last_backup_at).toLowerCase())}</small>`;
+    const renderTab = (tab) => {
+      document.querySelectorAll("[data-device-tab]").forEach((item) => item.classList.toggle("active", item.dataset.deviceTab === tab));
+      const host = document.querySelector("[data-device-content]");
+      if (tab === "summary") host.innerHTML = `<dl class="portal-device-details"><div><dt>Système</dt><dd>${escapeHtml(device.device_type || "Non renseigné")}</dd></div><div><dt>Version du client</dt><dd>${escapeHtml(device.client_version || "Non renseignée")}</dd></div><div><dt>Sources protégées</dt><dd>${Number(device.source_count || 0)}</dd></div><div><dt>Volume protégé</dt><dd>${escapeHtml(formatBytes(device.source_bytes))}</dd></div><div><dt>Volume stocké</dt><dd>${escapeHtml(formatBytes(device.stored_bytes))}</dd></div><div><dt>Dernière synchronisation</dt><dd>${escapeHtml(formatDate(device.synced_at || device.last_backup_at, true))}</dd></div></dl>`;
+      if (tab === "history") host.innerHTML = `<div class="portal-device-timeline"><article><span class="success">✓</span><div><strong>Sauvegarde terminée</strong><small>${escapeHtml(formatDate(device.last_backup_at, true))}</small></div></article><article><span>↻</span><div><strong>Synchronisation du statut</strong><small>${escapeHtml(formatDate(device.synced_at || device.last_backup_at, true))}</small></div></article></div>`;
+      if (tab === "configuration") host.innerHTML = `<dl class="portal-device-details"><div><dt>État du client</dt><dd>${device.active ? "Actif" : "Inactif"}</dd></div><div><dt>Sauvegarde en cours</dt><dd>${device.backup_running ? "Oui" : "Non"}</dd></div><div><dt>Alerte de sauvegarde</dt><dd>${device.backup_alert ? "Oui" : "Non"}</dd></div><div><dt>Sauvegarde manquante</dt><dd>${device.missing_backup_alert ? "Oui" : "Non"}</dd></div></dl>`;
+    };
+    document.querySelectorAll("[data-device-tab]").forEach((tab) => tab.onclick = () => renderTab(tab.dataset.deviceTab));
+    renderTab("summary");
+    dialog.showModal();
+  }));
+
+  const conversationDialog = document.querySelector("[data-conversation-dialog]");
+  let activeConversationId = null;
+  const requestMessages = (request) => {
+    const stored = portalState.requestMessages?.filter((message) => Number(message.request_id) === Number(request.id)) || [];
+    const seeded = request.messages || [];
+    if (stored.length || seeded.length) return [...seeded, ...stored].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    return [{ author_type: "client", author_name: "Vous", body: request.message, created_at: request.created_at || request.updated_at }];
+  };
+  const openConversation = (request) => {
+    activeConversationId = Number(request.id);
+    setText("[data-conversation-reference]", `Demande #D-${String(request.id).padStart(5, "0")}`);
+    setText("[data-conversation-title]", request.subject);
+    document.querySelector("[data-conversation-meta]").innerHTML = `<span class="portal-status ${escapeHtml(request.status)}">${statusLabel[request.status] || escapeHtml(request.status)}</span><span>${escapeHtml(request.category)}</span><span>Priorité ${request.priority === "urgent" ? "urgente" : request.priority === "high" ? "élevée" : "normale"}</span>`;
+    document.querySelector("[data-conversation-thread]").innerHTML = requestMessages(request).map((message) => `<article class="portal-message ${message.author_type === "support" ? "support" : "client"}"><div><strong>${escapeHtml(message.author_name || (message.author_type === "support" ? "Support Alliancia" : "Vous"))}</strong><time>${escapeHtml(formatDate(message.created_at, true))}</time></div><p>${escapeHtml(message.body)}</p></article>`).join("");
+    document.querySelector("[data-reply-form]").hidden = ["resolved", "closed"].includes(request.status);
+    setText("[data-reply-feedback]", "");
+    conversationDialog?.showModal();
+  };
+  const bindRequestConversations = () => document.querySelectorAll("[data-request-open]").forEach((button) => button.addEventListener("click", () => {
+    const request = portalState.requests.find((item) => Number(item.id) === Number(button.dataset.requestOpen));
+    if (request) openConversation(request);
+  }));
+
+  const renderRestoreDevices = (selectedId = null) => {
+    const host = document.querySelector("[data-restore-devices]");
+    host.innerHTML = portalState.devices.map((device, index) => { const id = Number(device.id || index + 1); return `<label class="portal-choice"><input type="radio" name="device_id" value="${id}" ${Number(selectedId) === id || (!selectedId && index === 0) ? "checked" : ""}><span><strong>${escapeHtml(device.name)}</strong><small>${escapeHtml(device.device_type || "Équipement")} · sauvegardé ${escapeHtml(relativeBackup(device.last_backup_at).toLowerCase())}</small></span></label>`; }).join("");
+  };
+
+  const initializeRestoreForm = () => {
+    const form = document.querySelector("[data-restore-form]");
+    let step = 0;
+    const paint = () => {
+      form.querySelectorAll("[data-restore-step]").forEach((item) => item.hidden = Number(item.dataset.restoreStep) !== step);
+      document.querySelectorAll(".portal-restore-progress li").forEach((item, index) => { item.classList.toggle("active", index === step); item.classList.toggle("complete", index < step); });
+      form.querySelector("[data-restore-back]").hidden = step === 0;
+      form.querySelector("[data-restore-next]").hidden = step === 4;
+      form.querySelector("[data-restore-submit]").hidden = step !== 4;
+      if (step === 4) {
+        const values = new FormData(form);
+        const device = portalState.devices.find((item, index) => Number(item.id || index + 1) === Number(values.get("device_id")));
+        document.querySelector("[data-restore-summary]").innerHTML = `<dl><div><dt>Équipement</dt><dd>${escapeHtml(device?.name || "Non précisé")}</dd></div><div><dt>Données</dt><dd>${escapeHtml(values.get("scope"))}</dd></div><div><dt>Date souhaitée</dt><dd>${escapeHtml(formatDate(values.get("restore_date")))}</dd></div><div><dt>Priorité</dt><dd>${values.get("urgency") === "urgent" ? "Urgente" : "Standard"}</dd></div></dl>`;
+      }
+    };
+    form.querySelector("[data-restore-next]").onclick = () => { const visible = form.querySelector(`[data-restore-step="${step}"]`); const fields = [...visible.querySelectorAll("input, textarea")]; if (!fields.every((field) => field.reportValidity())) return; step = Math.min(4, step + 1); paint(); };
+    form.querySelector("[data-restore-back]").onclick = () => { step = Math.max(0, step - 1); paint(); };
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const values = new FormData(form);
+      const device = portalState.devices.find((item, index) => Number(item.id || index + 1) === Number(values.get("device_id")));
+      const payload = { subject: `Restauration — ${device?.name || "équipement"}`, category: "Restauration", priority: values.get("urgency") === "urgent" ? "urgent" : "normal", message: `Équipement : ${device?.name || "Non précisé"}\nDonnées : ${values.get("scope")}\nDate souhaitée : ${values.get("restore_date")}\nPrécisions : ${values.get("details") || "Aucune"}` };
+      const submit = form.querySelector("[data-restore-submit]"); submit.disabled = true;
+      let data, error;
+      if (isLocalDemo) data = { id: Date.now(), ...payload, status: "open", created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+      else ({ data, error } = await client.from("support_requests").insert({ organization_id: portalState.organization.id, created_by: portalState.user.id, ...payload }).select().single());
+      if (error) { setText("[data-restore-feedback]", "La demande n’a pas pu être envoyée. Réessayez dans quelques instants."); submit.disabled = false; return; }
+      portalState.requests.unshift(data); renderRequestViews(); renderOnboarding(portalState);
+      form.innerHTML = `<div class="portal-restore-success"><span>✓</span><h2>Demande transmise</h2><p>L’équipe Alliancia vous répond sous un jour ouvré. Vous pouvez suivre l’échange dans vos demandes.</p><button class="button" type="button" data-portal-view="requests">Suivre ma demande</button></div>`;
+      form.querySelector("[data-portal-view]").onclick = () => activatePortalView("requests");
+    });
+    paint();
+  };
+
   const activatePortalView = (view, { updateHash = true, smooth = true } = {}) => {
+    if (view === "backups") view = "protection";
     const panel = document.querySelector(`[data-view-panel="${view}"]`);
     if (!panel) return;
-    document.querySelectorAll(".portal-sidebar [data-portal-view]").forEach((button) => button.classList.toggle("active", button.dataset.portalView === view));
+    const navigationView = ["statistics", "alerts"].includes(view) ? "protection" : view;
+    document.querySelectorAll(".portal-sidebar [data-portal-view]").forEach((button) => button.classList.toggle("active", button.dataset.portalView === navigationView));
     document.querySelectorAll("[data-view-panel]").forEach((item) => {
       const active = item.dataset.viewPanel === view;
       item.hidden = !active;
       item.classList.toggle("active", active);
     });
-    document.querySelector(".portal-sidebar")?.classList.remove("open");
+    closeMobileMenu();
     if (updateHash) history.replaceState(null, "", `#${view}`);
     window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
   };
@@ -651,6 +780,10 @@
     document.querySelector("[data-requests-preview]").innerHTML = renderTable("requests", state.requests, 4);
     document.querySelector("[data-requests-list]").innerHTML = renderTable("requests", state.requests);
     document.querySelector("[data-backups-list]").innerHTML = renderDevices(state.devices || []);
+    renderOnboarding(state);
+    renderAccount(state);
+    renderRestoreDevices();
+    initializeRestoreForm();
     const invoiceYear = document.querySelector("[data-invoice-year]");
     const years = [...new Set(state.invoices.map((invoice) => invoice.issued_at ? new Date(invoice.issued_at).getFullYear() : null).filter(Boolean))].sort((a, b) => b - a);
     invoiceYear.innerHTML = '<option value="">Toutes les années</option>' + years.map((year) => `<option value="${year}">${year}</option>`).join("");
@@ -662,6 +795,8 @@
     document.querySelectorAll("[data-usage-period]").forEach((button) => button.addEventListener("click", () => renderOverviewChart(state, Number(button.dataset.usagePeriod))));
     document.querySelectorAll("[data-stat-period]").forEach((button) => button.addEventListener("click", () => renderStatistics(state, Number(button.dataset.statPeriod))));
     bindInvoiceDownloads(document.querySelector("[data-invoices-preview]"));
+    bindDeviceCards();
+    bindRequestConversations();
     loading.hidden = true;
     shell.hidden = false;
     activatePortalView(location.hash.slice(1) || "overview", { updateHash: false, smooth: false });
@@ -679,20 +814,22 @@
       return;
     }
     const organizationId = membership.organization_id;
-    const [subscription, usage, alerts, invoices, requests, devices] = await Promise.all([
+    const [subscription, usage, alerts, invoices, requests, devices, requestMessagesResult, notificationPreferencesResult] = await Promise.all([
       client.from("subscriptions").select("*").eq("organization_id", organizationId).maybeSingle(),
       client.from("usage_daily").select("*").eq("organization_id", organizationId).order("measured_on", { ascending: false }).limit(730),
       client.from("alerts").select("*").eq("organization_id", organizationId).order("occurred_at", { ascending: false }).limit(100),
       client.from("invoices").select("*").eq("organization_id", organizationId).order("issued_at", { ascending: false }).limit(100),
       client.from("support_requests").select("*").eq("organization_id", organizationId).order("updated_at", { ascending: false }).limit(100),
-      client.from("backup_devices").select("*").eq("organization_id", organizationId).order("last_backup_at", { ascending: false }).limit(200)
+      client.from("backup_devices").select("*").eq("organization_id", organizationId).order("last_backup_at", { ascending: false }).limit(200),
+      client.from("support_request_messages").select("*").eq("organization_id", organizationId).order("created_at", { ascending: true }).limit(500),
+      client.from("notification_preferences").select("backup_failure,storage_threshold,request_reply").eq("user_id", user.id).maybeSingle()
     ]);
-    const firstError = [subscription, usage, alerts, invoices, requests, devices].find((result) => result.error)?.error;
+    const firstError = [subscription, usage, alerts, invoices, requests, devices, requestMessagesResult, notificationPreferencesResult].find((result) => result.error)?.error;
     if (firstError) {
       loading.innerHTML = "<strong>Impossible de charger votre espace.</strong><p>Réessayez dans quelques instants ou contactez l’assistance.</p>";
       return;
     }
-    renderPortal({ user, organization: membership.organizations, subscription: subscription.data, usage: [...(usage.data || [])].reverse(), alerts: alerts.data || [], invoices: invoices.data || [], requests: requests.data || [], devices: devices.data || [] });
+    renderPortal({ user, organization: membership.organizations, subscription: subscription.data, usage: [...(usage.data || [])].reverse(), alerts: alerts.data || [], invoices: invoices.data || [], requests: requests.data || [], devices: devices.data || [], requestMessages: requestMessagesResult.data || [], notificationPreferences: notificationPreferencesResult.data || { backup_failure: true, storage_threshold: true, request_reply: true } });
   };
 
   document.querySelectorAll("[data-portal-view]").forEach((control) => control.addEventListener("click", () => activatePortalView(control.dataset.portalView)));
@@ -738,7 +875,35 @@
     button.textContent = "Copié";
     window.setTimeout(() => { button.textContent = label; }, 1200);
   }));
-  document.querySelector("[data-portal-menu]")?.addEventListener("click", () => document.querySelector(".portal-sidebar")?.classList.toggle("open"));
+  document.querySelector("[data-portal-menu]")?.addEventListener("click", (event) => {
+    const sidebar = document.querySelector(".portal-sidebar");
+    const open = !sidebar.classList.contains("open");
+    sidebar.classList.toggle("open", open);
+    document.body.classList.toggle("portal-menu-open", open);
+    event.currentTarget.setAttribute("aria-expanded", String(open));
+    event.currentTarget.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
+  });
+  document.querySelector("[data-portal-menu-close]")?.addEventListener("click", closeMobileMenu);
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeMobileMenu(); });
+  document.querySelectorAll("[data-protection-tab]").forEach((button) => button.addEventListener("click", () => {
+    document.querySelectorAll("[data-protection-tab]").forEach((item) => item.classList.toggle("active", item === button));
+    document.querySelectorAll("[data-protection-panel]").forEach((panel) => panel.hidden = panel.dataset.protectionPanel !== button.dataset.protectionTab);
+  }));
+  document.querySelector("[data-device-close]")?.addEventListener("click", () => document.querySelector("[data-device-dialog]")?.close());
+  document.querySelector("[data-device-restore]")?.addEventListener("click", () => {
+    const dialog = document.querySelector("[data-device-dialog]"); const selected = dialog.dataset.deviceId; dialog.close(); activatePortalView("restore"); renderRestoreDevices(selected);
+  });
+  document.querySelector("[data-conversation-close]")?.addEventListener("click", () => conversationDialog?.close());
+  document.querySelector("[data-copy-contract]")?.addEventListener("click", async (event) => { await navigator.clipboard.writeText(document.querySelector("[data-contract-number]").textContent); event.currentTarget.textContent = "Copié"; window.setTimeout(() => event.currentTarget.textContent = "Copier", 1200); });
+  document.querySelector("[data-save-notifications]")?.addEventListener("click", async (event) => {
+    const values = Object.fromEntries([...document.querySelectorAll("[data-notification]")].map((input) => [input.dataset.notification, input.checked]));
+    event.currentTarget.disabled = true;
+    let error = null;
+    if (!isLocalDemo) ({ error } = await client.from("notification_preferences").upsert({ user_id: portalState.user.id, organization_id: portalState.organization.id, ...values }, { onConflict: "user_id,organization_id" }));
+    if (!error) portalState.notificationPreferences = values;
+    setText("[data-notification-feedback]", error ? "Enregistrement impossible pour le moment." : "Préférences enregistrées.");
+    event.currentTarget.disabled = false;
+  });
   document.querySelector("[data-logout]")?.addEventListener("click", async () => { if (client) await client.auth.signOut(); location.replace("/connexion.html"); });
   document.querySelector("[data-invoice-search]")?.addEventListener("input", renderInvoiceViews);
   document.querySelector("[data-invoice-status]")?.addEventListener("change", renderInvoiceViews);
@@ -788,8 +953,26 @@
   const renderRequestViews = () => {
     document.querySelector("[data-requests-preview]").innerHTML = renderTable("requests", portalState.requests, 4);
     document.querySelector("[data-requests-list]").innerHTML = renderTable("requests", portalState.requests);
-    bindRequestEdits();
+    bindRequestConversations();
   };
+  document.querySelector("[data-reply-form]")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const body = form.elements.message.value.trim();
+    const submit = form.querySelector("[type='submit']");
+    submit.disabled = true;
+    let message = { id: Date.now(), request_id: activeConversationId, author_type: "client", author_name: "Vous", body, created_at: new Date().toISOString() };
+    let error = null;
+    if (!isLocalDemo) {
+      const result = await client.from("support_request_messages").insert({ request_id: activeConversationId, organization_id: portalState.organization.id, author_id: portalState.user.id, author_type: "client", author_name: portalState.user.user_metadata?.full_name || "Client", body }).select().single();
+      error = result.error; if (result.data) message = result.data;
+    }
+    if (error) { setText("[data-reply-feedback]", "Le message n’a pas pu être envoyé."); submit.disabled = false; return; }
+    portalState.requestMessages ||= []; portalState.requestMessages.push(message);
+    const request = portalState.requests.find((item) => Number(item.id) === activeConversationId);
+    if (request) { request.updated_at = message.created_at; openConversation(request); }
+    form.reset(); submit.disabled = false;
+  });
   document.querySelectorAll("[data-new-request]").forEach((button) => button.addEventListener("click", prepareNewRequest));
   document.querySelector("[data-request-close]")?.addEventListener("click", () => requestDialog?.close());
   requestForm?.addEventListener("submit", async (event) => {

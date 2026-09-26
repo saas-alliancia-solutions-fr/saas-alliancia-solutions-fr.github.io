@@ -30,6 +30,7 @@ create table if not exists public.subscriptions (
   id bigint generated always as identity primary key,
   organization_id bigint not null unique references public.organizations(id) on delete cascade,
   plan_name text not null,
+  contract_number text unique,
   storage_limit_bytes bigint not null default 0 check (storage_limit_bytes >= 0),
   storage_used_bytes bigint not null default 0 check (storage_used_bytes >= 0),
   retention_days integer not null default 365 check (retention_days > 0),
@@ -56,6 +57,28 @@ create table if not exists public.support_requests (
 
 create index if not exists support_requests_organization_updated_idx on public.support_requests(organization_id, updated_at desc);
 create index if not exists support_requests_created_by_idx on public.support_requests(created_by);
+
+create table if not exists public.support_request_messages (
+  id bigint generated always as identity primary key,
+  request_id bigint not null references public.support_requests(id) on delete cascade,
+  organization_id bigint not null references public.organizations(id) on delete cascade,
+  author_id uuid references auth.users(id) on delete set null,
+  author_type text not null default 'client' check (author_type in ('client', 'support', 'system')),
+  author_name text,
+  body text not null check (char_length(body) between 2 and 10000),
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.notification_preferences (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  organization_id bigint not null references public.organizations(id) on delete cascade,
+  backup_failure boolean not null default true,
+  storage_threshold boolean not null default true,
+  request_reply boolean not null default true,
+  updated_at timestamptz not null default now(),
+  unique (user_id, organization_id)
+);
 
 create table if not exists public.invoices (
   id bigint generated always as identity primary key,
