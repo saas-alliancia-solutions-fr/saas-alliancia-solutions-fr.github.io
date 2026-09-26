@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css?v=20260925-2">
-  <link rel="stylesheet" href="/portal.css?v=20260926-8">
+  <link rel="stylesheet" href="/portal.css?v=20260926-9">
 </head>
 <body class="portal-page" data-portal-page>
   <svg class="portal-icon-sprite" aria-hidden="true">
@@ -210,7 +210,7 @@
 
   <dialog class="request-dialog" data-request-dialog aria-labelledby="request-title">
     <form data-request-form>
-      <div><h2 id="request-title" data-request-title>Nouvelle demande</h2><button type="button" data-request-close aria-label="Fermer">×</button></div>
+      <div><h2 id="request-title" data-request-title>Nouvelle demande</h2><button class="dialog-close" type="button" data-request-close aria-label="Fermer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
       <input type="hidden" name="id">
       <p class="request-dialog-context" data-request-context>Décrivez votre besoin : votre demande sera transmise à l’équipe Alliancia.</p>
       <label>Objet<input type="text" name="subject" minlength="5" required></label>
@@ -223,7 +223,7 @@
   </dialog>
   <dialog class="request-dialog invoice-dialog" data-invoice-dialog aria-labelledby="invoice-title">
     <div class="invoice-dialog-shell">
-      <header><div><span>Facture</span><h2 id="invoice-title" data-invoice-title>—</h2></div><button type="button" data-invoice-close aria-label="Fermer">×</button></header>
+      <header><div><span>Facture</span><h2 id="invoice-title" data-invoice-title>—</h2></div><button class="dialog-close" type="button" data-invoice-close aria-label="Fermer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></header>
       <div class="invoice-dialog-status"><span data-invoice-status-label></span><small data-invoice-document-state></small></div>
       <dl>
         <div><dt>Date d’émission</dt><dd data-invoice-date>—</dd></div>
@@ -235,7 +235,7 @@
   </dialog>
   <dialog class="request-dialog invoice-dialog alert-dialog" data-alert-dialog aria-labelledby="alert-title">
     <div class="invoice-dialog-shell">
-      <header><div><span>Alerte</span><h2 id="alert-title" data-alert-title>—</h2></div><button type="button" data-alert-close aria-label="Fermer">×</button></header>
+      <header><div><span>Alerte</span><h2 id="alert-title" data-alert-title>—</h2></div><button class="dialog-close" type="button" data-alert-close aria-label="Fermer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></header>
       <div class="invoice-dialog-status"><span data-alert-severity-label></span><span data-alert-status-label></span></div>
       <p class="alert-dialog-message" data-alert-message></p>
       <dl><div><dt>Source</dt><dd data-alert-source>—</dd></div><div><dt>Date</dt><dd data-alert-date>—</dd></div></dl>
