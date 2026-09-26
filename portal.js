@@ -181,15 +181,71 @@
     return `<table class="portal-table"><thead><tr><th>Référence</th><th>Objet</th><th>Statut</th><th>Mise à jour</th></tr></thead><tbody>${items.map((item) => `<tr><td>#D-${String(item.id).padStart(5, "0")}</td><td>${escapeHtml(item.subject)}</td><td><span class="portal-status ${escapeHtml(item.status)}">${statusLabel[item.status] || escapeHtml(item.status)}</span></td><td>${formatDate(item.updated_at, true)}</td></tr>`).join("")}</tbody></table>`;
   };
 
-  const renderChart = (selector, usage) => {
-    const host = document.querySelector(selector);
+  const renderOverviewChart = (state, period = 30) => {
+    const host = document.querySelector("[data-usage-chart]");
+    const usage = (state.usage || []).slice(-period);
     if (!host || !usage.length) return;
-    const width = 900, height = 230, pad = 28;
+    const width = 900, height = 180, top = 16, bottom = 14;
     const values = usage.map((item) => Number(item.storage_bytes || 0));
-    const max = Math.max(...values, 1) * 1.12;
-    const points = values.map((value, index) => `${pad + index * ((width - pad * 2) / Math.max(values.length - 1, 1))},${height - pad - (value / max) * (height - pad * 2)}`).join(" ");
-    const area = `${pad},${height - pad} ${points} ${width - pad},${height - pad}`;
-    host.innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" role="img" aria-label="Évolution du volume sauvegardé"><defs><linearGradient id="usage-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#356bff" stop-opacity=".2"/><stop offset="1" stop-color="#356bff" stop-opacity=".02"/></linearGradient></defs><line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="#dbe3ef"/><line x1="${pad}" y1="${height / 2}" x2="${width - pad}" y2="${height / 2}" stroke="#edf1f7"/><polygon points="${area}" fill="url(#usage-fill)"/><polyline points="${points}" fill="none" stroke="#356bff" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>`;
+    const liveStorage = Number(state.subscription?.storage_used_bytes || 0);
+    if (liveStorage) values[values.length - 1] = liveStorage;
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+    const range = Math.max(maxValue - minValue, maxValue * .035, 1);
+    const chartMin = Math.max(0, minValue - range * .35);
+    const chartMax = maxValue + range * .3;
+    const x = (index) => index * (width / Math.max(values.length - 1, 1));
+    const y = (value) => top + (chartMax - value) / (chartMax - chartMin) * (height - top - bottom);
+    const points = values.map((value, index) => `${x(index)},${y(value)}`).join(" ");
+    const area = `0,${height - bottom} ${points} ${width},${height - bottom}`;
+    const firstValue = values[0];
+    const currentValue = values.at(-1);
+    const delta = currentValue - firstValue;
+    const deltaPercent = firstValue ? delta / firstValue * 100 : 0;
+    const limit = Number(state.subscription?.storage_limit_bytes || 0);
+    const available = limit ? Math.max(0, limit - currentValue) : 0;
+    const capacity = limit ? currentValue / limit * 100 : 0;
+    const labelDate = (value) => new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" }).format(new Date(value));
+    const changeLabel = firstValue ? `${delta >= 0 ? "↗" : "↘"} ${delta >= 0 ? "+" : "−"}${formatBytes(Math.abs(delta))} (${Math.abs(deltaPercent).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %)` : "Évolution indisponible";
+
+    setText("[data-overview-period-label]", `Évolution sur les ${period} derniers jours`);
+    setText("[data-overview-change]", `${changeLabel} sur la période`);
+    setText("[data-overview-capacity]", limit ? `${capacity.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} % utilisé · ${formatBytes(available)} disponibles` : "Capacité non renseignée");
+    setText("[data-overview-range]", `${formatBytes(minValue)} à ${formatBytes(maxValue)}`);
+    document.querySelector("[data-overview-change]")?.classList.toggle("down", delta < 0);
+    document.querySelectorAll("[data-usage-period]").forEach((button) => {
+      const active = Number(button.dataset.usagePeriod) === period;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+
+    const hits = usage.map((item, index) => {
+      const pointX = x(index), pointY = y(values[index]);
+      const date = labelDate(item.measured_on);
+      return `<circle class="portal-overview-hit" cx="${pointX}" cy="${pointY}" r="13" tabindex="0" role="button" aria-label="${escapeHtml(date)} : ${escapeHtml(formatBytes(values[index]))}" data-chart-date="${escapeHtml(date)}" data-chart-value="${escapeHtml(formatBytes(values[index]))}" data-chart-x="${(pointX / width * 100).toFixed(2)}" data-chart-y="${(pointY / height * 100).toFixed(2)}"/>`;
+    }).join("");
+    const dates = [usage[0], usage[Math.floor((usage.length - 1) / 2)], usage.at(-1)];
+    host.innerHTML = `<div class="portal-overview-plot"><svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" role="img" aria-label="${escapeHtml(changeLabel)} sur les ${period} derniers jours"><defs><linearGradient id="overview-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#356bff" stop-opacity=".28"/><stop offset="1" stop-color="#356bff" stop-opacity=".025"/></linearGradient></defs><g class="portal-overview-grid"><line x1="0" y1="${top}" x2="${width}" y2="${top}"/><line x1="0" y1="${height / 2}" x2="${width}" y2="${height / 2}"/><line x1="0" y1="${height - bottom}" x2="${width}" y2="${height - bottom}"/></g><polygon points="${area}" fill="url(#overview-fill)"/><polyline points="${points}" fill="none" stroke="#356bff" stroke-width="3" vector-effect="non-scaling-stroke"/><g>${hits}</g><circle cx="${x(values.length - 1)}" cy="${y(currentValue)}" r="5" fill="#fff" stroke="#356bff" stroke-width="3" vector-effect="non-scaling-stroke"/></svg><div class="portal-overview-tooltip" hidden><strong></strong><span></span></div></div><div class="portal-overview-axis"><span>${escapeHtml(labelDate(dates[0].measured_on))}</span><span>${escapeHtml(labelDate(dates[1].measured_on))}</span><span>${escapeHtml(labelDate(dates[2].measured_on))}</span></div>`;
+
+    const tooltip = host.querySelector(".portal-overview-tooltip");
+    const showPoint = (point) => {
+      tooltip.hidden = false;
+      tooltip.querySelector("strong").textContent = point.dataset.chartValue;
+      tooltip.querySelector("span").textContent = point.dataset.chartDate;
+      tooltip.style.left = `${Math.min(92, Math.max(8, Number(point.dataset.chartX)))}%`;
+      tooltip.style.top = `${Math.max(6, Number(point.dataset.chartY) - 8)}%`;
+      host.querySelectorAll(".portal-overview-hit").forEach((item) => item.classList.toggle("active", item === point));
+    };
+    const hidePoint = () => {
+      tooltip.hidden = true;
+      host.querySelectorAll(".portal-overview-hit").forEach((item) => item.classList.remove("active"));
+    };
+    host.querySelectorAll(".portal-overview-hit").forEach((point) => {
+      point.addEventListener("mouseenter", () => showPoint(point));
+      point.addEventListener("focus", () => showPoint(point));
+      point.addEventListener("mouseleave", hidePoint);
+      point.addEventListener("blur", hidePoint);
+    });
   };
 
   const renderStatistics = (state) => {
@@ -319,8 +375,9 @@
     document.querySelector("[data-invoices-list]").innerHTML = renderTable("invoices", state.invoices);
     document.querySelector("[data-requests-list]").innerHTML = renderTable("requests", state.requests);
     document.querySelector("[data-backups-list]").innerHTML = renderDevices(state.devices || []);
-    renderChart("[data-usage-chart]", state.usage);
+    renderOverviewChart(state);
     renderStatistics(state);
+    document.querySelectorAll("[data-usage-period]").forEach((button) => button.addEventListener("click", () => renderOverviewChart(state, Number(button.dataset.usagePeriod))));
     bindInvoiceDownloads();
     loading.hidden = true;
     shell.hidden = false;

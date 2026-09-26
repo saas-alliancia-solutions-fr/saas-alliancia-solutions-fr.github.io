@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css?v=20260925-2">
-  <link rel="stylesheet" href="/portal.css?v=20260926-2">
+  <link rel="stylesheet" href="/portal.css?v=20260926-3">
 </head>
 <body class="portal-page" data-portal-page>
   <svg class="portal-icon-sprite" aria-hidden="true">
@@ -64,9 +64,14 @@
             <article><span class="portal-metric-icon" aria-hidden="true"><svg><use href="#icon-backup-time"/></svg></span><div><strong data-last-backup>—</strong><small>Dernière sauvegarde</small></div></article>
             <article><span class="portal-metric-icon" aria-hidden="true"><svg><use href="#icon-retention"/></svg></span><div><strong data-retention>365 jours</strong><small>Rétention</small></div></article>
           </div>
-          <section class="portal-chart-panel">
-            <div class="portal-panel-heading"><div><h2>Utilisation du stockage</h2><p>Évolution sur les 30 derniers jours</p></div><div><strong data-storage-summary>—</strong><small data-storage-limit>Capacité non renseignée</small></div></div>
+          <section class="portal-chart-panel portal-overview-chart-panel">
+            <div class="portal-panel-heading"><div><h2>Utilisation du stockage</h2><p data-overview-period-label>Évolution sur les 30 derniers jours</p></div><div><strong data-storage-summary>—</strong><small data-storage-limit>Capacité non renseignée</small></div></div>
+            <div class="portal-overview-chart-toolbar">
+              <div class="portal-overview-insights"><span data-overview-change>Évolution indisponible</span><span data-overview-capacity>Capacité non renseignée</span><span data-overview-range>Plage indisponible</span></div>
+              <div class="portal-chart-periods" role="group" aria-label="Période du graphique"><button type="button" data-usage-period="7">7 jours</button><button class="active" type="button" data-usage-period="30">30 jours</button></div>
+            </div>
             <div class="portal-chart" data-usage-chart><p>Aucune mesure disponible pour le moment.</p></div>
+            <div class="portal-overview-chart-footer"><small>Survolez ou sélectionnez un point pour consulter la mesure.</small><button type="button" data-portal-view="statistics">Voir toutes les statistiques →</button></div>
           </section>
           <div class="portal-overview-grid">
             <section class="portal-data-panel"><div class="portal-panel-heading"><h2>Alertes récentes</h2><button type="button" data-portal-view="alerts">Voir toutes</button></div><div data-alerts-preview></div></section>
@@ -188,6 +193,6 @@
   <script src="/site-ui.js?v=20260925-3" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/config.js?v=20260905-1"></script>
-  <script src="/portal.js?v=20260926-1" defer></script>
+  <script src="/portal.js?v=20260926-2" defer></script>
 </body>
 </html>
